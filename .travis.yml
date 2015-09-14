@@ -1,0 +1,14 @@
+language: python
+python:
+- '2.7'
+- '3.4'
+- nightly
+install: pip install -r requirements.txt
+script: nosetests
+deploy:
+  provider: heroku
+  api_key:
+    secure: JcPGzsFxk4V6OZ+VUZnjPc283T1GeAGlp1a1Ru/5fnddYeqLvInCJQGhSUr2qzs5p982spW7a3KE18JmhV704/pe1yFAdbAPxVw00VjQcCTdUv6vpnRfIcadY9ihDke1OOoCOMnT5REfcCJo7HCX+AhISj2kLjnvkNsuIWlej7122WkTC+jFOw7Q+6G1zGXi8JjBRY4jHsXRIQbgj82GvC9gwFKnk/9zewivZskU1K5ViC0d/g+trq/yj72EDLgCaOyonr9+eE36AeVf5CmMGrT5a+7to/6ry2OWAtk1M+bUbCJgm2Skmu97RQVo3F4mKakdoA/4bRoF3dxfzPbRnM176ZtpxLwuGnFBxGE1Z7BShGYybtkYdBk4IQdjUNYwfHLh3H56nOXC+3HcpOQsI0vyDuMYuWqV89cbTwzm4e8AU+gJ4B+Qc6zRyrBlUT0bM9eckIicrSGG0yVMA9DDr1i1HgF/dmzVrPcvpgIlGtCNFGeEFKme6M9cqvd2+oNWPvK2MU4oNAZ80uhdVBp7n1K6xQYydrD3mWr7+kkq9jMxWLjWTOYBDkmPFlFzrUvCSbkLOTxVttJbthF8Lys0A/j/T7qjnDep1/osu5AH7iNYkV6pDczv1B+bSroA5yMXl0Emeu1rn/gWxMcFgAbrtjoErSI0pm4nJALL8ZkRGD0=
+  app: AC41004-Team-2
+  on:
+    repo: jslvtr/AC41004-Team-2
