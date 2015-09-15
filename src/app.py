@@ -12,7 +12,7 @@ mongo_database = os.environ.get("MONGODB_DATABASE")
 
 app = Flask(__name__)
 app.session_interface = MongoSessionInterface(host=mongo_url,
-                                              port=mongo_port,
+                                              port=int(mongo_port),
                                               db=mongo_database,
                                               user=mongodb_user,
                                               password=mongodb_password)
