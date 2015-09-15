@@ -20,9 +20,12 @@ class MongoSession(CallbackDict, SessionMixin):
 
 
 class MongoSessionInterface(SessionInterface):
-    def __init__(self, host='localhost', port=27017, db='', collection='sessions'):
+    def __init__(self, host='localhost', port=27017, db='', collection='sessions', user=None, password=None):
         client = MongoClient(host, port)
-        self.store = client[db][collection]
+        db = client[db]
+        if user is None or password is None:
+            db.authenticate(user, password)
+        self.store = db[collection]
 
     def open_session(self, app, request):
         sid = request.cookies.get(app.session_cookie_name)

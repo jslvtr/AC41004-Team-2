@@ -2,9 +2,20 @@ __author__ = 'jslvtr'
 
 from flask import Flask, session, jsonify
 from src.common.sessions import MongoSessionInterface
+import os
+
+mongodb_user = os.environ.get("MONGODB_USER")
+mongodb_password = os.environ.get("MONGODB_PASSWORD")
+mongo_url = os.environ.get("MONGODB_URL")
+mongo_port = os.environ.get("MONGODB_PORT")
+mongo_database = os.environ.get("MONGODB_DATABASE")
 
 app = Flask(__name__)
-app.session_interface = MongoSessionInterface(db="enterprisegym")
+app.session_interface = MongoSessionInterface(host=mongo_url,
+                                              port=mongo_port,
+                                              db=mongo_database,
+                                              user=mongodb_user,
+                                              password=mongodb_password)
 app.secret_key = "ajfjfBafbaf1565~/?"
 
 
