@@ -23,7 +23,7 @@ class MongoSessionInterface(SessionInterface):
     def __init__(self, host='localhost', port=27017, db='', collection='sessions', user=None, password=None):
         client = MongoClient(host, port)
         db = client[db]
-        if user is None or password is None:
+        if user is not None and password is not None:
             db.authenticate(user, password)
         self.store = db[collection]
 
