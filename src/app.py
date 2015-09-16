@@ -1,6 +1,8 @@
+from src.models.user import User
+
 __author__ = 'jslvtr'
 
-from flask import Flask, session, jsonify
+from flask import Flask, session, jsonify, request, redirect, url_for
 from src.common.sessions import MongoSessionInterface
 import os
 
@@ -16,7 +18,8 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               db=mongo_database,
                                               user=mongodb_user,
                                               password=mongodb_password)
-app.secret_key = "ajfjfBafbaf1565~/?"
+
+app.secret_key = open("/dev/random", "rb").read(32)
 
 
 @app.route('/')
@@ -26,6 +29,18 @@ def index():
     else:
         session['tmp'] = "You are logged in!"
         return jsonify({"message": "empty"}), 200
+
+
+@app.route('/auth/login')
+def login_user():
+    user_email = request.form['email']
+    user_password = request.form['password']
+
+    if User.check_login(user_email, user_password):
+        session['email'] = user_email
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('login', error_message="Your username or password was incorrect."))
 
 
 if __name__ == '__main__':
