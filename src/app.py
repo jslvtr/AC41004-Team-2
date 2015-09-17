@@ -21,7 +21,8 @@ app.secret_key = "ajfjfBafbaf1565~/?"
 
 @app.route('/')
 def index():
-    return render_template('home.html', event='Hello World!')
+    return render_template('home.html', events=[{'title':'Freetime', 'summary':'Have a beer'}],
+                                        news=[{'heading':'Beer', 'Free beer':'Have a beer'}])
 
 
 if __name__ == '__main__':
