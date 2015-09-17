@@ -26,11 +26,13 @@ app.secret_key = os.urandom(32)
 
 @app.route('/')
 def index():
-    #Database.insert("news", {'heading': 'Beer', 'Free beer': 'Have a beer'})
+    #Database.insert("events", {'title': 'Beer', 'summary': 'Beer Drinking', 'date': 'now'})
+    news = [article for article in Database.find("news", {})]
+    events = [event for event in Database.find("events", {})]
 
     return render_template('home.html',
-                           events=[{'title': 'Freetime', 'summary': 'Have a beer'}],
-                           news=[{'heading': 'Beer', 'Free beer': 'Have a beer'}])
+                           events=events,
+                           news=news)
 
 
 @app.before_first_request

@@ -25,7 +25,7 @@ class Database(object):
     @staticmethod
     def find_one(collection, query):
         if collection is not None:
-            return collection.find_one(query)
+            return Database.DATABASE[collection].find_one(query)
         else:
             raise pymongo.errors.InvalidOperation
 
