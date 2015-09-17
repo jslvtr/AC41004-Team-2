@@ -7,7 +7,70 @@
 
 <body>
 
-<h1>This is a heading</h1>
+    <div class="loginHeader">
+       <a href="/signup">Sign Up</a>
+            <!--Signup button - Takes user to separate page -->
+        <form action="/login" method="POST">
+            <input type="text" name="username" >
+            <input type="password" name="psw" >
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+
+    <!--Menu Bar - Home, About, Activies, Trainers, connect and News buttons-->
+    <div class="menuBar">
+        <ul>
+            <li class="menuElement">
+                <a href="" title="A Warm Welcome">Home</a>
+            </li>
+            <li class="menuElement">
+                <a href="" title="Info & Team">About</a>
+            </li>
+            <li class="menuElement">
+                <a href="" title="What we offer">Activites</a>
+            </li>
+            <li class="menuElement">
+                <a href="" title="Our supporters">Trainers</a>
+            </li>
+            <li class="menuElement">
+                <a href="" title="External Help & Support">Connect</a>
+            </li>
+            <li class="menuElement">
+                <a href="" title="All the latest">News</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-2"></div> <!-- Just a separator -->
+        <!--Retrive 3 News from db based on current date-->
+        <!-- I am assuming below 'article' are separate entries in the news table -->
+        <ul>
+            {% for article in news %}
+            <h2>{{ article.heading }}{#Heading data here #}</h2>
+            <p>{{ article.summary }}{#Sub heading data here - might need to truncate this #}</p >
+            {% endfor %}
+        </ul>
+
+        <!--Button or link to continue to each individual article - This will require an article page which
+             # just retrives the data for specific article/event thing """
+        #Retrive 3 Upcoming Events from db closest to current date-->
+        <ul>
+            {% for event in events %}
+            <h2>{{ event.title }}{#Heading data here #}</h2>
+            <p>{{ event.summary }}{#Sub heading data here, possibly might need to truncate this #}</p >
+            {% endfor %}
+            <a href="#" ><button type="button">{{ event.date }}</button></a>
+        </ul>
+         <div class="col-md-2"></div> <!-- just a separator -->
+         <!--To the right of these items a Calender?-->
+    </div>
+
+    <div class="row">
+      <!--#Social Media Sharing buttons - Facebook, Youtube, Twitter and LinkedIn-->
+    </div>
 
 </body>
 </html>
