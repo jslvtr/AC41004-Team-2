@@ -1,3 +1,4 @@
+from src.common.database import Database
 from src.models.user import User
 
 __author__ = 'jslvtr'
@@ -5,6 +6,7 @@ __author__ = 'jslvtr'
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for
 from src.common.sessions import MongoSessionInterface
 import os
+
 
 mongodb_user = os.environ.get("MONGODB_USER")
 mongodb_password = os.environ.get("MONGODB_PASSWORD")
@@ -19,14 +21,31 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               user=mongodb_user,
                                               password=mongodb_password)
 
-app.secret_key = open("/dev/random", "rb").read(32)
+app.secret_key = os.urandom(32)
 
 
 @app.route('/')
 def index():
+    #Database.insert("news", {'heading': 'Beer', 'Free beer': 'Have a beer'})
+
     return render_template('home.html',
                            events=[{'title': 'Freetime', 'summary': 'Have a beer'}],
                            news=[{'heading': 'Beer', 'Free beer': 'Have a beer'}])
+
+
+@app.before_first_request
+def initdb():
+    Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
+
+@app.route('/event', methods=['POST'])
+def event_post():
+    pass
+
+
+@app.route('/event', methods=['GET'])
+def event_get():
+    return render_template('event.html',
+                           event={'title': 'Freetime', 'summary': 'Have a beer'})
 
 
 @app.route('/auth/login')
