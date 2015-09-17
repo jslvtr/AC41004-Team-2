@@ -6,14 +6,14 @@
 </head>
 
 <body>
-
+<div class="fluid-container">
     <div class="loginHeader">
        <a href="/signup">Sign Up</a>
             <!--Signup button - Takes user to separate page -->
         <form action="/login" method="POST">
-            <input type="text" name="username" >
-            <input type="password" name="psw" >
-            <input type="submit" value="Login">
+             <input type="username" class="form-control" id="exampleInputEmail1" placeholder="Email" name="text">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="psw">
+            <button type="submit" class="btn btn-default">Submit</button>
         </form>
     </div>
 
@@ -61,8 +61,9 @@
             {% for event in events %}
             <h2>{{ event.title }}{#Heading data here #}</h2>
             <p>{{ event.summary }}{#Sub heading data here, possibly might need to truncate this #}</p >
+            <a href="#" ><button type="button">{{event.date}}</button></a>
             {% endfor %}
-            <a href="#" ><button type="button">{{ event.date }}</button></a>
+
         </ul>
          <div class="col-md-2"></div> <!-- just a separator -->
          <!--To the right of these items a Calender?-->
@@ -71,6 +72,6 @@
     <div class="row">
       <!--#Social Media Sharing buttons - Facebook, Youtube, Twitter and LinkedIn-->
     </div>
-
+</div>
 </body>
 </html>
