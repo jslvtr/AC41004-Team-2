@@ -15,3 +15,14 @@ class User(object):
         if sha256(document['password']) == password:
             return True
         return False
+
+    @staticmethod
+    def register_user(email, password):
+        # This method will add a new user to the database
+        if Database.find_one("users", {"email": email}):
+            # This user already exists
+            return False
+        Database.insert("users", {"email": email, "password": password})
+        return True
+
+
