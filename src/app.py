@@ -1,12 +1,14 @@
+from werkzeug.exceptions import abort
 from src.common.database import Database
+from src.models.event import Event, NoSuchEventExistException
 from src.models.user import User
-
-__author__ = 'jslvtr'
-
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for
 from src.common.sessions import MongoSessionInterface
 import os
+import uuid
+from datetime import datetime
 
+__author__ = 'jslvtr and stamas01'
 
 mongodb_user = os.environ.get("MONGODB_USER")
 mongodb_password = os.environ.get("MONGODB_PASSWORD")
@@ -26,7 +28,6 @@ app.secret_key = os.urandom(32)
 
 @app.route('/')
 def index():
-    #Database.insert("events", {'title': 'Beer', 'summary': 'Beer Drinking', 'date': 'now'})
     news = [article for article in Database.find("news", {})]
     events = [event for event in Database.find("events", {})]
 
@@ -36,18 +37,57 @@ def index():
 
 
 @app.before_first_request
-def initdb():
+def init_db():
     Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
+
 
 @app.route('/event', methods=['POST'])
 def event_post():
-    pass
+    try:
+        event_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+    except ValueError:
+        abort(500)
+    new_event = Event(request.form.get('title'), request.form.get('description'), event_date)
+    if not new_event.is_valid_model():
+        abort(500)
+    new_event.save_to_db()
+    return "Done"
 
 
-@app.route('/event', methods=['GET'])
-def event_get():
-    return render_template('event.html',
-                           event={'title': 'Freetime', 'summary': 'Have a beer'})
+@app.route('/event', methods=['PUT'])
+def event_put():
+    try:
+        event_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+    except ValueError:
+        abort(500)
+
+    new_event = Event(request.form.get('title'),
+                      request.form.get('description'),
+                      event_date,
+                      uuid.UUID(request.form.get('id')))
+    if not new_event.is_valid_model():
+        abort(500)
+    new_event.sync_to_db()
+    return "Done"
+
+
+@app.route('/event/<uuid:event_id>', methods=['DELETE'])
+def event_delete(event_id):
+    try:
+        old_event = Event.get_by_id(event_id)
+    except NoSuchEventExistException:
+        abort(404)
+    old_event.remove_from_db()
+    return "Done"
+
+
+@app.route('/event/<uuid:event_id>', methods=['GET'])
+def event_get(event_id):
+    try:
+        old_event = Event.get_by_id(event_id)
+    except NoSuchEventExistException:
+        abort(404)
+    return render_template('event.html',event=old_event)
 
 
 @app.route('/auth/login')
