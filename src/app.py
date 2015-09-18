@@ -1,5 +1,6 @@
 from werkzeug.exceptions import abort
 from src.common.database import Database
+from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for
@@ -24,6 +25,8 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               password=mongodb_password)
 
 app.secret_key = os.urandom(32)
+
+
 
 
 @app.route('/')
@@ -90,6 +93,72 @@ def event_get(event_id):
     return render_template('event.html',event=old_event)
 
 
+@app.route('/event/smallview/<uuid:event_id>', methods=['GET'])
+def event_get_small(event_id):
+    try:
+        old_event = Event.get_by_id(event_id)
+    except NoSuchEventExistException:
+        abort(404)
+    return render_template('event_small.html',event=old_event)
+
+
+@app.route('/article', methods=['POST'])
+def article_post():
+    try:
+        article_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+    except ValueError:
+        abort(500)
+    new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
+    if not new_article.is_valid_model():
+        abort(500)
+    new_article.save_to_db()
+    return "Done"
+
+
+@app.route('/article', methods=['PUT'])
+def article_put():
+    try:
+        article_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+    except ValueError:
+        abort(500)
+
+    new_article = Event(request.form.get('title'),
+                      request.form.get('summary'),
+                      article_date,
+                      uuid.UUID(request.form.get('id')))
+    if not new_article.is_valid_model():
+        abort(500)
+    new_article.sync_to_db()
+    return "Done"
+
+
+@app.route('/article/<uuid:article_id>', methods=['DELETE'])
+def article_delete(article_id):
+    try:
+        old_article = Article.get_by_id(article_id)
+    except NoSuchArticleExistException:
+        abort(404)
+    old_article.remove_from_db()
+    return "Done"
+
+
+@app.route('/article/<uuid:article_id>', methods=['GET'])
+def article_get(article_id):
+    try:
+        old_article = Article.get_by_id(article_id)
+    except NoSuchArticleExistException:
+        abort(404)
+    return render_template('article.html',article=old_article)
+
+@app.route('/article/smallview/<uuid:article_id>', methods=['GET'])
+def article_get_small(article_id):
+    try:
+        old_article = Article.get_by_id(article_id)
+    except NoSuchArticleExistException:
+        abort(404)
+    return render_template('article_small.html',article=old_article)
+
+
 @app.route('/auth/login')
 def login_user():
     user_email = request.form['email']
@@ -104,3 +173,7 @@ def login_user():
 
 if __name__ == '__main__':
     app.run(debug=True, port=4999)
+
+
+app.jinja_env.globals.update(event_get_small=event_get_small)
+app.jinja_env.globals.update(article_get_small=article_get_small)

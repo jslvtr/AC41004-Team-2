@@ -87,9 +87,9 @@ class Event:
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return (self.get_id() == other.get_id()
-                    and self.get_title() == other.get_title()
-                    and self.get_description() == other.get_description())
+            return (self.get_id() == other.get_id() and
+                    self.get_title() == other.get_title() and
+                    self.get_description() == other.get_description())
 
     def to_json(self):
         return {'title': self.__title, 'description': self.__description, 'date': self.__date, '_id': self.__id}
