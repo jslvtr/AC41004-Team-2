@@ -11,9 +11,11 @@ class User(object):
     @staticmethod
     def check_login(email, password):
         # This method checks a login/password combo is correct
-        document = Database.find_one("users", {"email": "test@example.com"})
-        if sha256(document['password']) == password:
-            return True
+        document = Database.find_one('users', {"email": email})
+        if document is not None:
+            password_encode = password.encode('utf-8')
+            if document['password'] == sha256(password_encode).hexdigest():
+                return True
         return False
 
     @staticmethod
@@ -22,7 +24,8 @@ class User(object):
         if Database.find_one("users", {"email": email}):
             # This user already exists
             return False
-        Database.insert("users", {"email": email, "password": password})
+        encrypted_password = sha256(password.encode('utf-8'))
+        Database.insert("users", {"email": email, "password": encrypted_password.hexdigest()})
         return True
 
 

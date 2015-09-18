@@ -1,3 +1,4 @@
+from src.common.database import Database
 from src.models.user import User
 
 __author__ = 'jslvtr'
@@ -19,7 +20,7 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               user=mongodb_user,
                                               password=mongodb_password)
 
-app.secret_key = open("/dev/random", "rb").read(32)
+app.secret_key = os.urandom(0)
 
 
 @app.route('/')
@@ -29,17 +30,44 @@ def index():
                            news=[{'heading': 'Beer', 'Free beer': 'Have a beer'}])
 
 
-@app.route('/auth/login')
+
+
+@app.route('/auth/login', methods=["POST"])
 def login_user():
     user_email = request.form['email']
     user_password = request.form['password']
 
     if User.check_login(user_email, user_password):
         session['email'] = user_email
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
     else:
-        return redirect(url_for('login', error_message="Your username or password was incorrect."))
+        return redirect(url_for('login_page', error_message="Your username or password was incorrect."))
 
+
+@app.route('/auth/register', methods=["POST"])
+def register_user():
+    user_email = request.form['email']
+    user_password = request.form['password']
+
+    if User.register_user(user_email, user_password):
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('register_page', error_message="User exists"))
+
+
+@app.route('/register')
+def register_page():
+    return render_template('register.html')
+
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+
+@app.before_first_request
+def initdb():
+    Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
 
 if __name__ == '__main__':
     app.run(debug=True, port=4999)
