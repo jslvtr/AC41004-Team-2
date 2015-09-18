@@ -7,6 +7,7 @@ from flask import Flask, session, jsonify, request, render_template, redirect, u
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
+import html
 from datetime import datetime
 
 __author__ = 'jslvtr and stamas01'
@@ -31,7 +32,7 @@ app.secret_key = os.urandom(32)
 
 @app.route('/')
 def index():
-    news = [article for article in Database.find("news", {})]
+    news = [article for article in Database.find("articles", {})]
     events = [event for event in Database.find("events", {})]
 
     return render_template('home.html',
@@ -42,6 +43,17 @@ def index():
 @app.before_first_request
 def init_db():
     Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
+
+
+@app.after_request
+def layout(response):
+    if response.content_type == 'text/html; charset=utf-8':
+        data = response.get_data()
+        data = data.decode()
+        data = render_template('layout.html', data=data)
+        response.set_data(data)
+        return response
+    return response
 
 
 @app.route('/event', methods=['POST'])

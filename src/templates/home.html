@@ -1,77 +1,26 @@
-<!DOCTYPE html>
-<html>
+<div class="row">
+    <!--Retrive 3 News from db based on current date-->
+    <!-- I am assuming below 'article' are separate entries in the news table -->
+    <div class="col-md-5">
+    <ul>
 
-<head>
-<title>The Enterprise Gym - Home</title>
-</head>
-
-<body>
-<div class="fluid-container">
-    <div class="loginHeader">
-       <a href="/signup">Sign Up</a>
-            <!--Signup button - Takes user to separate page -->
-        <form action="/login" method="POST">
-             <input type="username" class="form-control" id="exampleInputEmail1" placeholder="Email" name="text">
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="psw">
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+        {% for article in news %}
+        <h2>{{ article.heading }}{#Heading data here #}</h2>
+        <p>{{ article.summary }}{#Sub heading data here - might need to truncate this #}</p >
+        {% endfor %}
+    </ul>
     </div>
-
-
-    <!--Menu Bar - Home, About, Activies, Trainers, connect and News buttons-->
-    <div class="menuBar">
-        <ul>
-            <li class="menuElement">
-                <a href="" title="A Warm Welcome">Home</a>
-            </li>
-            <li class="menuElement">
-                <a href="" title="Info & Team">About</a>
-            </li>
-            <li class="menuElement">
-                <a href="" title="What we offer">Activites</a>
-            </li>
-            <li class="menuElement">
-                <a href="" title="Our supporters">Trainers</a>
-            </li>
-            <li class="menuElement">
-                <a href="" title="External Help & Support">Connect</a>
-            </li>
-            <li class="menuElement">
-                <a href="" title="All the latest">News</a>
-            </li>
-        </ul>
-    </div>
-
-
-    <div class="row">
-        <div class="col-md-2"></div> <!-- Just a separator -->
-        <!--Retrive 3 News from db based on current date-->
-        <!-- I am assuming below 'article' are separate entries in the news table -->
-        <ul>
-            {% for article in news %}
-            <h2>{{ article.heading }}{#Heading data here #}</h2>
-            <p>{{ article.summary }}{#Sub heading data here - might need to truncate this #}</p >
-            {% endfor %}
-        </ul>
-
+    <div class="col-md-5">
         <!--Button or link to continue to each individual article - This will require an article page which
              # just retrives the data for specific article/event thing """
         #Retrive 3 Upcoming Events from db closest to current date-->
         <ul>
             {% for event in events %}
-            <h2>{{ event.title }}{#Heading data here #}</h2>
-            <p>{{ event.summary }}{#Sub heading data here, possibly might need to truncate this #}</p >
-            <a href="#" ><button type="button">{{event.date}}</button></a>
+               {% include 'event_small.html' %}
             {% endfor %}
-
+​
         </ul>
-         <div class="col-md-2"></div> <!-- just a separator -->
-         <!--To the right of these items a Calender?-->
     </div>
-
-    <div class="row">
-      <!--#Social Media Sharing buttons - Facebook, Youtube, Twitter and LinkedIn-->
-    </div>
+     <!--To the right of these items a Calender?-->
 </div>
-</body>
-</html>
+​
