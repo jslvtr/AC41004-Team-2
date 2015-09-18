@@ -1,0 +1,12 @@
+<div class="row">
+    <!--Retrive 3 News from db based on current date-->
+    <!-- I am assuming below 'article' are separate entries in the news table -->
+    <div class="col-md-5">
+        <ul>
+            {% for event in events %}
+                {% include 'event_small_edit.html' %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+

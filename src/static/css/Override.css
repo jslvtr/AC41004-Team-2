@@ -1,0 +1,26 @@
+@media (max-width: 1240px) {
+    .loginBar {
+        display: none;
+    }
+    #loginButton {
+        display: block;
+    }
+}
+?
+@media (min-width: 1240px) {
+    .loginBar {
+        display: block;
+    }
+    #loginButton {
+        display: none;
+    }
+}
+?
+@media (max-width: 768px) {
+    .loginBar {
+        display: block;
+    }
+    #loginButton {
+        display: none;
+    }
+}
