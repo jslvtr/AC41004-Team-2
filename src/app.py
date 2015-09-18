@@ -7,7 +7,6 @@ from flask import Flask, session, jsonify, request, render_template, redirect, u
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
-import html
 from datetime import datetime
 
 __author__ = 'jslvtr and stamas01'
@@ -26,8 +25,6 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               password=mongodb_password)
 
 app.secret_key = os.urandom(32)
-
-
 
 
 @app.route('/')
@@ -49,11 +46,17 @@ def init_db():
 def layout(response):
     if response.content_type == 'text/html; charset=utf-8':
         data = response.get_data()
-        data = data.decode()
+        data = data.decode('utf-8')
         data = render_template('layout.html', data=data)
         response.set_data(data)
         return response
     return response
+
+
+@app.route('/admin/events', methods=['GET'])
+def events_get_admin():
+    events = [event for event in Database.find("events", {})]
+    return render_template('events_admin.html', events=events)
 
 
 @app.route('/event', methods=['POST'])
@@ -105,15 +108,6 @@ def event_get(event_id):
     return render_template('event.html',event=old_event)
 
 
-@app.route('/event/smallview/<uuid:event_id>', methods=['GET'])
-def event_get_small(event_id):
-    try:
-        old_event = Event.get_by_id(event_id)
-    except NoSuchEventExistException:
-        abort(404)
-    return render_template('event_small.html',event=old_event)
-
-
 @app.route('/article', methods=['POST'])
 def article_post():
     try:
@@ -161,14 +155,6 @@ def article_get(article_id):
     except NoSuchArticleExistException:
         abort(404)
     return render_template('article.html',article=old_article)
-
-@app.route('/article/smallview/<uuid:article_id>', methods=['GET'])
-def article_get_small(article_id):
-    try:
-        old_article = Article.get_by_id(article_id)
-    except NoSuchArticleExistException:
-        abort(404)
-    return render_template('article_small.html',article=old_article)
 
 
 @app.route('/auth/login')

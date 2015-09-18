@@ -1,0 +1,45 @@
+<!-- Model required: event -->
+<br>
+<br>
+<br>
+<br>
+
+<div class="panel panel-primary">
+    <div class="panel-heading"> {{event.title}}
+        <a href="#" ><button type="button">Edit</button></a>
+        <button type="button" onclick="delete_event('{{ event._id }}')">Delete</button>
+
+    </div>
+    <div class="panel-body">
+        <p>{{ event.description }}{#Sub heading data here, possibly might need to truncate this #}</p >
+        {{event.date}}
+    </div>
+</div>
+
+
+<script type="text/javascript">
+tinymce.init({
+    selector: "textarea",
+    plugins: [
+        "advlist autolink lists link image charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+        "insertdatetime media table contextmenu paste"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+});
+</script>
+
+<form method="post" action="somepage">
+    <textarea name="content" style="width:100%"></textarea>
+</form>
+
+<script>
+    function delete_event(id)
+    {
+        $.ajax({
+          type: "DELETE",
+          url: "/event/"+id,
+          success: function(ss){},
+        });
+    }
+</script>
