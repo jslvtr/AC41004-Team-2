@@ -18,6 +18,9 @@ class MongoSession(CallbackDict, SessionMixin):
         self.sid = sid
         self.modified = False
 
+    def contains(self, key):
+        return key in self.keys()
+
 
 class MongoSessionInterface(SessionInterface):
     def __init__(self, host='localhost', port=27017, db='', collection='sessions', user=None, password=None):

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% if message %}
+{{ message }}
+{% else %}
+User: {{profile.email}} <br>
+University: {{profile.university}} <br>
+Level of Study: {{profile.level}} <br>
+Country: {{profile.country}} <br>
+{% endif %}
+</body>
+</html>
