@@ -1,46 +1,51 @@
 from _sha256 import sha256
 from src.common.database import Database
+from src.common.utils import Utils
 
 __author__ = 'jslvtr'
 
 
 class User(object):
-    def __init__(self):
-        pass
+    def __init__(self, email, password, **kwargs):
+        self.email = email
+        self.encrypted_password = password
+        self.data = kwargs
+
+    @classmethod
+    def find_by_email(cls, email):
+        data = Database.find_one("users", {"email": email})
+        if data is not None:
+            return cls(**data)
 
     @staticmethod
     def check_login(email, password):
         # This method checks a login/password combo is correct
-        document = Database.find_one('users', {"email": email})
-        if document is not None:
+        user = User.find_by_email(email)
+        if user is not None:
             password_encode = password.encode('utf-8')
-            if document['password'] == sha256(password_encode).hexdigest():
+            if user.encrypted_password == sha256(password_encode).hexdigest():
                 return True
         return False
 
     @staticmethod
     def register_user(email, password):
-        # This method will add a new user to the database
-        if Database.find_one("users", {"email": email}):
-            # This user already exists
+        if not Utils.email_is_valid(email):
             return False
+        if User.find_by_email(email) is not None:
+            return False
+
         encrypted_password = sha256(password.encode('utf-8'))
-        Database.insert("users", {"email": email, "password": encrypted_password.hexdigest()})
+        User(email, encrypted_password.hexdigest()).save_to_db()
         return True
 
-    @staticmethod
-    def get_user_profile(user):
-        # This method will get the user profile of the currently logged in user
-        return Database.find_one("users", {"email": user})
+    def save_to_db(self):
+        Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
 
-    @staticmethod
-    def update_user_profile(email, password, country, university, level):
-        # This method will update the users profile data
-        encrypted_password = sha256(password.encode('utf-8')).hexdigest()
-        if Database.update("users", {"email": email}, {"email": email, "password": encrypted_password,
-                                                       "country": country, "university": university,
-                                                       "level": level}):
-            return True
-        else:
-            return False
+    def json(self):
+        json = {
+            "email": self.email,
+            "password": self.encrypted_password
+        }
+        json.update(self.data)
 
+        return json

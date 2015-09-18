@@ -3,7 +3,7 @@ from src.models.user import User
 
 __author__ = 'jslvtr'
 
-from flask import Flask, session, jsonify, request, render_template, redirect, url_for
+from flask import Flask, session, request, render_template, redirect, url_for
 from src.common.sessions import MongoSessionInterface
 import os
 
@@ -21,6 +21,10 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               password=mongodb_password)
 
 app.secret_key = os.urandom(32)
+
+
+def get_db():
+    Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
 
 
 @app.route('/')
@@ -56,7 +60,7 @@ def register_user():
 @app.route('/view-profile')
 def view_profile():
     if session.contains('email') and session['email'] is not None:
-        profile = User.get_user_profile(session['email'])
+        profile = User.find_by_email(session['email'])
         return render_template('user-profile.html', profile=profile)
     else:
         return render_template('user-profile.html', message="Not Logged In")
@@ -66,8 +70,10 @@ def view_profile():
 def edit_profile():
     if session.get('email'):
         if User.check_login(session.get('email'), request.form['password']):
-            User.update_user_profile(session['email'], request.form['password'], request.form['country'],
-                                                        request.form['university'], request.form['level'])
+            user = User.find_by_email(session['email'])
+            user.data.update(request.form)
+
+            user.save_to_db()
             return redirect(url_for('view_profile', message="Profile updated"))
         else:
             return render_template('user-profile.html', message="Incorrect Password")
@@ -98,7 +104,7 @@ def login_page():
 
 @app.before_first_request
 def initdb():
-    Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
+    get_db()
 
 if __name__ == '__main__':
     app.run(debug=True, port=4999)
