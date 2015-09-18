@@ -33,4 +33,14 @@ class User(object):
         # This method will get the user profile of the currently logged in user
         return Database.find_one("users", {"email": user})
 
+    @staticmethod
+    def update_user_profile(email, password, country, university, level):
+        # This method will update the users profile data
+        encrypted_password = sha256(password.encode('utf-8')).hexdigest()
+        if Database.update("users", {"email": email}, {"email": email, "password": encrypted_password,
+                                                       "country": country, "university": university,
+                                                       "level": level}):
+            return True
+        else:
+            return False
 
