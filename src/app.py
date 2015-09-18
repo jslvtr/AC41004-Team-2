@@ -30,8 +30,6 @@ def index():
                            news=[{'heading': 'Beer', 'Free beer': 'Have a beer'}])
 
 
-
-
 @app.route('/auth/login', methods=["POST"])
 def login_user():
     user_email = request.form['email']
@@ -57,7 +55,7 @@ def register_user():
 
 @app.route('/view-profile')
 def view_profile():
-    if session.get('email'):
+    if session.contains('email') and session['email'] is not None:
         profile = User.get_user_profile(session['email'])
         return render_template('user-profile.html', profile=profile)
     else:
