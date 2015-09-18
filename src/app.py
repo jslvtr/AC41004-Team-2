@@ -55,6 +55,21 @@ def register_user():
         return redirect(url_for('register_page', error_message="User exists"))
 
 
+@app.route('/view-profile')
+def view_profile():
+    if session.get('email'):
+        profile = User.get_user_profile(session['email'])
+        return render_template('user-profile.html', profile=profile)
+    else:
+        return render_template('user-profile.html', error="Not Logged In")
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+
 @app.route('/register')
 def register_page():
     return render_template('register.html')

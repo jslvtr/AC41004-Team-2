@@ -28,4 +28,9 @@ class User(object):
         Database.insert("users", {"email": email, "password": encrypted_password.hexdigest()})
         return True
 
+    @staticmethod
+    def get_user_profile(user):
+        # This method will get the user profile of the currently logged in user
+        return Database.find_one("users", {"email": user})
+
 
