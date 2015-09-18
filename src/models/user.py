@@ -1,4 +1,4 @@
-from _sha256 import sha256
+from hashlib import sha256
 from src.common.database import Database
 from src.common.utils import Utils
 
