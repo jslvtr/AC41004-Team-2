@@ -20,7 +20,7 @@ app.session_interface = MongoSessionInterface(host=mongo_url,
                                               user=mongodb_user,
                                               password=mongodb_password)
 
-app.secret_key = os.urandom(0)
+app.secret_key = os.urandom(32)
 
 
 @app.route('/')
@@ -61,7 +61,25 @@ def view_profile():
         profile = User.get_user_profile(session['email'])
         return render_template('user-profile.html', profile=profile)
     else:
-        return render_template('user-profile.html', error="Not Logged In")
+        return render_template('user-profile.html', message="Not Logged In")
+
+
+@app.route('/user/edit-profile', methods=["POST"])
+def edit_profile():
+    if session.get('email'):
+        if User.check_login(session.get('email'), request.form['password']):
+            User.update_user_profile(session['email'], request.form['password'], request.form['country'],
+                                                        request.form['university'], request.form['level'])
+            return redirect(url_for('view_profile', message="Profile updated"))
+        else:
+            return render_template('user-profile.html', message="Incorrect Password")
+    else:
+        return render_template('user-profile.html', message="Not Logged In")
+
+
+@app.route('/edit-profile')
+def edit_profile_page():
+    return render_template('edit-profile.html')
 
 
 @app.route('/logout')

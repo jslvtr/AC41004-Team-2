@@ -5,11 +5,13 @@
     <title></title>
 </head>
 <body>
-{% if error %}
-{{ error }}
+{% if message %}
+{{ message }}
 {% else %}
-{{profile.email}}
-
+User: {{profile.email}} <br>
+University: {{profile.university}} <br>
+Level of Study: {{profile.level}} <br>
+Country: {{profile.country}} <br>
 {% endif %}
 </body>
 </html>
