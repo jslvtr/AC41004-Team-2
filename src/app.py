@@ -74,7 +74,7 @@ def events_get_admin():
 @app.route('/event', methods=['POST'])
 def event_post():
     try:
-        event_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
 
         new_event = Event(request.form.get('title'), request.form.get('description'), event_date)
         if not new_event.is_valid_model():
@@ -88,8 +88,8 @@ def event_post():
 @app.route('/event', methods=['PUT'])
 def event_put():
     try:
-        event_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
-
+        trff = request.form.get('description')
+        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
         new_event = Event(request.form.get('title'),
                           request.form.get('description'),
                           event_date,
@@ -107,7 +107,7 @@ def event_delete(event_id):
     try:
         old_event = Event.get_by_id(event_id)
         old_event.remove_from_db()
-        return "Done"
+        return jsonify({"message": "Done"}), 200
     except NoSuchEventExistException:
         abort(404)
 
@@ -124,13 +124,13 @@ def event_get(event_id):
 @app.route('/article', methods=['POST'])
 def article_post():
     try:
-        article_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+        article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
 
         new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
         if not new_article.is_valid_model():
             abort(500)
         new_article.save_to_db()
-        return "Done"
+        return jsonify({"message": "Done"}), 200
     except ValueError:
         abort(500)
 
@@ -138,7 +138,7 @@ def article_post():
 @app.route('/article', methods=['PUT'])
 def article_put():
     try:
-        article_date = datetime.strptime(request.form.get('date'), '%b %d %Y %I:%M%p')
+        article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
 
         new_article = Event(request.form.get('title'),
                             request.form.get('summary'),
@@ -147,10 +147,10 @@ def article_put():
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
-
-        return "Done"
+        return jsonify({"message": "Done"}), 200
     except ValueError:
         abort(500)
+
 
 
 @app.route('/article/<uuid:article_id>', methods=['DELETE'])
