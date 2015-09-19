@@ -71,6 +71,12 @@ def events_get_admin():
     return render_template('events_admin.html', events=events)
 
 
+@app.route('/admin/articles', methods=['GET'])
+def articles_get_admin():
+    news = [article for article in Database.find("articles", {})]
+    return render_template('articles_admin.html', news=news)
+
+
 @app.route('/event', methods=['POST'])
 def event_post():
     try:
@@ -140,7 +146,7 @@ def article_put():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
 
-        new_article = Event(request.form.get('title'),
+        new_article = Article(request.form.get('title'),
                             request.form.get('summary'),
                             article_date,
                             uuid.UUID(request.form.get('id')))

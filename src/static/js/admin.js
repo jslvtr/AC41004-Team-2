@@ -41,3 +41,50 @@
     }
 
 
+
+
+
+    function delete_article(id)
+    {
+        $.ajax({
+          type: "DELETE",
+          url: "/article/"+id,
+          success: function(ss){location.reload();},
+        });
+    }
+
+    function update_article(id)
+    {
+        var formData = $("#article_edit_form"+id);
+        var sdf = formData.find('#summary'+id);
+        var xx = sdf.val(tinyMCE.get('summary'+id).getContent());
+        $.ajax({
+            type: "PUT",
+            url: "/article",
+            data: $("#article_edit_form"+id).serialize(),
+            processData: false,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(ss){location.reload();},
+        });
+    }
+
+    function add_article()
+    {
+        var formData = $("#article_edit_form_new");
+        var sdf = formData.find('#summary_new');
+        var xx = sdf.val(tinyMCE.get('summary_new').getContent());
+        $.ajax({
+            type: "POST",
+            url: "/article",
+            data: $("#article_edit_form_new").serialize(),
+            processData: false,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(ss){
+                                       location.reload();
+                                 },
+        });
+    }
+
+
+
+

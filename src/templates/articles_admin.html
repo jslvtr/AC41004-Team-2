@@ -4,7 +4,7 @@
     <!-- I am assuming below 'article' are separate entries in the news table -->
     <div class="col-md-5">
         <ul>
-            {% for article in articles %}
+            {% for article in news %}
                 {% include 'article_small_edit.html' %}
             {% endfor %}
         </ul>
@@ -54,7 +54,7 @@
                 <!-- Editor -->
                 <script type="text/javascript" >
                 tinymce.init({
-                    selector: "#description_new",
+                    selector: "#summary_new",
                     plugins: [
                         "advlist autolink lists link image charmap print preview anchor",
                         "searchreplace visualblocks code fullscreen",
@@ -64,8 +64,8 @@
                 });
                 </script>
 
-                <label for="description_new" class="control-label">Description:</label>
-                <textarea name="description" id="description_new" style="width:100%">
+                <label for="summary_new" class="control-label">Description:</label>
+                <textarea name="summary" id="summary_new" style="width:100%">
                 </textarea>
                 <!-- Editor END -->
 
@@ -74,7 +74,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" onclick="add_article()" class="btn btn-primary">Save</button>
+          <button type="button" onclick="add_article()" class="btn btn-primary">Add</button>
       </div>
     </div>
 
