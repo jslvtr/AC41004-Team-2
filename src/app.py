@@ -221,7 +221,7 @@ def edit_profile():
                              subject=request.form['subject'], year=request.form['yearofstudy'])
 
             user.save_to_db()
-            return redirect(url_for('view_profile', message="Profile updated"))
+            return render_template(url_for('view_profile', message="Profile updated"))
         else:
             return render_template('user-profile.html', message="Incorrect Password")
     else:

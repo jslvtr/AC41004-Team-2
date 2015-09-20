@@ -36,6 +36,10 @@ class User(object):
 
         encrypted_password = sha256(password.encode('utf-8'))
         User(email, encrypted_password.hexdigest()).save_to_db()
+        user = User.find_by_email(email)
+        user.data.update(actionpoints=0, practicepoints=0, theorypoints=0, networkingpoints=0,
+             virtualpoints=0, projectpoints=0, totalpoints=0)
+        user.save_to_db()
         return True
 
     def save_to_db(self):
