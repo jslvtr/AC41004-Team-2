@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div class="jumbotron"><p>
 
     <form id="edit-profile" action="user/edit-profile" method="POST">
-            Email: <input type="text" name="email">
+            First Name: <input type="text" name="firstname">
             <br>
-            Current Password: <input type="password" name="password">
+            Last Name: <input type="text" name="lastname">
             <br>
             Country: <select name="country">
                     <option value="Scotland">Scotland</option>
@@ -22,15 +16,32 @@
                     </select>
             <br>
             Level of Study: <select name="level">
-                    <option value="undergrad">Undergraduate</option>
-                    <option value="postgrad">Postgraduate</option>
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
                     </select>
             <br>
-            
+            School Within University: <select name="school">
+                    <option value="Maths, Physics, Computing">Maths, Physics, Computing</option>
+                    <option value="Other School">Other School</option>
+                    </select>
+            <br>
+            Degree Subject: <select name="subject">
+                        <option value="Applied Computing">Applied Computing</option>
+                        <option value="Computing Science">Computing Science</option>
+                        <option value="Other Subject">Other Subject</option>
+                    </select>
+            <br>
+            Year Of Study: <select name="yearofstudy">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+            <br>
+            <br>
+            Enter Your Current Password: <input type="password" name="password">
+            <br>
 
             <input type="submit" Value="Submit">
         </form>
-
-
-</body>
-</html>
+</p></div>

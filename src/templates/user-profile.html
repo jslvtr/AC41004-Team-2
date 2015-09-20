@@ -1,10 +1,14 @@
 <div class="jumbotron">
-    <p>{% if message %}
-     {{ message }}
-    {% elif profile %}
-    User: {{profile.data['name']}} <br>
-    University: {{profile.data['university']}} <br>
-    Level of Study: {{profile.data['level']}} <br>
-    Country: {{profile.data['country']}} <br>
-    {% endif %}</p>
+<p>{% if message %}
+{{ message }}
+{% elif profile %}
+First Name: {{profile.data['firstname']}} <br>
+Last Name: {{profile.data['lastname']}} <br>
+University: {{profile.data['university']}} <br>
+Level of Study: {{profile.data['level']}} <br>
+Country: {{profile.data['country']}} <br>
+School: {{profile.data['school']}} <br>
+Subject: {{profile.data['subject']}} <br>
+Year of Study: {{profile.data['year']}} <br>
+{% endif %}</p>
 </div>
