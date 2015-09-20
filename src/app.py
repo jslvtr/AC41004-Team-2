@@ -215,7 +215,8 @@ def edit_profile():
     if session.get('email'):
         if User.check_login(session.get('email'), request.form['password']):
             user = User.find_by_email(session['email'])
-            user.data.update(request.form)
+            user.data.update(university=request.form['university'], level=request.form['level'],
+                             country=request.form['country'])
 
             user.save_to_db()
             return redirect(url_for('view_profile', message="Profile updated"))

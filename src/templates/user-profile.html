@@ -7,11 +7,11 @@
 <body>
 {% if message %}
 {{ message }}
-{% else %}
-User: {{profile.email}} <br>
-University: {{profile.university}} <br>
-Level of Study: {{profile.level}} <br>
-Country: {{profile.country}} <br>
+{% elif profile %}
+User: {{profile.data['name']}} <br>
+University: {{profile.data['university']}} <br>
+Level of Study: {{profile.data['level']}} <br>
+Country: {{profile.data['country']}} <br>
 {% endif %}
 </body>
 </html>
