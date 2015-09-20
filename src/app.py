@@ -1,9 +1,10 @@
+from functools import wraps
 from werkzeug.exceptions import abort
 from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.user import User
-from flask import Flask, session, jsonify, request, render_template, redirect, url_for
+from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
@@ -65,19 +66,34 @@ def layout(response):
     return response
 
 
+def secure(type):
+    def tags_decorator(func):
+        @wraps(func)
+        def func_wrapper(*args, **kwargs):
+            if session.contains('email') and session['email'] is not None and User.find_by_email(session['email']).allowed(type):
+                return make_response(func(*args, **kwargs))
+            else:
+                abort(401)
+        return func_wrapper
+    return tags_decorator
+
+
 @app.route('/admin/events', methods=['GET'])
+@secure("events")
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     return render_template('events_admin.html', events=events)
 
 
 @app.route('/admin/articles', methods=['GET'])
+@secure("articles")
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
     return render_template('articles_admin.html', news=news)
 
 
 @app.route('/event', methods=['POST'])
+@secure("events")
 def event_post():
     try:
         event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
@@ -92,6 +108,7 @@ def event_post():
 
 
 @app.route('/event', methods=['PUT'])
+@secure("events")
 def event_put():
     try:
         trff = request.form.get('description')
@@ -109,6 +126,7 @@ def event_put():
 
 
 @app.route('/event/<uuid:event_id>', methods=['DELETE'])
+@secure("events")
 def event_delete(event_id):
     try:
         old_event = Event.get_by_id(event_id)
@@ -128,6 +146,7 @@ def event_get(event_id):
 
 
 @app.route('/article', methods=['POST'])
+@secure("articles")
 def article_post():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
@@ -142,6 +161,7 @@ def article_post():
 
 
 @app.route('/article', methods=['PUT'])
+@secure("articles")
 def article_put():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
@@ -158,8 +178,8 @@ def article_put():
         abort(500)
 
 
-
 @app.route('/article/<uuid:article_id>', methods=['DELETE'])
+@secure("articles")
 def article_delete(article_id):
     try:
         old_article = Article.get_by_id(article_id)
@@ -212,8 +232,8 @@ def view_profile():
 
 @app.route('/user/edit-profile', methods=["POST"])
 def edit_profile():
-    if session.get('email'):
-        if User.check_login(session.get('email'), request.form['password']):
+    if session.contains('email') and session['email'] is not None:
+        if User.check_login(session['email'], request.form['password']):
             user = User.find_by_email(session['email'])
             user.data.update(request.form)
 

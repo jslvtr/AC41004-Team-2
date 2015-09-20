@@ -1,14 +1,16 @@
 from hashlib import sha256
 from src.common.database import Database
 from src.common.utils import Utils
+from src.models.permissions import Permissions
 
 __author__ = 'jslvtr'
 
 
 class User(object):
-    def __init__(self, email, password, **kwargs):
+    def __init__(self, email, password, permissions=None, **kwargs):
         self.email = email
         self.encrypted_password = password
+        self.permissions = permissions
         self.data = kwargs
 
     @classmethod
@@ -35,7 +37,7 @@ class User(object):
             return False
 
         encrypted_password = sha256(password.encode('utf-8'))
-        User(email, encrypted_password.hexdigest()).save_to_db()
+        User(email, encrypted_password.hexdigest(), permissions=Permissions.default()).save_to_db()
         return True
 
     def save_to_db(self):
@@ -44,8 +46,12 @@ class User(object):
     def json(self):
         json = {
             "email": self.email,
-            "password": self.encrypted_password
+            "password": self.encrypted_password,
+            "permissions": self.permissions.name
         }
         json.update(self.data)
 
         return json
+
+    def allowed(self, type):
+        return Permissions.find_by_name(self.permissions).allowed(Permissions.access_to(type))
