@@ -1,0 +1,36 @@
+<article class="content permissions">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Permissions Editor</div>
+
+        <!-- Table -->
+        <table class="table">
+            <tr>
+                <th>Permission Name</th>
+                <th class="center">Admin</th>
+                <th class="center">Events</th>
+                <th class="center">Articles</th>
+                <th class="center">User</th>
+                <th class="center">Actions</th>
+            </tr>
+            {% for permission in permissions %}
+            <tr>
+                <td>{{ permission.name }}</td>
+                <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'admin' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'admin', this)"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'events' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'events', this)"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'articles' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'articles', this)"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'user' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'user', this)"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><input type="text" class="form-control" id="new-permission" name="new-permission" placeholder="name..."/></td>
+                <td class="center middle"><input type="checkbox" class="center" id="admin-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="events-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="articles-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="user-permission"></td>
+                <td class="center"><button class="btn btn-primary" type="button">Add</button></td>
+            </tr>
+        </table>
+    </div>
+</article>

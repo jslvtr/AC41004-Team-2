@@ -3,6 +3,7 @@ from werkzeug.exceptions import abort
 from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
+from src.models.permissions import Permissions
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -90,6 +91,25 @@ def events_get_admin():
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
     return render_template('articles_admin.html', news=news)
+
+
+@app.route('/admin/permissions', methods=['GET'])
+@secure("admin")
+def permissions_get_admin():
+    permissions = [permission_level for permission_level in Database.find(Permissions.COLLECTION, {})]
+    return render_template('permissions_admin.html', permissions=permissions)
+
+
+@app.route('/admin/permissions/<string:name>/<string:access>', methods=['GET'])
+@secure("admin")
+def change_permission(name, access):
+    permission = Permissions.find_by_name(name)
+    if access in permission.access:
+        permission.access.remove(access)
+    else:
+        permission.access.append(access)
+    permission.save_to_db()
+    return jsonify({"message": "ok"}), 200
 
 
 @app.route('/event', methods=['POST'])
