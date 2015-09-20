@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-{% if message %}
-{{ message }}
-{% elif profile %}
-User: {{profile.data['name']}} <br>
-University: {{profile.data['university']}} <br>
-Level of Study: {{profile.data['level']}} <br>
-Country: {{profile.data['country']}} <br>
-{% endif %}
-</body>
-</html>
+<div class="jumbotron">
+    <p>{% if message %}
+     {{ message }}
+    {% elif profile %}
+    User: {{profile.data['name']}} <br>
+    University: {{profile.data['university']}} <br>
+    Level of Study: {{profile.data['level']}} <br>
+    Country: {{profile.data['country']}} <br>
+    {% endif %}</p>
+</div>

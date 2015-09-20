@@ -5,14 +5,22 @@
     <title></title>
 </head>
 <body>
-
+<div class="col-md-3"></div>
+<div class="col-md-6">
 <text id="error">{{error_message}}</text>
-        <form id="login" action="/auth/register" method="POST">
-            Email: <input type="text" name="email">
-            <br>
-            Password: <input type="password" name="password">
-            <br>
-            <input type="submit" Value="Register">
-        </form>
+    <form class="form-signin" id="signup" action="/auth/register" method="POST">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-success">Sign Up</button>
+    </form>
+</div>
+<div class="col-md-3"></div>
+
 </body>
 </html>
