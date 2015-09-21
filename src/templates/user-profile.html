@@ -1,17 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-{% if message %}
+<div class="jumbotron">
+<p>{% if message %}
 {{ message }}
-{% else %}
-User: {{profile.email}} <br>
-University: {{profile.university}} <br>
-Level of Study: {{profile.level}} <br>
-Country: {{profile.country}} <br>
+{% elif profile %}
+    <p><h2>Profile</h2><br>
+    <table border="1" style="width:100%">
+<tr><td>First Name:</td><td>{{profile.data['firstname']}}</td></tr>
+<tr><td>Last Name:</td><td> {{profile.data['lastname']}} </td></tr>
+<tr><td>University:</td><td> {{profile.data['university']}} </td></tr>
+<tr><td>Level of Study:</td><td> {{profile.data['level']}} </td></tr>
+<tr><td>Country:</td><td> {{profile.data['country']}} </td></tr>
+<tr><td>School:</td><td> {{profile.data['school']}} </td></tr>
+<tr><td>Subject:</td><td> {{profile.data['subject']}} </td></tr>
+<tr><td>Year of Study:</td><td> {{profile.data['year']}} </td></tr>
+    </table>
+</p>
+
+    <p><h2>Points</h2><br>
+<table border="1" style="width:100%">
+<tr><td>Action:</td><td>{{profile.data['actionpoints']}}</td></tr>
+<tr><td>Practice:</td><td> {{profile.data['practicepoints']}} </td></tr>
+<tr><td>Theory:</td><td> {{profile.data['theorypoints']}} </td></tr>
+<tr><td>Networking:</td><td> {{profile.data['networkingpoints']}} </td></tr>
+<tr><td>Virtual:</td><td> {{profile.data['virtualpoints']}} </td></tr>
+<tr><td>Project:</td><td> {{profile.data['projectpoints']}} </td></tr>
+<tr><td>Total:</td><td> {{profile.data['totalpoints']}} </td></tr>
+    </table>
+
+    </p>
+</div>
 {% endif %}
-</body>
-</html>

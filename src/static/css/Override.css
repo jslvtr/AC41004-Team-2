@@ -3,6 +3,22 @@
     margin: 70px auto;
 }
 
+.hero {
+    margin-top: 15px;
+    width: 100%;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.content img {
+    max-width: 100%;
+}
+
+.separator {
+    max-width: 50px;
+    margin: 0 auto;
+    color: #942239;
+}
+
 .center {
     text-align: center;
 }
@@ -18,11 +34,18 @@ td.center.middle {
     cursor: pointer;
 }
 
-@media screen and (max-width: 1300px) {
-    .loginBar {
-        display: none;
-    }
-    #loginButton {
-        display: block;
-    }
+.event > h2 {
+    font-weight: 100;
+}
+
+.article > h2 {
+    font-weight: 100;
+}
+
+.event > p {
+    font-size: 15px;
+}
+
+.article > p {
+    font-size: 15px;
 }

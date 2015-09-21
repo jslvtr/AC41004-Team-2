@@ -1,26 +1,25 @@
-<div class="row">
+<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image" ></div>
+<div class="content">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div class="col-md-5">
-    <ul>
+    <div>
+        <h1>Latest News</h1>
 
         {% for article in news %}
-        <h2>{{ article.heading }}{#Heading data here #}</h2>
-        <p>{{ article.summary }}{#Sub heading data here - might need to truncate this #}</p >
+        <div class="article">
+            <h2>{{ article.title }}</h2>
+
+            <p>{{ article.summary | safe}}</p>
+            <hr class="separator"/>
+        </div>
         {% endfor %}
-    </ul>
     </div>
-    <div class="col-md-5">
-        <!--Button or link to continue to each individual article - This will require an article page which
-             # just retrives the data for specific article/event thing """
-        #Retrive 3 Upcoming Events from db closest to current date-->
-        <ul>
-            {% for event in events %}
-               {% include 'event_small.html' %}
-            {% endfor %}
-​
-        </ul>
+    <div>
+        <h1>Upcoming Events</h1>
+        {% for event in events %}
+        {% include 'event_small.html' %}
+        {% endfor %}
     </div>
-     <!--To the right of these items a Calender?-->
+    <!--To the right of these items a Calender?-->
 </div>
 ​

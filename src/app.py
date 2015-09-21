@@ -275,10 +275,13 @@ def edit_profile():
     if session.contains('email') and session['email'] is not None:
         if User.check_login(session['email'], request.form['password']):
             user = User.find_by_email(session['email'])
-            user.data.update(request.form)
+            user.data.update(firstname=request.form['firstname'], lastname=request.form['lastname'],
+                             university=request.form['university'], level=request.form['level'],
+                             country=request.form['country'], school=request.form['school'],
+                             subject=request.form['subject'], year=request.form['yearofstudy'])
 
             user.save_to_db()
-            return redirect(url_for('view_profile', message="Profile updated"))
+            return render_template(url_for('view_profile', message="Profile updated"))
         else:
             return render_template('user-profile.html', message="Incorrect Password")
     else:
