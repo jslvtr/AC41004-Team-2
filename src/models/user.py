@@ -50,7 +50,7 @@ class User(object):
         json = {
             "email": self.email,
             "password": self.encrypted_password,
-            "permissions": self.permissions.name
+            "permissions": self.permissions
         }
         json.update(self.data)
 

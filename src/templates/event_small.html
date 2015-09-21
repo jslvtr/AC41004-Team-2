@@ -1,7 +1,7 @@
 <!-- Model required: event -->
 
 <div class="event">
-    <h2>{{ event.title }}</h2>
+    <h2><a href="/event/{{ event._id }}">{{ event.title }}</a></h2>
 
     <p>{{ event.description | safe}}</p>
 </div>

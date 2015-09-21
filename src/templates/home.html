@@ -7,7 +7,7 @@
 
         {% for article in news %}
         <div class="article">
-            <h2>{{ article.title }}</h2>
+            <h2><a href="/article/{{ article._id }}">{{ article.title }}</a></h2>
 
             <p>{{ article.summary | safe}}</p>
             <hr class="separator"/>

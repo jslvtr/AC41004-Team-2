@@ -72,11 +72,14 @@ def secure(type):
     def tags_decorator(func):
         @wraps(func)
         def func_wrapper(*args, **kwargs):
-            if session.contains('email') and session['email'] is not None and User.find_by_email(session['email']).allowed(type):
+            if session.contains('email') and session['email'] is not None and User.find_by_email(
+                    session['email']).allowed(type):
                 return make_response(func(*args, **kwargs))
             else:
                 abort(401)
+
         return func_wrapper
+
     return tags_decorator
 
 
@@ -181,7 +184,10 @@ def event_delete(event_id):
 def event_get(event_id):
     try:
         old_event = Event.get_by_id(event_id)
-        return render_template('event.html', event=old_event)
+        registered = None
+        if session.contains('email') and session['email'] is not None:
+            registered = EventRegister.check_if_registered(session['email'], event_id)
+        return render_template('event.html', event=old_event.to_json(), registered=registered)
     except NoSuchEventExistException:
         abort(404)
 
@@ -208,9 +214,9 @@ def article_put():
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
 
         new_article = Article(request.form.get('title'),
-                            request.form.get('summary'),
-                            article_date,
-                            uuid.UUID(request.form.get('id')))
+                              request.form.get('summary'),
+                              article_date,
+                              uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
@@ -234,7 +240,7 @@ def article_delete(article_id):
 def article_get(article_id):
     try:
         old_article = Article.get_by_id(article_id)
-        return render_template('article.html', article=old_article)
+        return render_template('article.html', article=old_article.to_json())
     except NoSuchArticleExistException:
         abort(404)
 
@@ -282,14 +288,14 @@ def edit_profile():
                              subject=request.form['subject'], year=request.form['yearofstudy'])
 
             user.save_to_db()
-            return render_template(url_for('view_profile', message="Profile updated"))
+            return make_response(view_profile())
         else:
             return render_template('user-profile.html', message="Incorrect Password")
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
 
-@app.route('/event-signup/<uuid:event_id>', methods=["GET"])
+@app.route('/event/signup/<uuid:event_id>', methods=["GET"])
 @secure('user')
 def event_signup(event_id):
     if EventRegister.check_if_registered(session['email'], event_id) is None:
@@ -299,7 +305,8 @@ def event_signup(event_id):
         except NoSuchEventExistException:
             abort(404)
     else:
-            EventRegister.unregister_for_event((session['email'], event_id))
+        EventRegister.unregister_for_event(session['email'], event_id)
+        return make_response(event_get(event_id))
 
 
 @app.route('/edit-profile')

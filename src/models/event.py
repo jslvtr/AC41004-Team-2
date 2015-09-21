@@ -53,7 +53,7 @@ class Event:
     def factory_form_json(cls, event_json):
         if event_json is None:
             raise NoSuchEventExistException()
-        event_obj = cls(event_json['title'], event_json['description'], event_json['date'], event_json['_id']);
+        event_obj = cls(event_json['title'], event_json['description'], event_json['date'], event_json['_id'])
         event_obj._synced = True
         return event_obj
 
@@ -82,7 +82,7 @@ class Event:
             self._synced = True
             Database.update('events', {'_id': self._id}, {'title': self._title, 'description': self._description, 'date': self._date})
 
-    def _eq_(self, other):
+    def __eq__(self, other):
         if isinstance(other, self.__class__):
             return (self.get_id() == other.get_id() and
                     self.get_title() == other.get_title() and

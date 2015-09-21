@@ -13,18 +13,40 @@
     max-width: 100%;
 }
 
+#registered {
+    color: #959595;
+}
+
+.margin-top {
+    margin-top: 15px;
+}
+
 hr {
     max-width: 50px;
     margin: 0 auto;
     color: #942239;
 }
 
-#news-panel {
+#news-panel a {
+    color: #000000;
+}
 
+#news-panel a:hover {
+    color: #000000;
+    text-decoration: underline;
 }
 
 #events-panel {
     margin-top: 60px;
+}
+
+#events-panel a {
+    color: #000000;
+}
+
+#events-panel a:hover {
+    color: #000000;
+    text-decoration: underline;
 }
 
 .center {
