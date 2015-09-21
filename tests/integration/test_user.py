@@ -1,6 +1,7 @@
 from unittest import TestCase
 from src.app import get_db
 from src.common.database import Database
+from src.models.permissions import Permissions
 from src.models.user import User
 
 __author__ = 'jslvtr'
@@ -20,6 +21,7 @@ class TestUser(TestCase):
     def test_save_simple_user_to_db(self):
         email = "test@example.com"
         user = User(email, "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+        user.permissions = Permissions.default()
         user.save_to_db()
 
         self.assertIsNotNone(User.find_by_email(email))
@@ -35,6 +37,7 @@ class TestUser(TestCase):
         user = User(email, encrypted_password)
         user.data['country'] = country
         user.data['university'] = university
+        user.permissions = Permissions.default()
         user.save_to_db()
 
         user_from_db = User.find_by_email(email)
@@ -53,6 +56,7 @@ class TestUser(TestCase):
         university = "Abertay"
 
         user = User(email, encrypted_password)
+        user.permissions = Permissions.default()
         user.data['country'] = country
         user.data['university'] = university
 
@@ -61,5 +65,6 @@ class TestUser(TestCase):
                              "email": email,
                              "password": encrypted_password,
                              "country": country,
-                             "university": university
+                             "university": university,
+                             "permissions": "user"
                          })
