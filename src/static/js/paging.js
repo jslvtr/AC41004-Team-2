@@ -26,7 +26,7 @@ function Pagingsys() {
 		pagination = $(pagination.find("ul"));
 
 		for (var i = 0; i < lis.size()/obj.max_on_one_page; i++)
-			pagination.append('<li><a onclick="$(\''+obj.selector.selector+'\').show_page('+i+')" </a>'+(i+1)+'</li>');
+			pagination.append('<li><a onclick="$(\''+obj.selector.selector+'\').show_page('+i+')" >'+(i+1)+'</li>');
 	}
 
 	this.show_page= function(page)
