@@ -37,7 +37,7 @@ class User(object):
             return False
 
         encrypted_password = sha256(password.encode('utf-8'))
-        user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default())
+        user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default().name)
         user.data.update({"points": {"action": 0, "practice": 0, "theory": 0, "networking": 0,
                                      "virtual": 0, "project": 0}})
         user.save_to_db()
