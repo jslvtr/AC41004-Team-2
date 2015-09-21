@@ -2,7 +2,7 @@ from src.common.database import Database
 import uuid
 from datetime import datetime
 
-__author__ = 'stamas01'
+_author_ = 'stamas01'
 
 
 
@@ -16,32 +16,32 @@ class NoSuchEventExistException(Exception):
 
 class Event:
     def __init__(self, title, description, date, id_=None):
-        self.__title = title
-        self.__description = description
-        self.__date = date
-        self.__id = id_
-        self.__synced = False
+        self._title = title
+        self._description = description
+        self._date = date
+        self._id = id_
+        self._synced = False
 
     def get_title(self):
-        return self.__title
+        return self._title
 
     def set_title(self,title):
-        self.__title = title
-        self.__synced = False
+        self._title = title
+        self._synced = False
 
     def get_description(self):
-        return self.__description
+        return self._description
 
     def get_id(self):
-        return self.__id
+        return self._id
 
     def set_description(self, description):
-        self.__description = description
-        self.__synced = False
+        self._description = description
+        self._synced = False
 
     @classmethod
     def get_by_title(cls, title):
-        event = Database.find_one('events',{'title': title})
+        event = Database.find_one('events', {'title': title})
         return Event.factory_form_json(event)
 
     @classmethod
@@ -54,44 +54,41 @@ class Event:
         if event_json is None:
             raise NoSuchEventExistException()
         event_obj = cls(event_json['title'], event_json['description'], event_json['date'], event_json['_id']);
-        event_obj.__synced = True
+        event_obj._synced = True
         return event_obj
 
     def save_to_db(self):
-        if self.__id is None:
-            self.__id = uuid.uuid4()
+        if self._id is None:
+            self._id = uuid.uuid4()
             Database.insert('events',self.to_json())
 
     def remove_from_db(self):
-        Database.remove('events', {'_id': self.__id})
-
+        Database.remove('events', {'_id': self._id})
 
     def is_synced(self):
-        return self.__synced
+        return self._synced
 
     def is_valid_model(self):
-        if type(self.__title) is not str:
+        if type(self._title) is not str:
             return False
-        if type(self.__description) is not str:
+        if type(self._description) is not str:
             return False
-        #if type(self.__id) is not uuid.UUID and not None:
-            #return False
-        if type(self.__date) is not datetime:
+        if type(self._date) is not datetime:
             return False
         return True
 
     def sync_to_db(self):
-        if self.__synced is False:
-            self.__synced = True
-            Database.update('events', {'_id': self.__id}, {'title': self.__title, 'description': self.__description, 'date': self.__date})
+        if self._synced is False:
+            self._synced = True
+            Database.update('events', {'_id': self._id}, {'title': self._title, 'description': self._description, 'date': self._date})
 
-    def __eq__(self, other):
+    def _eq_(self, other):
         if isinstance(other, self.__class__):
             return (self.get_id() == other.get_id() and
                     self.get_title() == other.get_title() and
                     self.get_description() == other.get_description())
 
     def to_json(self):
-        return {'title': self.__title, 'description': self.__description, 'date': self.__date, '_id': self.__id}
+        return {'title': self._title, 'description': self._description, 'date': self._date, '_id': self._id}
 
 

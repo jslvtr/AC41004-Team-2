@@ -13,10 +13,18 @@
     max-width: 100%;
 }
 
-.separator {
+hr {
     max-width: 50px;
     margin: 0 auto;
     color: #942239;
+}
+
+#news-panel {
+
+}
+
+#events-panel {
+    margin-top: 60px;
 }
 
 .center {

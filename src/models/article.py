@@ -15,32 +15,32 @@ class NoSuchArticleExistException(Exception):
 
 class Article:
     def __init__(self, title, summary, date, id_=None):
-        self.__title = title
-        self.__summary = summary
-        self.__date = date
-        self.__id = id_
-        self.__synced = False
+        self._title = title
+        self._summary = summary
+        self._date = date
+        self._id = id_
+        self._synced = False
 
     def get_title(self):
-        return self.__title
+        return self._title
 
     def set_title(self,title):
-        self.__title = title
-        self.__synced = False
+        self._title = title
+        self._synced = False
 
     def get_summary(self):
-        return self.__summary
+        return self._summary
 
     def get_id(self):
-        return self.__id
+        return self._id
 
     def set_summary(self, summary):
-        self.__summary = summary
-        self.__synced = False
+        self._summary = summary
+        self._synced = False
 
     @classmethod
     def get_by_title(cls, title):
-        article = Database.find_one('articles',{'title': title})
+        article = Database.find_one('articles', {'title': title})
         return Article.factory_form_json(article)
 
     @classmethod
@@ -52,36 +52,34 @@ class Article:
     def factory_form_json(cls, article_json):
         if article_json is None:
             raise NoSuchArticleExistException()
-        article_obj = cls(article_json['title'], article_json['summary'], article_json['date'], article_json['_id']);
-        article_obj.__synced = True
+        article_obj = cls(article_json['title'], article_json['summary'], article_json['date'], article_json['_id'])
+        article_obj._synced = True
         return article_obj
 
     def save_to_db(self):
-        if self.__id is None:
-            self.__id = uuid.uuid4()
-            Database.insert('articles',self.to_json())
+        if self._id is None:
+            self._id = uuid.uuid4()
+            Database.insert('articles', self.to_json())
 
     def remove_from_db(self):
-        Database.remove('articles', {'_id': self.__id})
+        Database.remove('articles', {'_id': self._id})
 
     def is_synced(self):
-        return self.__synced
+        return self._synced
 
     def is_valid_model(self):
-        if type(self.__title) is not str:
+        if type(self._title) is not str:
             return False
-        if type(self.__summary) is not str:
+        if type(self._summary) is not str:
             return False
-        #if type(self.__id) is not uuid.UUID and not None:
-            #return False
-        if type(self.__date) is not datetime:
+        if type(self._date) is not datetime:
             return False
         return True
 
     def sync_to_db(self):
-        if self.__synced is False:
-            self.__synced = True
-            Database.update('articles', {'_id': self.__id}, {'title': self.__title, 'summary': self.__summary, 'date': self.__date})
+        if self._synced is False:
+            self._synced = True
+            Database.update('articles', {'_id': self._id}, {'title': self._title, 'summary': self._summary, 'date': self._date})
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -90,6 +88,6 @@ class Article:
                     self.get_summary() == other.get_summary())
 
     def to_json(self):
-        return {'title': self.__title, 'summary': self.__summary, 'date': self.__date, '_id': self.__id}
+        return {'title': self._title, 'summary': self._summary, 'date': self._date, '_id': self._id}
 
 

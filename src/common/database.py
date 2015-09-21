@@ -37,7 +37,7 @@ class Database(object):
             raise pymongo.errors.InvalidOperation
 
     @staticmethod
-    def update(collection, query, data, upsert):
+    def update(collection, query, data, upsert=False):
         if collection is not None:
             return Database.DATABASE[collection].update(query, data, upsert=upsert)
         else:

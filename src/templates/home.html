@@ -2,7 +2,7 @@
 <div class="content">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div>
+    <div id="news-panel">
         <h1>Latest News</h1>
 
         {% for article in news %}
@@ -14,10 +14,11 @@
         </div>
         {% endfor %}
     </div>
-    <div>
+    <div id="events-panel">
         <h1>Upcoming Events</h1>
         {% for event in events %}
         {% include 'event_small.html' %}
+        <hr class="separator"/>
         {% endfor %}
     </div>
     <!--To the right of these items a Calender?-->
