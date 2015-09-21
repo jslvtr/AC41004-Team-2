@@ -3,6 +3,7 @@ from werkzeug.exceptions import abort
 from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
+from src.models.eventregister import EventRegister
 from src.models.permissions import Permissions
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
@@ -286,6 +287,22 @@ def edit_profile():
             return render_template('user-profile.html', message="Incorrect Password")
     else:
         return render_template('user-profile.html', message="Not Logged In")
+
+
+@app.route('/event-signup/<uuid:event_id>', methods=["GET"])
+@secure('user')
+def event_signup(event_id):
+    if EventRegister.check_if_registered(session['email'], event_id) is None:
+        try:
+            EventRegister.register_for_event(session['email'], event_id)
+            return make_response(event_get(event_id))
+        except NoSuchEventExistException:
+            abort(404)
+    else:
+            EventRegister.unregister_for_event((session['email'], event_id))
+
+
+
 
 
 @app.route('/edit-profile')
