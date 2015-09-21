@@ -1,0 +1,86 @@
+diff a/src/templates/articles_admin.html b/src/templates/articles_admin.html	(rejected hunks)
+@@ -0,0 +1,84 @@
++<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleEditroModalNew">Add</button>
++<div class="row">
++    <!--Retrive 3 News from db based on current date-->
++    <!-- I am assuming below 'article' are separate entries in the news table -->
++    <div class="col-md-5">
++        <ul>
++            {% for article in articles %}
++                {% include 'article_small_edit.html' %}
++            {% endfor %}
++        </ul>
++    </div>
++</div>
++
++
++
++<!-- Modal Adding new -->
++<div id="ArticleEditroModalNew" class="modal fade" role="dialog">
++  <div class="modal-dialog">
++
++    <!-- Modal content-->
++    <div class="modal-content">
++      <div class="modal-header">
++        <button type="button" class="close" data-dismiss="modal">&times;</button>
++        <h4 class="modal-title">Edit article</h4>
++      </div>
++      <div class="modal-body">
++          <form id="article_edit_form_new" >
++                <label for="title_new" class="control-label">Title:</label>
++                <input type="text" class="form-control" name="title" id="title_new">
++                <label for="date" class="control-label">Date:</label>
++
++                <!-- Date Picker -->
++                <div class="container">
++                    <div class="row">
++                        <div class='col-sm-6'>
++                            <div class="form-group">
++                                <div class='input-group date' id='datetimepicker_new'>
++                                    <input type='text' class="form-control" id="date" name="date"/>
++                                    <span class="input-group-addon">
++                                        <span class="glyphicon glyphicon-calendar"></span>
++                                    </span>
++                                </div>
++                            </div>
++                        </div>
++                        <script type="text/javascript">
++                            $(function () {
++                                $('#datetimepicker_new').datetimepicker();
++                            });
++                        </script>
++                    </div>
++                </div>
++                <!-- Date Picker END -->
++
++                <!-- Editor -->
++                <script type="text/javascript" >
++                tinymce.init({
++                    selector: "#description_new",
++                    plugins: [
++                        "advlist autolink lists link image charmap print preview anchor",
++                        "searchreplace visualblocks code fullscreen",
++                        "insertdatetime media table contextmenu paste"
++                    ],
++                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
++                });
++                </script>
++
++                <label for="description_new" class="control-label">Description:</label>
++                <textarea name="description" id="description_new" style="width:100%">
++                </textarea>
++                <!-- Editor END -->
++
++
++            </form>
++      </div>
++      <div class="modal-footer">
++        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
++          <button type="button" onclick="add_article()" class="btn btn-primary">Save</button>
++      </div>
++    </div>
++
++  </div>
++</div>
++
++
