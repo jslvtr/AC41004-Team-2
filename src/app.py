@@ -42,6 +42,21 @@ def get_db():
     Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
 
 
+@app.errorhandler(404)
+def not_found(ex):
+    return render_template('404.html')
+
+
+@app.errorhandler(401)
+def not_found(ex):
+    return render_template('401.html')
+
+
+@app.errorhandler(500)
+def not_found(ex):
+    return render_template('500.html')
+
+
 @app.route('/')
 def index():
     news = [article for article in Database.find("articles", {})]
