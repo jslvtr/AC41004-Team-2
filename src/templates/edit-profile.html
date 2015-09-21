@@ -1,37 +1,39 @@
-<div class="jumbotron"><p>
+<div class="content container">
+    <p>
 
-    <form id="edit-profile" action="user/edit-profile" method="POST">
-            First Name: <input type="text" name="firstname">
+    <form class="form-group" id="edit-profile" action="user/edit-profile" method="POST">
+            <label>First Name</label>
+            <input class="form-control" type="text" name="firstname">
             <br>
-            Last Name: <input type="text" name="lastname">
+            <label>Last Name</label> <input class="form-control" type="text" name="lastname">
             <br>
-            Country: <select name="country">
+            <label>Country</label> <select class="form-control" name="country">
                     <option value="Scotland">Scotland</option>
                     <option value="England">England</option>
                     </select>
             <br>
-            Place of Study: <select name="university">
+            <label>Place of Study</label> <select class="form-control" name="university">
                     <option value="Dundee">University Of Dundee</option>
                     <option value="Abertay">Abertay</option>
                     </select>
             <br>
-            Level of Study: <select name="level">
+            <label>Level of Study</label> <select class="form-control" name="level">
                     <option value="Undergraduate">Undergraduate</option>
                     <option value="Postgraduate">Postgraduate</option>
                     </select>
             <br>
-            School Within University: <select name="school">
+            <label>School Within University</label> <select class="form-control" name="school">
                     <option value="Maths, Physics, Computing">Maths, Physics, Computing</option>
                     <option value="Other School">Other School</option>
                     </select>
             <br>
-            Degree Subject: <select name="subject">
+            <label>Degree Subject</label> <select class="form-control" name="subject">
                         <option value="Applied Computing">Applied Computing</option>
                         <option value="Computing Science">Computing Science</option>
                         <option value="Other Subject">Other Subject</option>
                     </select>
             <br>
-            Year Of Study: <select name="yearofstudy">
+            <label>Year Of Study</label> <select class="form-control" name="yearofstudy">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -39,9 +41,11 @@
                     </select>
             <br>
             <br>
-            Enter Your Current Password: <input type="password" name="password">
+                <label>Enter Your Current Password</label>
+                <input class="form-control" type="password" name="password">
             <br>
 
-            <input type="submit" Value="Submit">
+            <input class="btn btn-default" type="submit" Value="Submit">
         </form>
-</p></div>
+    </p>
+</div>

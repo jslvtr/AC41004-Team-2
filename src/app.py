@@ -77,8 +77,9 @@ def layout(response):
     if response.content_type == 'text/html; charset=utf-8':
         data = response.get_data()
         data = data.decode('utf-8')
-        data = render_template('layout.html', data=data)
+        data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         response.set_data(data)
+
         return response
     return response
 

@@ -36,14 +36,18 @@ will feel more like a native application as they can't zoom it-->
           <div id="navbar" class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
                 <li><img src="{{ url_for('static', filename='img/logo.png') }}" class="img-responsive" alt="Responsive image" ></li>
-              <li><a href="" title="A Warm Welcome">Home</a></li>
-              <li><a href="" title="Info & Team">About</a></li>
-              <li><a href="" title="What we offer">Activities</a></li>
-              <li><a href="" title="Our supporters">Trainers</a></li>
-              <li><a href="" title="External Help & Support">Connect</a></li>
-              <li><a href="" title="All the latest">News</a></li>
-              <li><a href="/register">Sign Up </a></li>
-              <li id="hlb"><a href="/login">Login</a></li>
+              <li><a href="/" title="A Warm Welcome">Home</a></li>
+              <li><a href="/about" title="Info & Team">About</a></li>
+              <li><a href="/activites" title="What we offer">Activities</a></li>
+              <li><a href="/trainers" title="Our supporters">Trainers</a></li>
+              <li><a href="/connect" title="External Help & Support">Connect</a></li>
+              <li><a href="/news" title="All the latest">News</a></li>
+             {% if user %}
+                    <li><a href="/logout">Logout</a> </li>
+                {% else %}
+                 <li><a href="/register">Sign Up </a></li>
+                 <li><a href="/login">Login</a></li>
+                {% endif %}
             </ul>
 ​
           <!--<form class="navbar-form navbar-right loginBar" action="/login" method="POST">
@@ -78,7 +82,9 @@ will feel more like a native application as they can't zoom it-->
        <footer class="footer container">
 ​
                  <div class="row">
-                     <img class="img-responsive" src="{{ url_for('static', filename='img/logo.png') }}" alt="the enterprise gym logo">
+                     <div class="col-md-4">
+                        <img class="img-responsive" src="{{ url_for('static', filename='img/logo.png') }}" alt="the enterprise gym logo">
+                     </div>
                  </div>
                  <div class="row">
                      <div class="col-xs-1"><a href="https://twitter.com/Enterprise_Gym" class="fa fa-twitter "></a></div>
