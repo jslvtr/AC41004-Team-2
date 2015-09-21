@@ -58,6 +58,7 @@ def init_db():
 
 @app.after_request
 def layout(response):
+
     if response.content_type == 'text/html; charset=utf-8':
         data = response.get_data()
         data = data.decode('utf-8')
@@ -91,6 +92,13 @@ def events_get_admin():
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
     return render_template('articles_admin.html', news=news)
+
+@app.route('/admin/filemanager', methods=['GET'])
+@secure("articles")
+def filemanager_admin():
+
+    filess = {"name": "folder1", "type": "dir", "files":""}
+    return render_template('filemanager.html')
 
 
 @app.route('/admin/permissions', methods=['GET'])
