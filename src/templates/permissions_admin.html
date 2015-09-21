@@ -20,16 +20,16 @@
                 <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'events' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'events', this)"></span></td>
                 <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'articles' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'articles', this)"></span></td>
                 <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'user' in permission.access else 'ban-circle' }}" onclick="change_permission('{{ permission.name }}', 'user', this)"></span></td>
-                <td class="center"><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></td>
+                <td class="center"><span class="glyphicon glyphicon-remove" onclick="remove_permission('{{ permission.name }}', this)"></span></td>
             </tr>
             {% endfor %}
-            <tr>
+            <tr id="add-permission">
                 <td><input type="text" class="form-control" id="new-permission" name="new-permission" placeholder="name..."/></td>
                 <td class="center middle"><input type="checkbox" class="center" id="admin-permission"></td>
                 <td class="center middle"><input type="checkbox" class="center" id="events-permission"></td>
                 <td class="center middle"><input type="checkbox" class="center" id="articles-permission"></td>
                 <td class="center middle"><input type="checkbox" class="center" id="user-permission"></td>
-                <td class="center"><button class="btn btn-primary" type="button">Add</button></td>
+                <td class="center"><button class="btn btn-primary" type="button" onclick="add_permission()">Add</button></td>
             </tr>
         </table>
     </div>

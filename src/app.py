@@ -112,6 +112,26 @@ def change_permission(name, access):
     return jsonify({"message": "ok"}), 200
 
 
+@app.route('/admin/permissions/<string:name>', methods=['DELETE'])
+@secure("admin")
+def remove_permission(name):
+    Permissions.find_by_name(name).remove_from_db()
+    return jsonify({"message": "ok"}), 200
+
+
+@app.route('/admin/permissions', methods=['POST'])
+@secure("admin")
+def add_permission():
+    json = request.get_json()
+    name = json['name']
+    access = json['access']
+
+    permission = Permissions(name, access)
+    permission.save_to_db()
+
+    return jsonify({"message": "ok"}), 201
+
+
 @app.route('/event', methods=['POST'])
 @secure("events")
 def event_post():

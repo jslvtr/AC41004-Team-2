@@ -101,6 +101,45 @@
         });
     }
 
+    function remove_permission(name, object) {
+        $.ajax({
+            type: "DELETE",
+            url: "/admin/permissions/" + name,
+            success: function(ss){
+                                       $(object).parents("tr").remove()
+                                 }
+        });
+    }
+
+    function add_permission() {
+        object = $('#add-permission');
+        access = [];
+        if ($("#admin-permission").is(":checked")) {
+            access.push("admin");
+        }
+        if ($("#user-permission").is(":checked")) {
+            access.push("user");
+        }
+        if ($("#events-permission").is(":checked")) {
+            access.push("events");
+        }
+        if ($("#articles-permission").is(":checked")) {
+            access.push("articles");
+        }
+        data = {name: $("#new-permission").val(),
+                access: access};
+        $.ajax({
+            type: "POST",
+            url: "/admin/permissions",
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: "application/json",
+            success: function(ss){
+                                       location.reload();
+                                 }
+        });
+    }
+
 
 
 

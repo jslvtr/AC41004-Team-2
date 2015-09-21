@@ -80,6 +80,9 @@ class Permissions(object):
     def save_to_db(self):
         Database.update(self.COLLECTION, {"name": self.name}, {'$set': self.json()}, upsert=True)
 
+    def remove_from_db(self):
+        Database.remove(self.COLLECTION, {'name': self.name})
+
     def json(self):
         json = {
             "name": self.name,
