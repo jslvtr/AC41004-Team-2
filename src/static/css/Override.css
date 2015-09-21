@@ -21,6 +21,11 @@
     margin-top: 15px;
 }
 
+.footer-border {
+    border-top: 1px solid #e2e2e2;
+    width: 100%;
+}
+
 hr {
     max-width: 50px;
     margin: 0 auto;
