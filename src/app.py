@@ -302,9 +302,6 @@ def event_signup(event_id):
             EventRegister.unregister_for_event((session['email'], event_id))
 
 
-
-
-
 @app.route('/edit-profile')
 def edit_profile_page():
     return render_template('edit-profile.html')
