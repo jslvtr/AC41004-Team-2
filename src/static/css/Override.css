@@ -3,6 +3,24 @@
     margin: 70px auto;
 }
 
+.content-small {
+    max-width: 480px;
+    margin: 70px auto;
+}
+
+.navbar {
+    margin-top: 5px;
+}
+
+.navbar-brand {
+    padding: 0;
+}
+
+.navbar-brand > img {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
 .hero {
     margin-top: 15px;
     width: 100%;

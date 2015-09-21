@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div class="content-small container">
+    <form id="login" action="/auth/login" method="POST" class="form-signin">
+        <h2 class="form-signin-heading">Log in</h2>
 
-    <div class="col-md-4"></div>
-
-    <div class="col-md-4 content">
-      <form id="login" action="/auth/login" method="POST" class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" >Email address</label>
-        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        //Add margin here
-        <label for="inputPassword" >Password</label>
-        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required
+                   autofocus>
         </div>
-        <button id="signInButton" class="btn btn-lg btn-primary btn-block btn-danger" type="submit">Sign in</button>
-      </form>
-     </div>
-
-    <div class="col-md-4"></div>
-
-</body>
-</html>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
+                   required>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button id="signInButton" class="btn btn-lg btn-block btn-danger" type="submit">Sign in</button>
+    </form>
+</div>

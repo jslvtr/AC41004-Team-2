@@ -1,26 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<div class="col-md-3"></div>
-<div class="col-md-6 content">
-<text id="error">{{error_message}}</text>
+<div class="content-small container">
+    <text id="error">{{error_message}}</text>
+    <h2 class="">Sign up</h2>
+
     <form class="form-signin" id="signup" action="/auth/register" method="POST">
-      <div class="form-group">
-        <label for="exampleInputEmail1">Email</label>
-        <input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-      </div>
-      <button type="submit" class="btn btn-success">Sign Up</button>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                   placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-lg btn-block btn-danger">Sign Up</button>
     </form>
 </div>
-<div class="col-md-3"></div>
-
-</body>
-</html>

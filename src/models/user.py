@@ -43,6 +43,13 @@ class User(object):
         user.save_to_db()
         return True
 
+    def total_points(self):
+        total = 0
+        for point_type in self.data['points']:
+            total += self.data['points'][point_type]
+
+        return total
+
     def save_to_db(self):
         Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
 

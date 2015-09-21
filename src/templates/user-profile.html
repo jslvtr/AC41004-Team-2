@@ -1,8 +1,8 @@
 <div class="content container">
-<p>{% if message %}
-{{ message }}
+    {% if message %}
+<div class="alert alert-danger" role="alert">{{ message }}</div>
 {% elif profile %}
-    <p><h2>Profile</h2><br>
+    <h2>Profile</h2>
     <div class="table-responsive" >
         <table class="table table-striped table-bordered">
             <tr><td>First Name:</td><td>{{profile.data['firstname']}}</td></tr>
@@ -15,9 +15,8 @@
             <tr><td>Year of Study:</td><td> {{profile.data['year']}} </td></tr>
             </table>
                 </div>
-    </p>
 
-<p><h2>Points</h2><br>
+<h2>Points</h2>
     <table class="table table-striped table-bordered">
         <tr><td>Action:</td><td>{{profile.data['actionpoints']}}</td></tr>
         <tr><td>Practice:</td><td> {{profile.data['practicepoints']}} </td></tr>
@@ -27,8 +26,6 @@
         <tr><td>Project:</td><td> {{profile.data['projectpoints']}} </td></tr>
         <tr><td>Total:</td><td> {{profile.data['totalpoints']}} </td></tr>
     </table>
-</div>
 
-    </p>
-</div>
 {% endif %}
+    </div>
