@@ -1,3 +1,4 @@
+import base64
 from functools import wraps
 from werkzeug.exceptions import abort
 from src.common.database import Database
@@ -113,10 +114,14 @@ def events_get_admin():
 @secure("events")
 def upload_image():
     file_data = request.files['file']
-    sdfdsfd = file_data.read()
-    image = Image(file_data)
-    image.sync_to_db()
+    image = Image(file_data.read())
+    image.save_to_db()
     return jsonify({"id": image.get_id()}), 200
+
+@app.route('/admin/uploadtest', methods=['GET'])
+@secure("events")
+def upload_image_test():
+    return render_template('uploadtest.html')
 
 
 @app.route('/admin/articles', methods=['GET'])
