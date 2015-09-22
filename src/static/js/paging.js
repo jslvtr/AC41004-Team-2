@@ -25,17 +25,24 @@ function Pagingsys() {
 		pagination.append("<ul class='pagination'></ul>");
 		pagination = $(pagination.find("ul"));
 
-		for (var i = 0; i < lis.size()/obj.max_on_one_page; i++)
-			pagination.append('<li><a onclick="$(\''+obj.selector.selector+'\').show_page('+i+')" >'+(i+1)+'</li>');
+		for (var i = 0; i < lis.size()/obj.max_on_one_page; i++) {
+		    if(i == 0) {
+			    pagination.append('<li class="active"><a onclick="$(\''+obj.selector.selector+'\').show_page('+i+', this)" >'+(i+1)+'</li>');
+			} else {
+			    pagination.append('<li><a onclick="$(\''+obj.selector.selector+'\').show_page('+i+', this)" >'+(i+1)+'</li>');
+			}
+		}
 	}
 
-	this.show_page= function(page)
+	this.show_page= function(page, object)
 	{
 		var lis = this.find(".pages ul").children("div");
 		for (var i = 0; i < lis.size(); i++)
 			if (lis[i].style["display"] != "none")
 				$(lis[i]).hide("fast");
+				$(object).parents('ul').children(".active").removeClass("active");
 		$(lis[page]).show("fast");
+		$(object).parent().addClass("active");
 	}
 }
 
