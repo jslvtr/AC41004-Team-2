@@ -1,6 +1,7 @@
 from hashlib import sha256
 from src.common.database import Database
 from src.common.utils import Utils
+from src.models.event import Event
 from src.models.permissions import Permissions
 
 __author__ = 'jslvtr'
@@ -52,7 +53,18 @@ class User(object):
 
     @staticmethod
     def get_registered_events(user):
-        return Database.find("registrations", {"user": user})
+        events_registered_for = Database.find("registrations", {"user": user})
+        if events_registered_for is not None:
+            events = list()
+            for event in events_registered_for:
+                events.append(Database.find_one("events", {"_id": event['event']}))
+
+            return events
+        return None
+
+    @staticmethod
+    def get_user_list():
+        return Database.find("users", {})
 
     def save_to_db(self):
         Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
