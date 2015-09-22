@@ -58,13 +58,22 @@ class User(object):
             events = list()
             for event in events_registered_for:
                 events.append(Database.find_one("events", {"_id": event['event']}))
-
             return events
         return None
 
     @staticmethod
     def get_user_list():
         return Database.find("users", {})
+
+    @staticmethod
+    def get_user_permissions(user):
+        user = Database.find_one("users", {"email": user})
+        return user['permissions']
+
+    @staticmethod
+    def get_by_id(user_id):
+        return Database.find_one("users", {"_id": user_id})
+
 
     def save_to_db(self):
         Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
