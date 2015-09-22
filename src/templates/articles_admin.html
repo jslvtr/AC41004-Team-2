@@ -1,9 +1,19 @@
-<div class="content row">
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleEditroModalNew">Add</button>
 
+    <div class="content row">
+   <!-- <h4>Add an Article</h4>-->
+        <div class="panel panel-success">
+            <div class="panel-heading"><h4>Admin Panel</h4></div>
+            <div class="panel-body">
+                <button type="button" class="btn btn-success btn-lg dropdown-menu-right" data-toggle="modal" data-target="#ArticleEditroModalNew">Add new Article</button>
+
+            </div>
+        </div>
+    </div>
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div class="col-md-5">
+
+    <div class="content">
+    <!--<h4>Current Articles</h4>-->
         <ul>
             {% for article in news %}
                 {% include 'article_small_edit.html' %}

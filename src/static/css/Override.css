@@ -130,3 +130,15 @@ td.center.middle {
 .article > p {
     font-size: 15px;
 }
+
+.bronze {
+    color: #cd7f32;
+}
+
+.silver {
+    color: #c0c0c0;
+}
+
+.gold {
+    color: #ffd700;
+}
