@@ -296,7 +296,9 @@ def register_user():
 def view_profile():
     if session.contains('email') and session['email'] is not None:
         profile = User.find_by_email(session['email'])
-        return render_template('user-profile.html', profile=profile)
+        events = profile.get_registered_events(session['email'])
+        totalpoints = profile.total_points()
+        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
     else:
         return render_template('user-profile.html', message="Not Logged In")
 

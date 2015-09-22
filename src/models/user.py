@@ -50,6 +50,10 @@ class User(object):
 
         return total
 
+    @staticmethod
+    def get_registered_events(user):
+        return Database.find("registrations", {"user": user})
+
     def save_to_db(self):
         Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
 

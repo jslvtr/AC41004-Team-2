@@ -18,14 +18,18 @@
 
 <h2>Points</h2>
     <table class="table table-striped table-bordered">
-        <tr><td>Action:</td><td>{{profile.data['actionpoints']}}</td></tr>
-        <tr><td>Practice:</td><td> {{profile.data['practicepoints']}} </td></tr>
-        <tr><td>Theory:</td><td> {{profile.data['theorypoints']}} </td></tr>
-        <tr><td>Networking:</td><td> {{profile.data['networkingpoints']}} </td></tr>
-        <tr><td>Virtual:</td><td> {{profile.data['virtualpoints']}} </td></tr>
-        <tr><td>Project:</td><td> {{profile.data['projectpoints']}} </td></tr>
-        <tr><td>Total:</td><td> {{profile.data['totalpoints']}} </td></tr>
+        {% set points = profile.data['points'] %}
+        <tr><td>Action:</td><td>{{points.action}}</td></tr>
+        <tr><td>Practice:</td><td> {{points.practice}} </td></tr>
+        <tr><td>Theory:</td><td> {{points.theory}} </td></tr>
+        <tr><td>Networking:</td><td> {{points.networking}} </td></tr>
+        <tr><td>Virtual:</td><td> {{points.virtual}} </td></tr>
+        <tr><td>Project:</td><td> {{points.project}} </td></tr>
+        <tr><td>Total:</td><td> {{totalpoints}} </td></tr>
     </table>
 
+    {% for event in events %}
+    <a href="/event/{{event.event}}">{{ event.title }}</a>
+    {% endfor %}
 {% endif %}
     </div>
