@@ -14,23 +14,30 @@ class NoSuchImageExistException(Exception):
 
 
 class Image:
-    def __init__(self, data, id_=None):
+    def __init__(self, data,content_type, id_=None):
         self._data = data
+        self._content_type =content_type
         self._id = id_
 
     def set_data(self,data):
         self._data = data
 
-    def get_data(self,data):
-        return self._date
+    def set_content_type(self,content_type):
+        self._content_type = content_type
+
+    def get_data(self):
+        return self._data
+
+    def get_content_type(self):
+        return self._content_type
 
     def get_id(self):
         return self._id
 
     @classmethod
     def get_by_id(cls, id_):
-        iamge = Database.find_one('images', {'_id': id_})
-        return Image.factory_form_json(iamge)
+        image = Database.find_one('images', {'_id': id_})
+        return Image.factory_form_json(image)
 
     @classmethod
     def factory_form_json(cls, image_json):

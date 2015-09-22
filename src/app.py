@@ -114,14 +114,18 @@ def events_get_admin():
 @secure("events")
 def upload_image():
     file_data = request.files['file']
-    image = Image(file_data.read())
+    image = Image(file_data.read(),file_data.mimetype)
     image.save_to_db()
     return jsonify({"id": image.get_id()}), 200
 
-@app.route('/admin/uploadtest', methods=['GET'])
-@secure("events")
-def upload_image_test():
-    return render_template('uploadtest.html')
+
+@app.route('/images/<uuid:image_id>', methods=['GET'])
+def images(image_id):
+    image = Image.get_by_id(image_id)
+    fr = make_response( image.get_data() )
+    fr.headers['Content-Type'] = image.get_content_type()
+    return fr
+
 
 
 @app.route('/admin/articles', methods=['GET'])
