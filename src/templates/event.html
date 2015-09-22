@@ -11,7 +11,7 @@
                     $("#register-symbol").addClass('glyphicon-remove');
                     $("#register-message").text('Unregister');
                     var currentDate = new Date();
-                    $("#registered-date").text('You registered on ' + currentDate.getDate() + '-' + currentDate.getMonth()+1 + '-' + currentDate.getFullYear());
+                    $("#registered-date").text('You registered on ' + currentDate.getDate() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getFullYear());
                } else {
                     $("#register-symbol").removeClass('glyphicon-remove');
                     $("#register-symbol").addClass('glyphicon-ok');
@@ -38,7 +38,7 @@
     {% if registered %}
         <span id="registered"><button type="button" class="btn btn-primary" onclick="register_event('{{ event._id }}', this)"><span class="glyphicon glyphicon-remove" id="register-symbol"></span> <span id="register-message">Unregister</span></button> <span id="registered-date">You registered on {{ registered.date }}</span></span>
     {% else %}
-        <span id="registered"><button type="button" class="btn btn-primary" onclick="register_event('{{ event._id }}', this)"><span class="glyphicon glyphicon-ok" id="register-symbol"></span> <span id="register-message">Register</span> <span id="registered-date"></span></button></span>
+        <span id="registered"><button type="button" class="btn btn-primary" onclick="register_event('{{ event._id }}', this)"><span class="glyphicon glyphicon-ok" id="register-symbol"></span> <span id="register-message">Register</span> </button> <span id="registered-date"></span></span>
     {% endif %}
     <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none; margin: 15px 0;"><span class="glyphicon glyphicon-exclamation-sign"></span> We couldn't sign you up to this event. Sorry!</div>
 
