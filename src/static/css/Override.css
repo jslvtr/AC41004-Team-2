@@ -12,6 +12,10 @@
     margin-top: 5px;
 }
 
+.pagination {
+    margin: 0;
+}
+
 .navbar-brand {
     padding-top: 0;
     padding-left: 0;
