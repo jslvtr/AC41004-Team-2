@@ -303,17 +303,6 @@ def view_profile():
         return render_template('user-profile.html', message="Not Logged In")
 
 
-@app.route('/view-profile/<uuid:user_id>', methods=["GET"])
-def admin_view_profile(user_id):
-    if User.get_user_permissions(session['email']) == 'admin':
-        profile = User.find_by_id(user_id)
-        events = profile.get_registered_events(profile.email)
-        totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
-    else:
-        abort(401)
-
-
 @app.route('/user/edit-profile', methods=["POST"])
 def edit_profile():
     if session.contains('email') and session['email'] is not None:
@@ -353,6 +342,19 @@ def load_user_list():
         return render_template("admin-user-list.html", users=users)
     else:
         abort(500)
+
+
+@app.route('/view-profile/<user_email>', methods=["GET"])
+def admin_view_profile(user_email):
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            profile = User.find_by_email(user_email)
+            events = profile.get_registered_events(profile.email)
+            totalpoints = profile.total_points()
+            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
+
+    else:
+        abort(401)
 
 
 

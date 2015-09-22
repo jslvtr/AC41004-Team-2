@@ -1,4 +1,5 @@
 from hashlib import sha256
+import uuid
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.event import Event
@@ -13,6 +14,7 @@ class User(object):
         self.encrypted_password = password
         self.permissions = permissions
         self.data = kwargs
+
 
     @classmethod
     def find_by_email(cls, email):
@@ -36,6 +38,7 @@ class User(object):
             return False
         if User.find_by_email(email) is not None:
             return False
+
 
         encrypted_password = sha256(password.encode('utf-8'))
         user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default().name)
@@ -72,7 +75,8 @@ class User(object):
 
     @staticmethod
     def get_by_id(user_id):
-        return Database.find_one("users", {"_id": user_id})
+        user = Database.find_one("users", {"_id": user_id})
+        return user
 
 
     def save_to_db(self):
