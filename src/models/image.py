@@ -5,7 +5,12 @@ from datetime import datetime
 _author_ = 'stamas01'
 
 
+class NoSuchImageExistException(Exception):
+    def __init__(self):
+        self.message = "No such image exists"
 
+    def __str__(self):
+        return repr(self.message)
 
 
 class Image:

@@ -4,6 +4,8 @@ from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
+from src.models.image import Image
+
 from src.models.permissions import Permissions
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
@@ -105,6 +107,16 @@ def secure(type):
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     return render_template('events_admin.html', events=events)
+
+
+@app.route('/admin/upload', methods=['POST'])
+@secure("events")
+def upload_image():
+    file_data = request.files['file']
+    sdfdsfd = file_data.read()
+    image = Image(file_data)
+    image.sync_to_db()
+    return jsonify({"id": image.get_id()}), 200
 
 
 @app.route('/admin/articles', methods=['GET'])
