@@ -311,7 +311,7 @@ def admin_view_profile(user_id):
         totalpoints = profile.total_points()
         return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
     else:
-        abort(500)
+        abort(401)
 
 
 @app.route('/user/edit-profile', methods=["POST"])
