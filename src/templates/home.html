@@ -10,7 +10,7 @@
                 {% for article in news %}
                 <li >
                     <div class="article">
-                        <h2>{{ article.title }}</h2>
+                        <h2><a href="/article/{{article._id}}">{{ article.title }}</a></h2>
 
                         <p>{{ article.summary | safe}}</p>
                         <hr class="separator"/>
@@ -19,7 +19,7 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="pagination pull-right"></div>
+        <div class="pagination"></div>
     </div>
     <div id="events-panel">
         <h1>Upcoming Events</h1>
@@ -33,7 +33,7 @@
         {% endfor %}
             </ul>
         </div>
-        <div class="pagination pull-right"></div>
+        <div class="pagination"></div>
     </div>
     <!--To the right of these items a Calender?-->
 </div>

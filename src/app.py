@@ -293,32 +293,31 @@ def register_user():
 
 
 @app.route('/view-profile')
+@secure("user")
 def view_profile():
     if session.contains('email') and session['email'] is not None:
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
         totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
+        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
 
 @app.route('/user/edit-profile', methods=["POST"])
+@secure("user")
 def edit_profile():
-    if session.contains('email') and session['email'] is not None:
-        if User.check_login(session['email'], request.form['password']):
-            user = User.find_by_email(session['email'])
-            user.data.update(firstname=request.form['firstname'], lastname=request.form['lastname'],
-                             university=request.form['university'], level=request.form['level'],
-                             country=request.form['country'], school=request.form['school'],
-                             subject=request.form['subject'], year=request.form['yearofstudy'])
+    if User.check_login(session['email'], request.form['password']):
+        user = User.find_by_email(session['email'])
+        user.data.update(firstname=request.form['firstname'], lastname=request.form['lastname'],
+                         university=request.form['university'], level=request.form['level'],
+                         country=request.form['country'], school=request.form['school'],
+                         subject=request.form['subject'], year=request.form['yearofstudy'])
 
-            user.save_to_db()
-            return make_response(view_profile())
-        else:
-            return render_template('user-profile.html', message="Incorrect Password")
+        user.save_to_db()
+        return make_response(view_profile())
     else:
-        return render_template('user-profile.html', message="Not Logged In")
+        return render_template('user-profile.html', message="Incorrect Password")
 
 
 @app.route('/event/signup/<uuid:event_id>', methods=['GET'])
@@ -336,6 +335,7 @@ def event_signup(event_id):
 
 
 @app.route('/user-list')
+@secure("admin")
 def load_user_list():
     if User.get_user_permissions(session['email']) == 'admin':
         users = User.get_user_list()
@@ -345,17 +345,17 @@ def load_user_list():
 
 
 @app.route('/view-profile/<user_email>', methods=["GET"])
+@secure("admin")
 def admin_view_profile(user_email):
     if session.contains('email') and session['email'] is not None:
         if User.get_user_permissions(session['email']) == 'admin':
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
-            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints)
+            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
 
     else:
         abort(401)
-
 
 
 @app.route('/edit-profile')

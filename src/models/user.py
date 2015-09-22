@@ -9,16 +9,18 @@ __author__ = 'jslvtr'
 
 
 class User(object):
+
+    COLLECTION = "users"
+
     def __init__(self, email, password, permissions=None, **kwargs):
         self.email = email
         self.encrypted_password = password
         self.permissions = permissions
         self.data = kwargs
 
-
     @classmethod
     def find_by_email(cls, email):
-        data = Database.find_one("users", {"email": email})
+        data = Database.find_one(cls.COLLECTION, {"email": email})
         if data is not None:
             return cls(**data)
 
@@ -78,9 +80,22 @@ class User(object):
         user = Database.find_one("users", {"_id": user_id})
         return user
 
-
     def save_to_db(self):
-        Database.update("users", {"email": self.email}, {'$set': self.json()}, upsert=True)
+        Database.update(self.COLLECTION, {"email": self.email}, {'$set': self.json()}, upsert=True)
+
+    def get_point_rank(self):
+        users = [user for user in Database.find(self.COLLECTION, {})]
+        top_points_user = 0
+        for user in users:
+            total_points = 0
+            for key in user['points'].keys():
+                total_points += user['points'][key]
+            if total_points > top_points_user:
+                top_points_user = total_points
+
+        current_user_points = self.total_points()
+
+        return 100 - (current_user_points / top_points_user * 100)
 
     def json(self):
         json = {
