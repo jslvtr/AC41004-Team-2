@@ -1,0 +1,21 @@
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="admin_panel">
+    {% if "admin" in access_level or "events" in access_level %}
+        <button>Events </button>
+    {% endif %}
+    {% if "admin" in access_level or "articles" in access_level %}
+        <button>Articles </button>
+    {% endif %}
+    {% if "admin" in access_level %}
+        <button>User permissions  </button>
+    {% endif %}
+
+</div>
+
+
+{{data | safe}}
