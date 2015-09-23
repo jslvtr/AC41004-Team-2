@@ -1,9 +1,12 @@
+import base64
 from functools import wraps
 from werkzeug.exceptions import abort
 from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
+from src.models.image import Image
+
 from src.models.permissions import Permissions
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
@@ -107,6 +110,24 @@ def events_get_admin():
     return render_template('events_admin.html', events=events)
 
 
+@app.route('/admin/upload', methods=['POST'])
+@secure("events")
+def upload_image():
+    file_data = request.files['file']
+    image = Image(file_data.read(),file_data.mimetype)
+    image.save_to_db()
+    return jsonify({"id": image.get_id()}), 200
+
+
+@app.route('/images/<uuid:image_id>', methods=['GET'])
+def images(image_id):
+    image = Image.get_by_id(image_id)
+    fr = make_response( image.get_data() )
+    fr.headers['Content-Type'] = image.get_content_type()
+    return fr
+
+
+
 @app.route('/admin/articles', methods=['GET'])
 @secure("articles")
 def articles_get_admin():
@@ -164,9 +185,10 @@ def add_permission():
 @secure("events")
 def event_post():
     try:
-        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
+        start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
+        end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
 
-        new_event = Event(request.form.get('title'), request.form.get('description'), event_date)
+        new_event = Event(request.form.get('title'), request.form.get('description'), start, end)
         if not new_event.is_valid_model():
             abort(500)
         new_event.save_to_db()
@@ -179,11 +201,12 @@ def event_post():
 @secure("events")
 def event_put():
     try:
-        trff = request.form.get('description')
-        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
+        start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
+        end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
         new_event = Event(request.form.get('title'),
                           request.form.get('description'),
-                          event_date,
+                          start,
+                          end,
                           uuid.UUID(request.form.get('id')))
         if not new_event.is_valid_model():
             abort(500)

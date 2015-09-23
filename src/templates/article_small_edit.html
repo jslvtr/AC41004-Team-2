@@ -4,17 +4,19 @@
 <br>
 <br>
 
-<div class="panel panel-primary">
-    <div class="panel-heading"> {{article.title}}
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleEditrModal{{article._id}}">Edit</button>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
 
+
+<li >
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleEditrModal{{article._id}}">Edit</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
+
+    <div class="article">
+        <h2>{{ article.title }}</h2>
+
+        <p>{{ article.summary | safe}}</p>
+        <hr class="separator"/>
     </div>
-    <div class="panel-body">
-        <p>{{ article.summary|safe }}{#Sub heading data here, possibly might need to truncate this #}</p >
-        {{article.date.strftime('%m/%d/%Y %I:%M %p')}}
-    </div>
-</div>
+</li>
 
 
 

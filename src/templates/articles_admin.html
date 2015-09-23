@@ -19,8 +19,15 @@
                 {% include 'article_small_edit.html' %}
             {% endfor %}
         </ul>
-    </div>
-</div>
+
+
+<script>
+
+	 pagingsys.init({selector: $("#news-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
+
 
 
 

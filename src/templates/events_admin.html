@@ -1,16 +1,33 @@
-<div class="content row">
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModalNew">Add</button>
-
+<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image" ></div>
+<div class="content container">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div class="col-md-5">
-        <ul>
-            {% for event in events %}
-                {% include 'event_small_edit.html' %}
-            {% endfor %}
-        </ul>
+    <div id="events-panel">
+        <h1>Events</h1>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModalNew">Add</button>
+        <div class="pages">
+            <ul>
+        {% for event in events %}
+                <li>
+                    {% include 'event_small_edit.html' %}
+                    <hr class="separator"/>
+                </li>
+        {% endfor %}
+            </ul>
+        </div>
+        <div class="pagination"></div>
     </div>
+    <!--To the right of these items a Calender?-->
 </div>
+?
+
+<script>
+
+	 pagingsys.init({selector: $("#events-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
+
 
 
 
@@ -28,7 +45,7 @@
           <form id="event_edit_form_new" >
                 <label for="title_new" class="control-label">Title:</label>
                 <input type="text" class="form-control" name="title" id="title_new">
-                <label for="date" class="control-label">Date:</label>
+                <label for="start" class="control-label">Start:</label>
 
                 <!-- Date Picker -->
                 <div class="container">
@@ -36,7 +53,7 @@
                         <div class='col-sm-6'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker_new'>
-                                    <input type='text' class="form-control" id="date" name="date"/>
+                                    <input type='text' class="form-control" id="start" name="start"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -51,6 +68,30 @@
                     </div>
                 </div>
                 <!-- Date Picker END -->
+
+                <label for="end" class="control-label">End:</label>
+
+                <!-- Date Picker -->
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker2'>
+                                    <input type='text' class="form-control" id="end" name="end"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker2').datetimepicker();
+                            });
+                        </script>
+                    </div>
+                </div>
+
 
                 <!-- Editor -->
                 <script type="text/javascript" >

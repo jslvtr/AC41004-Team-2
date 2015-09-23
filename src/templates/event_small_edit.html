@@ -4,17 +4,17 @@
 <br>
 <br>
 
-<div class="panel panel-primary">
-    <div class="panel-heading"> {{event.title}}
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModal{{event._id}}">Edit</button>
+
+<!-- Model required: event -->
+
+<div class="event">
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModal{{event._id}}">Edit</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#}">View Registered Users</button>
 
-    </div>
-    <div class="panel-body">
-        <p>{{ event.description|safe }}{#Sub heading data here, possibly might need to truncate this #}</p >
-        {{event.date.strftime('%m/%d/%Y %I:%M %p')}}
-    </div>
+    <h2><a href="/event/{{ event._id }}">{{ event.title }}</a></h2>
+
+    <p>{{ event.description | safe}}</p>
 </div>
 
 
@@ -40,7 +40,7 @@
                 <label for="title{{event._id}}" class="control-label">Title:</label>
                 <input type="text" class="form-control" name="title" id="title{{event._id}}" value="{{event.title}}">
                 <input type="hidden" value="{{event._id}}" name="id">
-                <label for="date" class="control-label">Date:</label>
+                <label for="start" class="control-label">Start:</label>
 
                 <!-- Date Picker -->
                 <div class="container">
@@ -48,7 +48,7 @@
                         <div class='col-sm-6'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker{{event._id}}'>
-                                    <input type='text' class="form-control" id="date" value="{{event.date.strftime('%m/%d/%Y %I:%M %p')}}" name="date"/>
+                                    <input type='text' class="form-control" id="start" value="{{event.start.strftime('%m/%d/%Y %I:%M %p')}}" name="start"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -63,7 +63,29 @@
                     </div>
                 </div>
                 <!-- Date Picker END -->
+                <label for="end" class="control-label">End:</label>
 
+                <!-- Date Picker -->
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker{{event._id}}2'>
+                                    <input type='text' class="form-control" id="end" value="{{event.end.strftime('%m/%d/%Y %I:%M %p')}}" name="end"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker{{event._id}}2').datetimepicker();
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!-- Date Picker END -->
                 <!-- Editor -->
                 <script type="text/javascript" >
                 tinymce.init({

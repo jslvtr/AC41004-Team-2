@@ -41,8 +41,8 @@ function Pagingsys() {
 			if (lis[i].style["display"] != "none")
 				$(lis[i]).hide("fast");
 				$(object).parents('ul').children(".active").removeClass("active");
-		$(lis[page]).show("fast");
 		$(object).parent().addClass("active");
+		$(lis[page]).show('slide', {direction: 'right'}, 400);
 	}
 }
 
