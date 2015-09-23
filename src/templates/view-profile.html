@@ -165,7 +165,7 @@
             {% for event in events %}
             <tr>
                 <td><a href="/event/{{event._id}}">{{ event.title }}</a></td>
-                <td>{# event.date#} {{event.date.strftime("%d-%m-%Y at %H:%M")}}</td>
+                <td>{{event.start.strftime("%d-%m-%Y at %H:%M")}}</td>
             </tr>
 
             {% endfor %}
