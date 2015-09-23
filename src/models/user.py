@@ -99,12 +99,9 @@ class User(object):
 
     @staticmethod
     def update_user_points(user, category, points):
-        if Database.update("users", {"email": user}, {"points": {category: points}}):
+        if Database.update("users", {"email": user}, {"$inc": {"points." + category: points}}, upsert=True):
             return True
         return False
-
-
-
 
     def json(self):
         json = {

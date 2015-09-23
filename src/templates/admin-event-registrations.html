@@ -10,6 +10,9 @@
             <td><div class="checkbox"><input type="checkbox" name="attended" value="user.user" checked></div></td></tr>
             {%endif%}
             {%endfor%}
+            <input type="hidden" name="category" value="project">
+            <input type="hidden" name="event" value="{{event_id}}">
+
             </table>
         <input class="btn btn-default" type="submit" Value="Submit">
         </form>

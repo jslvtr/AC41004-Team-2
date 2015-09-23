@@ -1,4 +1,5 @@
 import time
+import uuid
 from src.common.database import Database
 from src.models.event import Event
 
@@ -23,7 +24,14 @@ class EventRegister(object):
 
         @staticmethod
         def set_user_attended(user, event):
-            Database.update("registrations", {"user": user, "event": event}, {"attended": "Yes"}, upsert=True)
+            Database.update("registrations", {"user": user, "event": uuid.UUID(event)}, {"attended": "Yes"}, upsert=True)
+
+        @staticmethod
+        def get_user_attended(user, event):
+            if Database.find_one("registrations", {"user": user, "event": uuid.UUID(event), "attended": "Yes"}):
+                return True
+            else:
+                return False
 
         @staticmethod
         def list_registered_users(event):

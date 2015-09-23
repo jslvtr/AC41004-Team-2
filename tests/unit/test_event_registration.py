@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from unittest import TestCase
 from src.app import get_db
 from src.common.database import Database
@@ -45,3 +46,12 @@ class TestEventRegister(TestCase):
         self.assertIsNone(EventRegister.check_if_registered(user, event.get_id()))
 
         Database.remove(Event.COLLECTION, {'_id': event.get_id()})
+
+    def test_user_attended(self):
+        user = "jamie@jamie.com"
+        event_id = "467c7d7f-96c8-4867-9357-fd1c84ec020f"
+
+        EventRegister.set_user_attended(user, uuid.UUID(event_id).hex)
+
+        self.assertEquals(EventRegister.get_user_attended(user, event_id), True)
+

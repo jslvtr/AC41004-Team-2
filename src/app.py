@@ -400,14 +400,31 @@ def admin_view_profile(user_email):
         abort(401)
 
 
-@app.route('/event/registrations/<uuid:event_id>', methods=['GET'])
+@app.route('/admin/event/registrations/<uuid:event_id>', methods=['GET'])
+@secure("admin")
 def view_event_registrations(event_id):
     if session.contains('email') and session['email'] is not None:
         if User.get_user_permissions(session['email']) == 'admin':
             users = EventRegister.list_registered_users(event_id)
-            return render_template('admin-event-registrations.html', users=users)
+            return render_template('admin-event-registrations.html', users=users, event_id=event_id)
         else:
             abort(401)
+
+
+@app.route('/update-attended', methods=['POST'])
+def update_attended():
+    checkboxes = request.form.getlist("attended")
+    category = request.form['category']
+    event = request.form['event']
+    for user in checkboxes:
+        if EventRegister.get_user_attended(user, event) is not "Yes":
+            User.update_user_points(user, category, 30)
+            EventRegister.set_user_attended(user, event)
+        else:
+            abort(500)
+
+    return redirect(url_for("view_event_registrations", event_id=event))
+
 
 
 @app.route('/edit-profile')
