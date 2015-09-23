@@ -15,11 +15,14 @@ class NoSuchEventExistException(Exception):
 
 
 class Event:
+
+    COLLECTION = "events"
+
     def __init__(self, title, description, start, end, id_=None):
         self._title = title
         self._description = description
         self._start = start
-        self._end = start
+        self._end = end
         self._id = id_
         self._synced = False
 
@@ -56,12 +59,12 @@ class Event:
 
     @classmethod
     def get_by_title(cls, title):
-        event = Database.find_one('events', {'title': title})
+        event = Database.find_one(cls.COLLECTION, {'title': title})
         return Event.factory_form_json(event)
 
     @classmethod
     def get_by_id(cls, id_):
-        event = Database.find_one('events', {'_id': id_})
+        event = Database.find_one(cls.COLLECTION, {'_id': id_})
         return Event.factory_form_json(event)
 
     @classmethod
@@ -75,10 +78,10 @@ class Event:
     def save_to_db(self):
         if self._id is None:
             self._id = uuid.uuid4()
-            Database.insert('events', self.to_json())
+        Database.insert(self.COLLECTION, self.to_json())
 
     def remove_from_db(self):
-        Database.remove('events', {'_id': self._id})
+        Database.remove(self.COLLECTION, {'_id': self._id})
 
     def is_synced(self):
         return self._synced
@@ -97,7 +100,7 @@ class Event:
     def sync_to_db(self):
         if self._synced is False:
             self._synced = True
-            Database.update('events',
+            Database.update(self.COLLECTION,
                             {'_id': self._id},
                             {'title': self._title, 'description': self._description, 'start': self._start, 'end': self._end})
 
