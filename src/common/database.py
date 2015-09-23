@@ -16,9 +16,17 @@ class Database(object):
         Database.DATABASE.authenticate(user, password)
 
     @staticmethod
-    def find(collection, query):
+    def find(collection, query, sort=None, direction=pymongo.ASCENDING, limit=None):
         if collection is not None:
-            return Database.DATABASE[collection].find(query)
+            if sort:
+                cursor = Database.DATABASE[collection].find(query).sort(sort, direction)
+            else:
+                cursor = Database.DATABASE[collection].find(query)
+
+            if limit:
+                return cursor.limit(limit)
+            else:
+                return cursor
         else:
             raise pymongo.errors.InvalidOperation
 

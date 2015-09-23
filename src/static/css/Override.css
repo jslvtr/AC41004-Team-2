@@ -17,6 +17,13 @@
     cursor: pointer;
 }
 
+.see-more {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 200;
+    text-decoration: underline;
+}
+
 .navbar-brand {
     padding-top: 0;
     padding-left: 0;

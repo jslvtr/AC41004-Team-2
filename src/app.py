@@ -1,7 +1,9 @@
 import base64
 from functools import wraps
+import pymongo
 from werkzeug.exceptions import abort
 from src.common.database import Database
+from src.common.utils import Utils
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
@@ -62,8 +64,13 @@ def not_found(ex):
 
 @app.route('/')
 def index():
-    news = [article for article in Database.find("articles", {})]
-    events = [event for event in Database.find("events", {})]
+    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING, limit=3)]
+    events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING, limit=3)]
+
+    for article in news:
+        article['summary'] = Utils.clean_for_homepage(article['summary'])
+    for event in events:
+        event['description'] = Utils.clean_for_homepage(event['description'])
 
     return render_template('home.html',
                            events=events,
@@ -105,10 +112,12 @@ def secure(type):
 
     return tags_decorator
 
+
 def get_access_level():
     if session.contains('email') and session['email'] is not None:
         return User.find_by_email(session['email']).permissions
     return ""
+
 
 @app.route('/admin', methods=['GET'])
 @app.route('/admin/events', methods=['GET'])
@@ -116,7 +125,6 @@ def get_access_level():
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     return render_template('events_admin.html', events=events)
-
 
 
 @app.route('/admin/upload', methods=['POST'])
@@ -136,18 +144,16 @@ def images(image_id):
     return fr
 
 
-
 @app.route('/admin/articles', methods=['GET'])
 @secure("articles")
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
     return render_template('articles_admin.html', news=news)
 
+
 @app.route('/admin/filemanager', methods=['GET'])
 @secure("articles")
 def filemanager_admin():
-
-    filess = {"name": "folder1", "type": "dir", "files":""}
     return render_template('filemanager.html')
 
 
@@ -329,6 +335,7 @@ def register_user():
     user_password = request.form['password']
 
     if User.register_user(user_email, user_password):
+        session['email'] = user_email
         return redirect(url_for('index'))
     else:
         return redirect(url_for('register_page', error_message="User exists"))
