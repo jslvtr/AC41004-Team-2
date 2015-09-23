@@ -21,6 +21,8 @@ class TestArticle(TestCase):
 
     def test_factory_form_json(self):
         article = Article("Test", "lk", datetime.now())
+        dfsdf = article.to_json()
+        dsds = Article.factory_form_json(dfsdf)
         self.assertEqual(article, Article.factory_form_json(article.to_json()), "Creating article object from json failed")
 
     def test_save_to_db(self):
@@ -42,7 +44,7 @@ class TestArticle(TestCase):
             self.fail("Error occurred when tried to delete existing article")
 
     def test_remove_non_existing_event_from_db(self):
-        article = Article("Test", "lk", datetime.now(), uuid.uuid4())
+        article = Article("Test", "lk", None, datetime.now(), uuid.uuid4())
         self.assertRaises(NoSuchArticleExistException,article.remove_from_db())
 
     def test_not_synced(self):
@@ -61,11 +63,11 @@ class TestArticle(TestCase):
         article.remove_from_db()
 
     def test_is_valid_model(self):
-        article = Article("Test", "lk", datetime.now(),uuid.uuid4())
+        article = Article("Test", "lk", datetime.now(),None, uuid.uuid4())
         self.assertTrue(article.is_valid_model(),"Valid model is invalid")
 
     def test_is_not_valid_model(self):
-        article = Article(12, 12, "hello","sd")
+        article = Article(12, 12, "hello", "sd")
         self.assertFalse(article.is_valid_model(),"Invalid model is valid")
 
     def test_sync_to_db(self):
@@ -83,5 +85,6 @@ class TestArticle(TestCase):
     def test_to_json(self):
         dt = datetime.now()
         id_ = uuid.uuid4()
-        article = Article("Test", "lk", dt,id_)
-        self.equal = self.assertEqual(article.to_json(), {'title': 'Test', 'summary': 'lk', 'date': dt, '_id': id_})
+        article = Article("Test", "lk", dt,None,id_)
+        test = article.to_json()
+        self.equal = self.assertEqual(article.to_json(), {'title': 'Test', 'summary': 'lk', 'date': dt, 'publication': None, '_id': id_})

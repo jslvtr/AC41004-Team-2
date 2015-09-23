@@ -1,0 +1,21 @@
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<div id="admin_panel">
+    {% if "admin" in access_level or "events" in access_level %}
+        <a href="/admin/events">Events </a>
+    {% endif %}
+    {% if "admin" in access_level or "articles" in access_level %}
+        <a href="/admin/articles">Articles </a>
+    {% endif %}
+    {% if "admin" in access_level %}
+        <a href="/admin/permissions">User permissions  </a>
+    {% endif %}
+
+</div>
+
+
+{{data | safe}}

@@ -77,11 +77,14 @@ def init_db():
 
 @app.after_request
 def layout(response):
-
     if response.content_type == 'text/html; charset=utf-8':
         data = response.get_data()
         data = data.decode('utf-8')
-        data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+        if str(request.url_rule).startswith("/admin"):
+            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+        else:
+            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         response.set_data(data)
 
         return response
@@ -102,12 +105,18 @@ def secure(type):
 
     return tags_decorator
 
+def get_access_level():
+    if session.contains('email') and session['email'] is not None:
+        return User.find_by_email(session['email']).permissions
+    return ""
 
+@app.route('/admin', methods=['GET'])
 @app.route('/admin/events', methods=['GET'])
 @secure("events")
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     return render_template('events_admin.html', events=events)
+
 
 
 @app.route('/admin/upload', methods=['POST'])
@@ -244,8 +253,11 @@ def event_get(event_id):
 def article_post():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
-
-        new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
+        new_article = None
+        if request.form.get('publication') is "":
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
+        else:
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date, request.form.get('publication'))
         if not new_article.is_valid_model():
             abort(500)
         new_article.save_to_db()
@@ -259,11 +271,18 @@ def article_post():
 def article_put():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
-
-        new_article = Article(request.form.get('title'),
-                              request.form.get('summary'),
-                              article_date,
-                              uuid.UUID(request.form.get('id')))
+        if request.form.get('publication') is "":
+            new_article = Article(request.form.get('title'),
+                                  request.form.get('summary'),
+                                  article_date,
+                                  None,
+                                  uuid.UUID(request.form.get('id')))
+        else:
+            new_article = Article(request.form.get('title'),
+                      request.form.get('summary'),
+                      article_date,
+                      request.form.get('publication'),
+                      uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
