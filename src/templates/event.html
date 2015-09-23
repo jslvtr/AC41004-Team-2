@@ -34,7 +34,7 @@
 </script>
 
 <div class="content container">
-    <h1>{{ event.title }} <small>on {{ event.date.strftime("%d-%m-%Y at %H:%M") }}</small></h1>
+    <h1>{{ event.title }} <small>on {{ event.start.strftime("%d-%m-%Y at %H:%M") }}</small></h1>
     {% if registered %}
         <span id="registered"><button type="button" class="btn btn-primary" onclick="register_event('{{ event._id }}', this)"><span class="glyphicon glyphicon-remove" id="register-symbol"></span> <span id="register-message">Unregister</span></button> <span id="registered-date">You registered on {{ registered.date }}</span></span>
     {% else %}
