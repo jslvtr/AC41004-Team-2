@@ -357,7 +357,7 @@ def event_signup(event_id):
         return make_response(event_get(event_id))
 
 
-@app.route('/user-list')
+@app.route('/admin/user-list')
 @secure("admin")
 def load_user_list():
     if User.get_user_permissions(session['email']) == 'admin':
@@ -367,7 +367,7 @@ def load_user_list():
         abort(500)
 
 
-@app.route('/view-profile/<user_email>', methods=["GET"])
+@app.route('/admin/view-profile/<user_email>', methods=["GET"])
 @secure("admin")
 def admin_view_profile(user_email):
     if session.contains('email') and session['email'] is not None:
