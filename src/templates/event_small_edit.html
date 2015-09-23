@@ -1,7 +1,5 @@
 <!-- Model required: event -->
-<br>
-<br>
-<br>
+
 <br>
 
 
@@ -12,16 +10,12 @@
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#}">View Registered Users</button>
 
-    <h2><a href="/event/{{ event._id }}">{{ event.title }}</a></h2>
-
-    <p>{{ event.description | safe}}</p>
+    </div>
+    <div class="panel-body">
+        <p>{{ event.description|safe }}{#Sub heading data here, possibly might need to truncate this #}</p >
+        {#event.date.strftime('%m/%d/%Y %I:%M %p')#}
+    </div>
 </div>
-
-
-
-
-
-
 
 
 
