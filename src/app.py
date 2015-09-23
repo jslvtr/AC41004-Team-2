@@ -185,9 +185,10 @@ def add_permission():
 @secure("events")
 def event_post():
     try:
-        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
+        start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
+        end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
 
-        new_event = Event(request.form.get('title'), request.form.get('description'), event_date)
+        new_event = Event(request.form.get('title'), request.form.get('description'), start, end)
         if not new_event.is_valid_model():
             abort(500)
         new_event.save_to_db()
@@ -200,11 +201,12 @@ def event_post():
 @secure("events")
 def event_put():
     try:
-        trff = request.form.get('description')
-        event_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
+        start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
+        end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
         new_event = Event(request.form.get('title'),
                           request.form.get('description'),
-                          event_date,
+                          start,
+                          end,
                           uuid.UUID(request.form.get('id')))
         if not new_event.is_valid_model():
             abort(500)

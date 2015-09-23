@@ -1,16 +1,30 @@
-<div class="content row">
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleEditroModalNew">Add</button>
-
+<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image" ></div>
+<div class="content container">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div class="col-md-5">
-        <ul>
-            {% for article in news %}
-                {% include 'article_small_edit.html' %}
-            {% endfor %}
-        </ul>
+    <button type="button" class="btn btn-success btn-lg dropdown-menu-right" data-toggle="modal" data-target="#ArticleEditroModalNew">Add new Article</button>
+    <div id="news-panel">
+        <h1>Latest News</h1>
+
+        <div class ="pages">
+            <ul>
+                {% for article in news %}
+                    {% include 'article_small_edit.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="pagination"></div>
     </div>
 </div>
+?
+
+<script>
+
+	 pagingsys.init({selector: $("#news-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
+
 
 
 

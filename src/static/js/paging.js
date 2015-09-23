@@ -34,8 +34,8 @@ function Pagingsys() {
 		var lis = this.find(".pages ul").children("div");
 		for (var i = 0; i < lis.size(); i++)
 			if (lis[i].style["display"] != "none")
-				$(lis[i]).hide("fast");
-		$(lis[page]).show("fast");
+				$(lis[i]).hide();
+		$(lis[page]).show('slide', {direction: 'right'}, 400);
 	}
 }
 
