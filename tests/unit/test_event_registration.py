@@ -34,8 +34,7 @@ class TestEventRegister(TestCase):
         event = Event(title="Test event",
               description="Test description",
               start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
-              end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'),
-              id_="123456")
+              end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'))
         event.save_to_db()
 
         EventRegister.register_for_event(user, event.get_id())
