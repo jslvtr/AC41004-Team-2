@@ -6,13 +6,13 @@
 <br>
 <div id="admin_panel">
     {% if "admin" in access_level or "events" in access_level %}
-        <button>Events </button>
+        <a href="/admin/events">Events </a>
     {% endif %}
     {% if "admin" in access_level or "articles" in access_level %}
-        <button>Articles </button>
+        <a href="/admin/articles">Articles </a>
     {% endif %}
     {% if "admin" in access_level %}
-        <button>User permissions  </button>
+        <a href="/admin/permissions">User permissions  </a>
     {% endif %}
 
 </div>

@@ -14,10 +14,11 @@ class NoSuchArticleExistException(Exception):
 
 
 class Article:
-    def __init__(self, title, summary, date, id_=None):
+    def __init__(self, title, summary, date, publication=None, id_=None):
         self._title = title
         self._summary = summary
         self._date = date
+        self._publication = publication
         self._id = id_
         self._synced = False
 
@@ -26,6 +27,13 @@ class Article:
 
     def set_title(self,title):
         self._title = title
+        self._synced = False
+
+    def get_publication(self):
+        return self._publication
+
+    def set_publication(self,publication):
+        self._publication = publication
         self._synced = False
 
     def get_summary(self):
@@ -52,7 +60,7 @@ class Article:
     def factory_form_json(cls, article_json):
         if article_json is None:
             raise NoSuchArticleExistException()
-        article_obj = cls(article_json['title'], article_json['summary'], article_json['date'], article_json['_id'])
+        article_obj = cls(article_json['title'], article_json['summary'],  article_json['date'], article_json['publication'], article_json['_id'])
         article_obj._synced = True
         return article_obj
 
@@ -72,6 +80,8 @@ class Article:
             return False
         if type(self._summary) is not str:
             return False
+        if type(self._publication) is not str and self._publication is not None:
+            return False
         if type(self._date) is not datetime:
             return False
         return True
@@ -79,15 +89,16 @@ class Article:
     def sync_to_db(self):
         if self._synced is False:
             self._synced = True
-            Database.update('articles', {'_id': self._id}, {'title': self._title, 'summary': self._summary, 'date': self._date})
+            Database.update('articles', {'_id': self._id}, {'title': self._title, 'summary': self._summary, 'publication': self._publication, 'date': self._date})
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return (self.get_id() == other.get_id() and
                     self.get_title() == other.get_title() and
-                    self.get_summary() == other.get_summary())
+                    self.get_summary() == other.get_summary() and
+                    self.get_publication() == other.get_publication())
 
     def to_json(self):
-        return {'title': self._title, 'summary': self._summary, 'date': self._date, '_id': self._id}
+        return {'title': self._title, 'summary': self._summary, 'date': self._date, 'publication': self._publication, '_id': self._id}
 
 

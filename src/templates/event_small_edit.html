@@ -8,7 +8,7 @@
 <div class="event">
             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModal{{event._id}}">Edit</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#}">View Registered Users</button>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventRegisteredUsers{{event._id}}">View Registered Users</button>
 
     </div>
     <div class="panel-body">
@@ -127,6 +127,25 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" onclick="delete_event('{{event._id}}')" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Registered Users -->
+<div id="EventRegisteredUsers{{event._id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        Users
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
