@@ -15,7 +15,7 @@ import os
 import uuid
 from datetime import datetime
 
-__author__ = 'jslvtr and stamas01'
+__author__ = 'jslvtr and stamas01 and jkerr123'
 
 mongodb_user = os.environ.get("MONGODB_USER")
 mongodb_password = os.environ.get("MONGODB_PASSWORD")
@@ -379,6 +379,16 @@ def admin_view_profile(user_email):
 
     else:
         abort(401)
+
+
+@app.route('/event/registrations/<uuid:event_id>', methods=['GET'])
+def view_event_registrations(event_id):
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            users = EventRegister.list_registered_users(event_id)
+            return render_template('admin-event-registrations.html', users=users)
+        else:
+            abort(401)
 
 
 @app.route('/edit-profile')

@@ -5,7 +5,7 @@ from src.common.utils import Utils
 from src.models.event import Event
 from src.models.permissions import Permissions
 
-__author__ = 'jslvtr'
+__author__ = 'jslvtr and jkerr123'
 
 
 class User(object):
@@ -96,6 +96,15 @@ class User(object):
         current_user_points = self.total_points()
 
         return 100 - (current_user_points / top_points_user * 100)
+
+    @staticmethod
+    def update_user_points(user, category, points):
+        if Database.update("users", {"email": user}, {"points": {category: points}}):
+            return True
+        return False
+
+
+
 
     def json(self):
         json = {

@@ -24,3 +24,7 @@ class EventRegister(object):
         @staticmethod
         def set_user_attended(user, event):
             Database.update("registrations", {"user": user, "event": event}, {"attended": "Yes"}, upsert=True)
+
+        @staticmethod
+        def list_registered_users(event):
+            return Database.find("registrations", {"event": event})
