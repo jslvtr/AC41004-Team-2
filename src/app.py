@@ -410,6 +410,17 @@ def view_event_registrations(event_id):
             abort(401)
 
 
+@app.route('/admin/edit-courses')
+def edit_profile_courses():
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            pass
+
+
+
+
+
+
 @app.route('/edit-profile')
 def edit_profile_page():
     return render_template('edit-profile.html')
