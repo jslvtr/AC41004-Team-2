@@ -105,10 +105,12 @@ def secure(type):
 
     return tags_decorator
 
+
 def get_access_level():
     if session.contains('email') and session['email'] is not None:
         return User.find_by_email(session['email']).permissions
     return ""
+
 
 @app.route('/admin', methods=['GET'])
 @app.route('/admin/events', methods=['GET'])
@@ -116,7 +118,6 @@ def get_access_level():
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     return render_template('events_admin.html', events=events)
-
 
 
 @app.route('/admin/upload', methods=['POST'])
@@ -134,21 +135,6 @@ def images(image_id):
     fr = make_response( image.get_data() )
     fr.headers['Content-Type'] = image.get_content_type()
     return fr
-
-
-
-@app.route('/admin/articles', methods=['GET'])
-@secure("articles")
-def articles_get_admin():
-    news = [article for article in Database.find("articles", {})]
-    return render_template('articles_admin.html', news=news)
-
-@app.route('/admin/filemanager', methods=['GET'])
-@secure("articles")
-def filemanager_admin():
-
-    filess = {"name": "folder1", "type": "dir", "files":""}
-    return render_template('filemanager.html')
 
 
 @app.route('/admin/permissions', methods=['GET'])
@@ -190,13 +176,22 @@ def add_permission():
     return jsonify({"message": "ok"}), 201
 
 
-@app.route('/event', methods=['POST'])
+@app.route('/admin/events/add/<uuid:event_id>', methods=['GET'])
 @secure("events")
-def event_post():
+def event_add_get(event_id):
+    try:
+        event = Event.get_by_id(event_id)
+        return render_template('event_add.html', event=event.to_json())
+    except NoSuchEventExistException:
+        abort(404)
+
+
+@app.route('/admin/event', methods=['POST'])
+@secure("events")
+def event_add_post():
     try:
         start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
         end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
-
         new_event = Event(request.form.get('title'), request.form.get('description'), start, end)
         if not new_event.is_valid_model():
             abort(500)
@@ -206,9 +201,19 @@ def event_post():
         abort(500)
 
 
-@app.route('/event', methods=['PUT'])
+@app.route('/admin/event/edit/<uuid:event_id>', methods=['GET'])
 @secure("events")
-def event_put():
+def event_edit_get(event_id):
+    try:
+        event = Event.get_by_id(event_id)
+        return render_template('event_edit.html', event=event.to_json())
+    except NoSuchEventExistException:
+        abort(404)
+
+
+@app.route('/admin/event', methods=['PUT'])
+@secure("events")
+def event_edit_put():
     try:
         start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
         end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
@@ -225,9 +230,9 @@ def event_put():
         abort(500)
 
 
-@app.route('/event/<uuid:event_id>', methods=['DELETE'])
+@app.route('/admin/event/<uuid:event_id>', methods=['DELETE'])
 @secure("events")
-def event_delete(event_id):
+def event_delete_delete(event_id):
     try:
         old_event = Event.get_by_id(event_id)
         old_event.remove_from_db()
@@ -248,9 +253,24 @@ def event_get(event_id):
         abort(404)
 
 
-@app.route('/article', methods=['POST'])
+@app.route('/admin/articles', methods=['GET'])
 @secure("articles")
-def article_post():
+def articles_get_admin():
+    news = [article for article in Database.find("articles", {})]
+    return render_template('articles_admin.html', news=news)
+
+
+@app.route('/admin/article/add', methods=['GET'])
+def article_add_get():
+    try:
+        return render_template('article_add.html')
+    except NoSuchArticleExistException:
+        abort(404)
+
+
+@app.route('/admin/article', methods=['POST'])
+@secure("articles")
+def article_add_post ():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
         new_article = None
@@ -266,9 +286,18 @@ def article_post():
         abort(500)
 
 
-@app.route('/article', methods=['PUT'])
+@app.route('/admin/article/edit/<uuid:article_id>', methods=['GET'])
+def article_edit_get(article_id):
+    try:
+        old_article = Article.get_by_id(article_id)
+        return render_template('article_edit.html', article=old_article.to_json())
+    except NoSuchArticleExistException:
+        abort(404)
+
+
+@app.route('/admin/article', methods=['PUT'])
 @secure("articles")
-def article_put():
+def article_edit_put():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
         if request.form.get('publication') is "":
