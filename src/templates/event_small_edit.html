@@ -5,18 +5,21 @@
 
 <!-- Model required: event -->
 
-<div class="event">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModal{{event._id}}">Edit</button>
+<div>
+    <div class="event">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModal{{event._id}}">Edit</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventRegisteredUsers{{event._id}}">View Registered Users</button>
-
     </div>
+
     <div class="panel-body">
         <h1>{{ event.title}}</h1>
-        <p>{{ event.description|safe }}{#Sub heading data here, possibly might need to truncate this #}</p >
-        {#event.date.strftime('%m/%d/%Y %I:%M %p')#}
+        <p>{{ event.description|safe }}</p>
+        {#event.start.strftime('%m/%d/%Y %I:%M %p')#}
     </div>
 </div>
+
+
 
 
 

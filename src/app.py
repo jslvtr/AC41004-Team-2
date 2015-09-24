@@ -82,9 +82,9 @@ def layout(response):
         data = data.decode('utf-8')
         if str(request.url_rule).startswith("/admin"):
             data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         else:
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         response.set_data(data)
 
         return response
