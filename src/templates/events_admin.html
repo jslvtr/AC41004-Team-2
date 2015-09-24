@@ -11,17 +11,18 @@
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
 <div class="content">
-        <div class="pages">
-            <ul>
+    <div class="pages">
+            <table class="table table-bordered">
+
             {% for event in events %}
-                <li>
+                <tr>
                     {% include 'event_small_edit.html' %}
-                    <hr class="separator"/>
-                </li>
+                    <!--<hr class="separator"/>-->
+                </tr>
             {% endfor %}
-            </ul>
-        </div>
-        <div class="pagination"></div>
+            </table>
+    </div>
+<div class="pagination"></div>
 
     <!--To the right of these items a Calender?-->
 </div>
