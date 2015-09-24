@@ -77,6 +77,36 @@ def index():
                            news=news)
 
 
+@app.route('/news')
+def news_page():
+    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING)]
+
+    for article in news:
+        article['summary'] = Utils.clean_for_homepage(article['summary'])
+
+    return render_template('news.html',
+                           news=news)
+
+
+@app.route('/events')
+def events_page():
+    events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING)]
+    for event in events:
+        event['id'] = str(event['_id'])
+        del event['_id']
+        event['title'] = "{} from {} until {}".format(event['title'],
+                                                      event['start'].strftime("{}%H:%M".format(
+                                                          "%d %b " if event['start'].day != event['end'].day else "")),
+                                                      event['end'].strftime("{}%H:%M".format(
+                                                          "%d %b " if event['start'].day != event['end'].day else "")))
+        event['start'] = int(event['start'].strftime('%s')) * 1000
+        event['end'] = int(event['end'].strftime('%s')) * 1000
+        event['url'] = "/event/{}".format(event['id'])
+
+    return render_template('events.html',
+                           events=events)
+
+
 @app.before_first_request
 def init_db():
     Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
@@ -84,15 +114,22 @@ def init_db():
 
 @app.after_request
 def layout(response):
-    if response.content_type == 'text/html; charset=utf-8':
+    if response.content_type == 'text/html; charset=utf-8' and 'static/' not in request.base_url:
         data = response.get_data()
         data = data.decode('utf-8')
         if str(request.url_rule).startswith("/admin"):
-            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('admin.html', access_level=get_access_level(), data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         else:
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         response.set_data(data)
+        response.direct_passthrough = False
 
         return response
     return response
@@ -131,7 +168,7 @@ def events_get_admin():
 @secure("events")
 def upload_image():
     file_data = request.files['file']
-    image = Image(file_data.read(),file_data.mimetype)
+    image = Image(file_data.read(), file_data.mimetype)
     image.save_to_db()
     return jsonify({"id": image.get_id()}), 200
 
@@ -139,7 +176,7 @@ def upload_image():
 @app.route('/images/<uuid:image_id>', methods=['GET'])
 def images(image_id):
     image = Image.get_by_id(image_id)
-    fr = make_response( image.get_data() )
+    fr = make_response(image.get_data())
     fr.headers['Content-Type'] = image.get_content_type()
     return fr
 
@@ -263,7 +300,8 @@ def article_post():
         if request.form.get('publication') is "":
             new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
         else:
-            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date, request.form.get('publication'))
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date,
+                                  request.form.get('publication'))
         if not new_article.is_valid_model():
             abort(500)
         new_article.save_to_db()
@@ -285,10 +323,10 @@ def article_put():
                                   uuid.UUID(request.form.get('id')))
         else:
             new_article = Article(request.form.get('title'),
-                      request.form.get('summary'),
-                      article_date,
-                      request.form.get('publication'),
-                      uuid.UUID(request.form.get('id')))
+                                  request.form.get('summary'),
+                                  article_date,
+                                  request.form.get('publication'),
+                                  uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
@@ -348,7 +386,8 @@ def view_profile():
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
         totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                               rank=profile.get_point_rank())
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
@@ -401,7 +440,8 @@ def admin_view_profile(user_email):
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
-            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                                   rank=profile.get_point_rank())
 
     else:
         abort(401)
