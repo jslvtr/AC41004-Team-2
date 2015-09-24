@@ -161,7 +161,7 @@ def get_access_level():
 @secure("events")
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
-    return render_template('events_admin.html', events=events)
+    return render_template('items/events_admin.html', events=events)
 
 
 @app.route('/admin/upload', methods=['POST'])
@@ -179,13 +179,6 @@ def images(image_id):
     fr = make_response(image.get_data())
     fr.headers['Content-Type'] = image.get_content_type()
     return fr
-
-
-@app.route('/admin/articles', methods=['GET'])
-@secure("articles")
-def articles_get_admin():
-    news = [article for article in Database.find("articles", {})]
-    return render_template('articles_admin.html', news=news)
 
 
 @app.route('/admin/permissions', methods=['GET'])
@@ -227,12 +220,11 @@ def add_permission():
     return jsonify({"message": "ok"}), 201
 
 
-@app.route('/admin/events/add/<uuid:event_id>', methods=['GET'])
+@app.route('/admin/event/add/', methods=['GET'])
 @secure("events")
-def event_add_get(event_id):
+def event_add_get():
     try:
-        event = Event.get_by_id(event_id)
-        return render_template('event_add.html', event=event.to_json())
+        return render_template('items/event_edit.html', event=Event("","",datetime.now(),datetime.now()).to_json(), event_type ="Add")
     except NoSuchEventExistException:
         abort(404)
 
@@ -257,7 +249,7 @@ def event_add_post():
 def event_edit_get(event_id):
     try:
         event = Event.get_by_id(event_id)
-        return render_template('event_edit.html', event=event.to_json())
+        return render_template('items/event_edit.html', event=event.to_json(), event_type="Edit")
     except NoSuchEventExistException:
         abort(404)
 
@@ -299,7 +291,7 @@ def event_get(event_id):
         registered = None
         if session.contains('email') and session['email'] is not None:
             registered = EventRegister.check_if_registered(session['email'], event_id)
-        return render_template('event.html', event=old_event.to_json(), registered=registered)
+        return render_template('items/event.html', event=old_event.to_json(), registered=registered)
     except NoSuchEventExistException:
         abort(404)
 
@@ -308,13 +300,13 @@ def event_get(event_id):
 @secure("articles")
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
-    return render_template('articles_admin.html', news=news)
+    return render_template('items/articles_admin.html', news=news)
 
 
 @app.route('/admin/article/add', methods=['GET'])
 def article_add_get():
     try:
-        return render_template('article_add.html')
+        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), event_type="Add")
     except NoSuchArticleExistException:
         abort(404)
 
@@ -342,7 +334,7 @@ def article_add_post ():
 def article_edit_get(article_id):
     try:
         old_article = Article.get_by_id(article_id)
-        return render_template('article_edit.html', article=old_article.to_json())
+        return render_template('items/article_edit.html', article=old_article.to_json(), event_type="Edit")
     except NoSuchArticleExistException:
         abort(404)
 
@@ -387,7 +379,7 @@ def article_delete(article_id):
 def article_get(article_id):
     try:
         old_article = Article.get_by_id(article_id)
-        return render_template('article.html', article=old_article.to_json())
+        return render_template('items/article.html', article=old_article.to_json())
     except NoSuchArticleExistException:
         abort(404)
 

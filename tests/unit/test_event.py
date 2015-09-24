@@ -20,11 +20,11 @@ class TestEvent(TestCase):
         Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
 
     def test_factory_form_json(self):
-        event = Event("Test", "lk", datetime.now(),datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(),datetime.now())
         self.assertEqual(event, Event.factory_form_json(event.to_json()), "Creating event object from json failed")
 
     def test_save_to_db(self):
-        event = Event("Test", "lk", datetime.now(),datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(),datetime.now())
         event.save_to_db()
         try:
             test_result = Event.get_by_id(event.get_id())
@@ -34,7 +34,7 @@ class TestEvent(TestCase):
         self.assertEqual(test_result, event, "Saved and retrieved event is not the same")
 
     def test_remove_from_db(self):
-        event = Event("Test", "lk", datetime.now(),datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(),datetime.now())
         event.save_to_db()
         try:
             event.remove_from_db()
@@ -42,18 +42,18 @@ class TestEvent(TestCase):
             self.fail("Error occurred when tried to delete existing event")
 
     def test_remove_non_existing_event_from_db(self):
-        event = Event("Test", "lk", datetime.now(),datetime.now(), uuid.uuid4())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(),datetime.now(), uuid.uuid4())
         self.assertRaises(NoSuchEventExistException,event.remove_from_db())
 
     def test_not_synced(self):
-        event = Event("Test", "lk", datetime.now(),datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(),datetime.now())
         event.save_to_db()
         event.set_title("TestUpdated")
         self.assertFalse(event.is_synced(),"event marked synced when it is not")
         event.remove_from_db()
 
     def test_is_synced(self):
-        event = Event("Test", "lk", datetime.now(), datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(), datetime.now())
         event.save_to_db()
         event.set_title("TestUpdated")
         event.sync_to_db()
@@ -61,15 +61,15 @@ class TestEvent(TestCase):
         event.remove_from_db()
 
     def test_is_valid_model(self):
-        event = Event("Test", "lk", datetime.now(), datetime.now(), uuid.uuid4())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(), datetime.now(), uuid.uuid4())
         self.assertTrue(event.is_valid_model(),"Valid model is invalid")
 
     def test_is_not_valid_model(self):
-        event = Event(12, 12, "hello","sd")
+        event = Event(12, 12, "virtual", 10, "hello","sd")
         self.assertFalse(event.is_valid_model(),"Invalid model is valid")
 
     def test_sync_to_db(self):
-        event = Event("Test", "lk", datetime.now(), datetime.now())
+        event = Event("Test", "lk", "virtual", 10, datetime.now(), datetime.now())
         event.save_to_db()
         event.set_title("TestUpdated")
         event.sync_to_db()
@@ -83,5 +83,5 @@ class TestEvent(TestCase):
     def test_to_json(self):
         dt = datetime.now()
         id_ = uuid.uuid4()
-        event = Event("Test", "lk", dt,dt,id_)
-        self.equal = self.assertEqual(event.to_json(), {'title': 'Test', 'description': 'lk', 'start': dt, 'end': dt, '_id': id_})
+        event = Event("Test", "lk", "virtual", 10, dt,dt,id_)
+        self.equal = self.assertEqual(event.to_json(), {'title': 'Test', 'description': 'lk', "event_type": "virtual", "points": 10, 'start': dt, 'end': dt, '_id': id_})
