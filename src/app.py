@@ -1,7 +1,9 @@
 import base64
 from functools import wraps
+import pymongo
 from werkzeug.exceptions import abort
 from src.common.database import Database
+from src.common.utils import Utils
 from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
@@ -15,7 +17,7 @@ import os
 import uuid
 from datetime import datetime
 
-__author__ = 'jslvtr and stamas01'
+__author__ = 'jslvtr and stamas01 and jkerr123'
 
 mongodb_user = os.environ.get("MONGODB_USER")
 mongodb_password = os.environ.get("MONGODB_PASSWORD")
@@ -62,12 +64,47 @@ def not_found(ex):
 
 @app.route('/')
 def index():
-    news = [article for article in Database.find("articles", {})]
-    events = [event for event in Database.find("events", {})]
+    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING, limit=3)]
+    events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING, limit=3)]
+
+    for article in news:
+        article['summary'] = Utils.clean_for_homepage(article['summary'])
+    for event in events:
+        event['description'] = Utils.clean_for_homepage(event['description'])
 
     return render_template('home.html',
                            events=events,
                            news=news)
+
+
+@app.route('/news')
+def news_page():
+    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING)]
+
+    for article in news:
+        article['summary'] = Utils.clean_for_homepage(article['summary'])
+
+    return render_template('news.html',
+                           news=news)
+
+
+@app.route('/events')
+def events_page():
+    events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING)]
+    for event in events:
+        event['id'] = str(event['_id'])
+        del event['_id']
+        event['title'] = "{} from {} until {}".format(event['title'],
+                                                      event['start'].strftime("{}%H:%M".format(
+                                                          "%d %b " if event['start'].day != event['end'].day else "")),
+                                                      event['end'].strftime("{}%H:%M".format(
+                                                          "%d %b " if event['start'].day != event['end'].day else "")))
+        event['start'] = int(event['start'].strftime('%s')) * 1000
+        event['end'] = int(event['end'].strftime('%s')) * 1000
+        event['url'] = "/event/{}".format(event['id'])
+
+    return render_template('events.html',
+                           events=events)
 
 
 @app.before_first_request
@@ -77,15 +114,22 @@ def init_db():
 
 @app.after_request
 def layout(response):
-    if response.content_type == 'text/html; charset=utf-8':
+    if response.content_type == 'text/html; charset=utf-8' and 'static/' not in request.base_url:
         data = response.get_data()
         data = data.decode('utf-8')
         if str(request.url_rule).startswith("/admin"):
-            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('admin.html', access_level=get_access_level(), data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         else:
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         response.set_data(data)
+        response.direct_passthrough = False
 
         return response
     return response
@@ -124,7 +168,7 @@ def events_get_admin():
 @secure("events")
 def upload_image():
     file_data = request.files['file']
-    image = Image(file_data.read(),file_data.mimetype)
+    image = Image(file_data.read(), file_data.mimetype)
     image.save_to_db()
     return jsonify({"id": image.get_id()}), 200
 
@@ -132,9 +176,16 @@ def upload_image():
 @app.route('/images/<uuid:image_id>', methods=['GET'])
 def images(image_id):
     image = Image.get_by_id(image_id)
-    fr = make_response( image.get_data() )
+    fr = make_response(image.get_data())
     fr.headers['Content-Type'] = image.get_content_type()
     return fr
+
+
+@app.route('/admin/articles', methods=['GET'])
+@secure("articles")
+def articles_get_admin():
+    news = [article for article in Database.find("articles", {})]
+    return render_template('articles_admin.html', news=news)
 
 
 @app.route('/admin/permissions', methods=['GET'])
@@ -277,7 +328,8 @@ def article_add_post ():
         if request.form.get('publication') is "":
             new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
         else:
-            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date, request.form.get('publication'))
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date,
+                                  request.form.get('publication'))
         if not new_article.is_valid_model():
             abort(500)
         new_article.save_to_db()
@@ -308,10 +360,10 @@ def article_edit_put():
                                   uuid.UUID(request.form.get('id')))
         else:
             new_article = Article(request.form.get('title'),
-                      request.form.get('summary'),
-                      article_date,
-                      request.form.get('publication'),
-                      uuid.UUID(request.form.get('id')))
+                                  request.form.get('summary'),
+                                  article_date,
+                                  request.form.get('publication'),
+                                  uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
@@ -358,6 +410,7 @@ def register_user():
     user_password = request.form['password']
 
     if User.register_user(user_email, user_password):
+        session['email'] = user_email
         return redirect(url_for('index'))
     else:
         return redirect(url_for('register_page', error_message="User exists"))
@@ -370,7 +423,8 @@ def view_profile():
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
         totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                               rank=profile.get_point_rank())
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
@@ -405,7 +459,7 @@ def event_signup(event_id):
         return make_response(event_get(event_id))
 
 
-@app.route('/user-list')
+@app.route('/admin/user-list')
 @secure("admin")
 def load_user_list():
     if User.get_user_permissions(session['email']) == 'admin':
@@ -415,7 +469,7 @@ def load_user_list():
         abort(500)
 
 
-@app.route('/view-profile/<user_email>', methods=["GET"])
+@app.route('/admin/view-profile/<user_email>', methods=["GET"])
 @secure("admin")
 def admin_view_profile(user_email):
     if session.contains('email') and session['email'] is not None:
@@ -423,10 +477,21 @@ def admin_view_profile(user_email):
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
-            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                                   rank=profile.get_point_rank())
 
     else:
         abort(401)
+
+
+@app.route('/event/registrations/<uuid:event_id>', methods=['GET'])
+def view_event_registrations(event_id):
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            users = EventRegister.list_registered_users(event_id)
+            return render_template('admin-event-registrations.html', users=users)
+        else:
+            abort(401)
 
 
 @app.route('/edit-profile')

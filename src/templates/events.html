@@ -1,0 +1,11 @@
+<div class="content container"><div id="calendar"></div></div>
+
+<script type="text/javascript" src="/static/underscore/underscore.js"></script>
+<script type="text/javascript" src="/static/js/calendar.js"></script>
+<script type="text/javascript">
+        var calendar = $("#calendar").calendar(
+            {
+                tmpl_path: "/static/calendar_templates/",
+                events_source: {{ events|safe }}
+            });
+</script>
