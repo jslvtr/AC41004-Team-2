@@ -4,9 +4,9 @@
     </div>
     <div class="col-xs-12 col-sm-8 col-md-8 well">
         <div >
-            {% if event_type == "Add" %}
+            {% if atcion_type == "Add" %}
                 <h1>New event</h1>
-            {% elif event_type == "Edit" %}
+            {% elif atcion_type == "Edit" %}
                 <h1>Edit event</h1>
             {% endif %}
         </div>
@@ -14,8 +14,15 @@
             <label for="title{{event._id}}" class="control-label">Title:</label>
             <input type="text" class="form-control" name="title" id="title{{event._id}}" value="{{event.title}}">
 
-            <label for="title{{event._id}}" class="control-label">Title:</label>
-            <input type="text" class="form-control" name="title" id="title{{event._id}}" value="{{event.title}}">
+            <label for="title{{event.points}}" class="control-label">Points:</label>
+            <input type="text" class="form-control" name="points" id="title{{event.points}}" value="{{event.points}}">
+
+            <label for="title{{event.event_type}}" class="control-label">Type:</label>
+            <select class="form-control" id="title{{event.event_type}}" name="event_type">
+                {% for event_type in event_types %}
+                    <option value="{{event_type}}">{{event_type}}</option>
+                {% endfor %}
+            </select>
 
             <input type="hidden" value="{{event._id}}" name="id">
             <label for="start" class="control-label">Start:</label>
@@ -82,9 +89,9 @@
                 {{ event.description }}
             </textarea>
             <!-- Editor END -->
-            {% if event_type == "Add" %}
-                <button type="button" onclick="update_add('{{event._id}}')" class="btn btn-primary">Add</button>
-            {% elif event_type == "Edit" %}
+            {% if atcion_type == "Add" %}
+                <button type="button" onclick="add_event('{{event._id}}')" class="btn btn-primary">Add</button>
+            {% elif atcion_type == "Edit" %}
                 <button type="button" onclick="update_event('{{event._id}}')" class="btn btn-primary">Edit</button>
             {% endif %}
 

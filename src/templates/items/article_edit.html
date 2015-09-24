@@ -4,15 +4,21 @@
     </div>
     <div class="col-xs-12 col-sm-8 col-md-8 well">
         <div >
-            {% if event_type == "Add" %}
+            {% if atcion_type == "Add" %}
                 <h1>New article</h1>
-            {% elif event_type == "Edit" %}
+            {% elif atcion_type == "Edit" %}
                 <h1>Edit event</h1>
             {% endif %}
         </div>
         <form id="article_edit_form{{article._id}}" >
                 <label for="title{{article._id}}" class="control-label">Title:</label>
                 <input type="text" class="form-control" name="title" id="title{{article._id}}" value="{{article.title}}">
+                <label for="title{{article.publication}}" class="control-label">Publication:</label>
+                {% if article.publication != "None" %}
+                    <input type="text" class="form-control" name="publication" id="title{{article.publication}}" value="{{article.publication}}">
+                {% else  %}
+                    <input type="text" class="form-control" name="publication" id="title{{article.publication}}">
+                {% endif %}
                 <input type="hidden" value="{{article._id}}" name="id">
                 <label for="date" class="control-label">Date:</label>
 
@@ -56,9 +62,9 @@
                     {{ article.summary }}
                 </textarea>
                 <!-- Editor END -->
-                {% if event_type == "Add" %}
+                {% if atcion_type == "Add" %}
                     <button type="button" onclick="add_article('{{article._id}}')" class="btn btn-primary">Add</button>
-                {% elif event_type == "Edit" %}
+                {% elif atcion_type == "Edit" %}
                     <button type="button" onclick="update_article('{{article._id}}')" class="btn btn-primary">Edit</button>
                 {% endif %}
 

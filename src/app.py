@@ -2,6 +2,7 @@ import base64
 from functools import wraps
 import pymongo
 from werkzeug.exceptions import abort
+from src.common.constants import Constants
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.article import Article, NoSuchArticleExistException
@@ -224,7 +225,7 @@ def add_permission():
 @secure("events")
 def event_add_get():
     try:
-        return render_template('items/event_edit.html', event=Event("","",datetime.now(),datetime.now()).to_json(), event_type ="Add")
+        return render_template('items/event_edit.html', event=Event("","","","",datetime.now(),datetime.now()).to_json(), atcion_type ="Add", event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -235,7 +236,12 @@ def event_add_post():
     try:
         start = datetime.strptime(request.form.get('start'), '%m/%d/%Y %I:%M %p')
         end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
-        new_event = Event(request.form.get('title'), request.form.get('description'), start, end)
+        new_event = Event(request.form.get('title'),
+                          request.form.get('description'),
+                          request.form.get('event_type'),
+                          int(request.form.get('points')),
+                          start,
+                          end)
         if not new_event.is_valid_model():
             abort(500)
         new_event.save_to_db()
@@ -249,7 +255,7 @@ def event_add_post():
 def event_edit_get(event_id):
     try:
         event = Event.get_by_id(event_id)
-        return render_template('items/event_edit.html', event=event.to_json(), event_type="Edit")
+        return render_template('items/event_edit.html', event=event.to_json(), atcion_type="Edit", event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -262,6 +268,8 @@ def event_edit_put():
         end = datetime.strptime(request.form.get('end'), '%m/%d/%Y %I:%M %p')
         new_event = Event(request.form.get('title'),
                           request.form.get('description'),
+                          request.form.get('event_type'),
+                          int(request.form.get('points')),
                           start,
                           end,
                           uuid.UUID(request.form.get('id')))
@@ -306,7 +314,7 @@ def articles_get_admin():
 @app.route('/admin/article/add', methods=['GET'])
 def article_add_get():
     try:
-        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), event_type="Add")
+        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), atcion_type="Add")
     except NoSuchArticleExistException:
         abort(404)
 
@@ -334,7 +342,7 @@ def article_add_post ():
 def article_edit_get(article_id):
     try:
         old_article = Article.get_by_id(article_id)
-        return render_template('items/article_edit.html', article=old_article.to_json(), event_type="Edit")
+        return render_template('items/article_edit.html', article=old_article.to_json(), atcion_type="Edit")
     except NoSuchArticleExistException:
         abort(404)
 
