@@ -1,21 +1,55 @@
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<div id="admin_panel">
-    {% if "admin" in access_level or "events" in access_level %}
-        <a href="/admin/events">Events </a>
-    {% endif %}
-    {% if "admin" in access_level or "articles" in access_level %}
-        <a href="/admin/articles">Articles </a>
-    {% endif %}
-    {% if "admin" in access_level %}
-        <a href="/admin/permissions">User permissions  </a>
-    {% endif %}
+<!--
+        <div class="row content container">
+            <div class="masthead clearfix">
+              <h3 class="masthead-brand">Admin Bar</h3>
 
-</div>
+                <ul class="nav navbar-default">
+                   {% if "admin" in access_level or "events" in access_level %}
+                <li><a href="/admin/events">Events </a></li>
+                    {% endif %}
+                    {% if "admin" in access_level or "articles" in access_level %}
+                <li><a href="/admin/articles">Articles </a></li>
+                    {% endif %}
+                    {% if "admin" in access_level %}
+                <li><a href="/admin/permissions">User permissions  </a></li>
+                    {% endif %}
+                </ul>
+          </div>
+        </div>
+<div class="footer-border"></div>
+
+-->
+
+<nav class="navbar-inverse admin-bar">
+      <div class="container">
+        <div class="navbar-header admin-bar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar2" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <div id="navbar2" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+              
+             {% if "admin" in access_level or "events" in access_level %}
+                <li><a href="/admin/events">Events </a></li>
+                    {% endif %}
+                    {% if "admin" in access_level or "articles" in access_level %}
+                <li><a href="/admin/articles">Articles </a></li>
+                    {% endif %}
+                    {% if "admin" in access_level %}
+                <li><a href="/admin/permissions">User permissions  </a></li>
+                    {% endif %}
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </nav>
+
 
 
 {{data | safe}}

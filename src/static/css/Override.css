@@ -134,4 +134,5 @@ td.center.middle {
 
 .admin-bar {
     margin-top: 35px;
+    border-radius: 0 !important;
 }

@@ -1,21 +1,28 @@
-<div class="content container">
+
+<div class="content row container ">
+
+    <div id="events-panel" class="panel panel-success">
+       <div class="panel-heading"><h4>Events</h4></div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#EventEditroModalNew">Add new Event</button>
+        </div>
+     </div>
+</div>
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div id="events-panel">
-        <h1>Events</h1>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventEditroModalNew">Add</button>
+<div class="content">
         <div class="pages">
             <ul>
-        {% for event in events %}
+            {% for event in events %}
                 <li>
                     {% include 'event_small_edit.html' %}
                     <hr class="separator"/>
                 </li>
-        {% endfor %}
+            {% endfor %}
             </ul>
         </div>
         <div class="pagination"></div>
-    </div>
+
     <!--To the right of these items a Calender?-->
 </div>
 
