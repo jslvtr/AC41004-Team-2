@@ -1,14 +1,15 @@
-<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image" ></div>
+<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image">
+</div>
 <div class="content container">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
     <div id="news-panel">
         <h1>Latest News</h1>
 
-        <div class ="pages">
+        <div class="pages">
             <ul>
                 {% for article in news %}
-                <li >
+                <li>
                     <div class="article">
                         <h2><a href="/article/{{article._id}}">{{ article.title }}</a></h2>
 
@@ -25,19 +26,10 @@
     </div>
     <div id="events-panel">
         <h1>Upcoming Events</h1>
-        <div class="pages">
-            <ul>
         {% for event in events %}
-                <li>
                     {% include 'items/event_small.html' %}
                     <hr class="separator"/>
-                </li>
         {% endfor %}
-            </ul>
-        </div>
-        {% if events|length == 3 %}
-        <h4 class="see-more"><a href="/events">See full calendar</a></h4>
-        {% endif %}
+        <h4 class="see-more"><a href="/events">See event calendar</a></h4>
     </div>
-    <!--To the right of these items a Calender?-->
 </div>
