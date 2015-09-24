@@ -52,10 +52,19 @@
                 <li><a href="/news" title="All the latest">News</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+
+
+
                 {% if user %}
+
+                {% if "admin" in access_level %}
+                        <li><a href="/admin"><span class="glyphicon glyphicon-briefcase"></span> Admin</a></li>
+                {% endif %}
 
                 <li><a href="/view-profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                 <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+
+
                 {% else %}
 
 
@@ -102,7 +111,7 @@
                  alt="the enterprise gym logo">
         </div>
     </div>
-    <div class="row">
+    <div class="row container">
         <div class="col-xs-1"><a href="https://twitter.com/Enterprise_Gym" class="fa fa-twitter "></a></div>
         <div class="col-xs-1"><a href="https://www.facebook.com/EnterpriseGym" class="fa fa-facebook"></a></div>
         <div class="col-xs-1"><a href="http://www.linkedin.com/groups?mostPopular&gid=3278209"
