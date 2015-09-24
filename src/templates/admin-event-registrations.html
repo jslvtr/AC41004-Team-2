@@ -11,7 +11,7 @@
             </tr>
             {% for user in users %}
             <tr>
-                <td><a href="/view-profile/{{user.user}}">{{user.user}}</a></td>
+                <td><a href="/admin/view-profile/{{user.user}}">{{user.user}}</a></td>
                 <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'Yes' in user.attended else 'ban-circle' }}" onclick="change_attended('{{ user.user }}', '{{event_id}}', this)"></span></td>
             </tr>
 
