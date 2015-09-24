@@ -1,5 +1,6 @@
 from unittest import TestCase
 from src.app import get_db
+from src.common.database import Database
 from src.models.university import University
 
 __author__ = 'jamie'
@@ -33,5 +34,7 @@ class TestUniversity(TestCase):
         University.add_course(university, college, course)
 
         self.assertIsNotNone(University.get_course(university,college,course))
+
+        Database.remove("universities", {"name": university})
 
 

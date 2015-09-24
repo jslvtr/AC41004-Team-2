@@ -22,8 +22,9 @@ class University(object):
 
     @staticmethod
     def get_course(university, college, course):
+
         return Database.find(COLLECTION, {"name": university, "colleges.name": college,
-                                          "colleges.name.courses.name": course})
+                                          "colleges[name][courses][name]": course})
 
     @staticmethod
     def add_university(university):
@@ -41,6 +42,6 @@ class University(object):
     @staticmethod
     def add_course(university, college, course):
         if Database.update(COLLECTION,{"name": university, "colleges.name": college},
-                           {"$set": {"colleges.name.courses.name": course}}, upsert=True):
+                           {"$set": {"colleges[name][courses][name]": course}}, upsert=True):
             return True
         return False

@@ -13,8 +13,9 @@
                     </select>
             <br>
             <label>Place of Study</label> <select class="form-control" name="university">
-                    <option value="Dundee">University Of Dundee</option>
-                    <option value="Abertay">Abertay</option>
+                    {% for university in universities %}
+                    <option value="{{university.name}}">{{university.name}}</option>
+                    {% endfor %}
                     </select>
             <br>
             <label>Level of Study</label> <select class="form-control" name="level">
@@ -23,14 +24,15 @@
                     </select>
             <br>
             <label>School Within University</label> <select class="form-control" name="school">
-                    <option value="Maths, Physics, Computing">Maths, Physics, Computing</option>
-                    <option value="Other School">Other School</option>
+                    {% for college in colleges %}
+                    <option value="{{college.name}}">{{college.name}}</option>
+                    {% endfor %}
                     </select>
             <br>
             <label>Degree Subject</label> <select class="form-control" name="subject">
-                        <option value="Applied Computing">Applied Computing</option>
-                        <option value="Computing Science">Computing Science</option>
-                        <option value="Other Subject">Other Subject</option>
+                    {% for course in courses %}
+                    <option value="{{course.name}}">{{course.name}}</option>
+                    {% endfor %}
                     </select>
             <br>
             <label>Year Of Study</label> <select class="form-control" name="yearofstudy">

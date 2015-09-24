@@ -8,6 +8,7 @@ from src.models.eventregister import EventRegister
 from src.models.image import Image
 
 from src.models.permissions import Permissions
+from src.models.university import University
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -414,7 +415,7 @@ def view_event_registrations(event_id):
 def edit_profile_courses():
     if session.contains('email') and session['email'] is not None:
         if User.get_user_permissions(session['email']) == 'admin':
-            pass
+            return
 
 
 
@@ -423,7 +424,14 @@ def edit_profile_courses():
 
 @app.route('/edit-profile')
 def edit_profile_page():
-    return render_template('edit-profile.html')
+    universities = University.get_uni_list()
+    colleges = list()
+    courses = list()
+    for university in universities:
+        colleges.append(University.get_uni(university))
+        for college in colleges:
+            courses.append(University.get_college(university, college))
+    return render_template('edit-profile.html', universities=universities, colleges=colleges, courses=courses)
 
 
 @app.route('/logout')
