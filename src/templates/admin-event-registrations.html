@@ -1,17 +1,23 @@
+<article class="content permissions">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Attendance For Event</div>
 
-<div class="table-responsive" >
-    <form action="/update-attended" method="POST">
-        <table class="table table-striped table-bordered">
+        <!-- Table -->
+        <table class="table">
+            <tr>
+                <th>User Name</th>
+                <th class="center">Attended</th>
+            </tr>
             {% for user in users %}
-            <tr><td><a href="/view-profile/{{user.user}}">{{user.user}}</a></td>
-            {%if user.attended == "No" %}
-             <td><div class="checkbox"><input type="checkbox" name="attended" value="user.user"></div></td></tr>
-            {% elif user.attended == "Yes" %}
-            <td><div class="checkbox"><input type="checkbox" name="attended" value="user.user" checked></div></td></tr>
-            {%endif%}
-            {%endfor%}
-            </table>
-        <input class="btn btn-default" type="submit" Value="Submit">
-        </form>
+            <tr>
+                <td><a href="/admin/view-profile/{{user.user}}">{{user.user}}</a></td>
+                <td class="center"><span class="glyphicon glyphicon-{{ 'ok' if 'Yes' in user.attended else 'ban-circle' }}" onclick="change_attended('{{ user.user }}', '{{event_id}}', this)"></span></td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
     </div>
+</article>
 

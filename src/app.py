@@ -478,14 +478,32 @@ def admin_view_profile(user_email):
         abort(401)
 
 
-@app.route('/event/registrations/<uuid:event_id>', methods=['GET'])
+@app.route('/admin/event/registrations/<uuid:event_id>', methods=['GET'])
+@secure("admin")
 def view_event_registrations(event_id):
     if session.contains('email') and session['email'] is not None:
         if User.get_user_permissions(session['email']) == 'admin':
             users = EventRegister.list_registered_users(event_id)
-            return render_template('admin-event-registrations.html', users=users)
+            return render_template('admin-event-registrations.html', users=users, event_id=event_id)
         else:
             abort(401)
+
+
+@app.route('/admin/update-attended/<user>/<event>', methods=['GET'])
+def update_attended(user, event):
+    #checkboxes = request.form.getlist("user")
+    category = "practice" #event.getcategory should be here
+    points = 30 #event.getpoints should be here
+
+    if EventRegister.get_user_attended(user, event):
+        EventRegister.set_user_attended(user, event)
+        User.update_user_points(user, category, -points)
+    else:
+        User.update_user_points(user, category, points)
+        EventRegister.set_user_attended(user, event)
+
+    return jsonify({"message": "ok"}), 200
+
 
 
 @app.route('/edit-profile')
