@@ -3,11 +3,11 @@
     <form action="/update-attended" method="POST">
         <table class="table table-striped table-bordered">
             {% for user in users %}
-            <tr><td><a href="/view-profile/{{user.user}}">{{user.user}}</a></td>
+            <tr><td><a href="/admin/view-profile/{{user.user}}">{{user.user}}</a></td>
             {%if user.attended == "No" %}
-             <td><div class="checkbox"><input type="checkbox" name="attended" value="user.user"></div></td></tr>
+             <td><div class="checkbox"><input type="checkbox" name="user" value="{{user.user}}"></div></td></tr>
             {% elif user.attended == "Yes" %}
-            <td><div class="checkbox"><input type="checkbox" name="attended" value="user.user" checked></div></td></tr>
+            <td><div class="checkbox"><input type="checkbox" name="user" value="{{user.user}}" checked></div></td></tr>
             {%endif%}
             {%endfor%}
             <input type="hidden" name="category" value="project">
@@ -16,5 +16,6 @@
             </table>
         <input class="btn btn-default" type="submit" Value="Submit">
         </form>
+    {{checkboxes}}
     </div>
 

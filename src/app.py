@@ -413,17 +413,19 @@ def view_event_registrations(event_id):
 
 @app.route('/update-attended', methods=['POST'])
 def update_attended():
-    checkboxes = request.form.getlist("attended")
+    checkboxes = request.form.getlist("user")
     category = request.form['category']
     event = request.form['event']
+    points = 30
     for user in checkboxes:
-        if EventRegister.get_user_attended(user, event) is not "Yes":
-            User.update_user_points(user, category, 30)
+        if EventRegister.get_user_attended(user, event):
             EventRegister.set_user_attended(user, event)
+            User.update_user_points(user, category, -points)
         else:
-            abort(500)
+            User.update_user_points(user, category, points)
+            EventRegister.set_user_attended(user, event)
 
-    return redirect(url_for("view_event_registrations", event_id=event))
+    return redirect(url_for('view_event_registrations', event_id=event))
 
 
 
