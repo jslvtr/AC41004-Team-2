@@ -1,0 +1,64 @@
+<script>
+
+    function register_event(id, object) {
+        $.ajax({
+            type: "GET",
+            url: "/event/signup/" + id,
+            success: function(ss){
+                $("#errorMessage").css('display', 'none');
+               if($("#register-symbol").hasClass('glyphicon-ok')) {
+                    $("#register-symbol").removeClass('glyphicon-ok');
+                    $("#register-symbol").addClass('glyphicon-remove');
+                    $("#register-message").text('Unregister');
+                    var currentDate = new Date();
+                    $("#registered-date").text('You registered on ' + currentDate.getDate() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getFullYear());
+               } else {
+                    $("#register-symbol").removeClass('glyphicon-remove');
+                    $("#register-symbol").addClass('glyphicon-ok');
+                    $("#register-message").text('Register');
+                    $("#registered-date").text('');
+               }
+            },
+            error: function(err, status, message) {
+                if(err.status == 401) {
+                    $("#errorMessage").html('<span class="glyphicon glyphicon-exclamation-sign"></span> You need to log in before you can register to events.');
+                    $("#errorMessage").css('display', 'block');
+                } else {
+                    $("#errorMessage").html('<span class="glyphicon glyphicon-exclamation-sign"></span> We couldn\'t sign you up to this event. Sorry!');
+                    $("#errorMessage").css('display', 'block');
+                }
+            }
+        });
+    }
+
+
+</script>
+
+<div class="content container">
+    <h1>{{ event.title }} {% if event.start.strftime("%d") != event.end.strftime("%d") %}
+        <small>
+            from {{ event.start.strftime("%d-%m-%Y at %H:%M") }} until {{ event.end.strftime("%d-%m-%Y at %H:%M") }}
+        </small>
+        {% else %}
+        <small>
+            on {{ event.start.strftime("%d-%m-%Y from %H:%M") }} until {{ event.end.strftime("%H:%M") }}
+        </small>
+        {% endif %}
+    </h1>
+    {% if registered %}
+    <span id="registered"><button type="button" class="btn btn-primary"
+                                  onclick="register_event('{{ event._id }}', this)"><span
+            class="glyphicon glyphicon-remove" id="register-symbol"></span> <span
+            id="register-message">Unregister</span></button> <span id="registered-date">You registered on {{ registered.date }}</span></span>
+    {% else %}
+    <span id="registered"><button type="button" class="btn btn-primary"
+                                  onclick="register_event('{{ event._id }}', this)"><span class="glyphicon glyphicon-ok"
+                                                                                          id="register-symbol"></span>
+        <span id="register-message">Register</span></button> <span id="registered-date"></span></span>
+    {% endif %}
+    <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none; margin: 15px 0;"><span
+            class="glyphicon glyphicon-exclamation-sign"></span> We couldn't sign you up to this event. Sorry!
+    </div>
+
+    <div class="margin-top">{{ event.description | safe }}</div>
+</div>

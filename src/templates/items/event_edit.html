@@ -1,0 +1,102 @@
+
+<div class="row">
+    <div class="col-xs-0 col-sm-2 col-md-2">
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-8 well">
+        <div >
+            {% if atcion_type == "Add" %}
+                <h1>New event</h1>
+            {% elif atcion_type == "Edit" %}
+                <h1>Edit event</h1>
+            {% endif %}
+        </div>
+        <form id="event_edit_form{{event._id}}" >
+            <label for="title{{event._id}}" class="control-label">Title:</label>
+            <input type="text" class="form-control" name="title" id="title{{event._id}}" value="{{event.title}}">
+
+            <label for="title{{event.points}}" class="control-label">Points:</label>
+            <input type="text" class="form-control" name="points" id="title{{event.points}}" value="{{event.points}}">
+
+            <label for="title{{event.event_type}}" class="control-label">Type:</label>
+            <select class="form-control" id="title{{event.event_type}}" name="event_type">
+                {% for event_type in event_types %}
+                    <option value="{{event_type}}">{{event_type}}</option>
+                {% endfor %}
+            </select>
+
+            <input type="hidden" value="{{event._id}}" name="id">
+            <label for="start" class="control-label">Start:</label>
+
+            <!-- Date Picker -->
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker{{event._id}}'>
+                                <input type='text' class="form-control" id="start" value="{{event.start.strftime('%m/%d/%Y %I:%M %p')}}" name="start"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker{{event._id}}').datetimepicker();
+                        });
+                    </script>
+                </div>
+            </div>
+            <!-- Date Picker END -->
+            <label for="end" class="control-label">End:</label>
+
+            <!-- Date Picker -->
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker{{event._id}}2'>
+                                <input type='text' class="form-control" id="end" value="{{event.end.strftime('%m/%d/%Y %I:%M %p')}}" name="end"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker{{event._id}}2').datetimepicker();
+                        });
+                    </script>
+                </div>
+            </div>
+            <!-- Date Picker END -->
+            <!-- Editor -->
+            <script type="text/javascript" >
+            tinymce.init({
+                selector: "#description{{event._id}}",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu paste"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+            });
+            </script>
+
+            <label for="description{{event._id}}" class="control-label">Description:</label>
+            <textarea name="description" id="description{{event._id}}" style="width:100%">
+                {{ event.description }}
+            </textarea>
+            <!-- Editor END -->
+            {% if atcion_type == "Add" %}
+                <button type="button" onclick="add_event('{{event._id}}')" class="btn btn-primary">Add</button>
+            {% elif atcion_type == "Edit" %}
+                <button type="button" onclick="update_event('{{event._id}}')" class="btn btn-primary">Edit</button>
+            {% endif %}
+
+        </form>
+    </div>
+    <div class="col-xs-0 col-sm-2 col-md-2">
+    </div>
+</div>

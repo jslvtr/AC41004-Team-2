@@ -1,0 +1,120 @@
+<!-- Model required: article -->
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+<a href="/admin/article/edit/{{article._id}}">Edit</a>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
+
+<td>
+    <div class="article">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.summary | safe}}</p>
+        <hr class="separator"/>
+    </div>
+</td>
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="ArticleEditrModal{{article._id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit article</h4>
+      </div>
+      <div class="modal-body">
+          <form id="article_edit_form{{article._id}}" >
+                <label for="title{{article._id}}" class="control-label">Title:</label>
+                <input type="text" class="form-control" name="title" id="title{{article._id}}" value="{{article.title}}">
+                <input type="hidden" value="{{article._id}}" name="id">
+                <label for="date" class="control-label">Date:</label>
+
+                <!-- Date Picker -->
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker{{article._id}}'>
+                                    <input type='text' class="form-control" id="date" value="{{article.date.strftime('%m/%d/%Y %I:%M %p')}}" name="date"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker{{article._id}}').datetimepicker();
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!-- Date Picker END -->
+
+                <!-- Editor -->
+                <script type="text/javascript" >
+                tinymce.init({
+                    selector: "#summary{{article._id}}",
+                    plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table contextmenu paste"
+                    ],
+                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                });
+                </script>
+
+                <label for="summary{{article._id}}" class="control-label">summary:</label>
+                <textarea name="summary" id="summary{{article._id}}" style="width:100%">
+                    {{ article.summary }}
+                </textarea>
+                <!-- Editor END -->
+
+
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" onclick="update_article('{{article._id}}')" class="btn btn-primary">Edit</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Delete -->
+<div id="ArticleDeleteConfirmModal{{article._id}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Are you sure you want to delete this article?</h4>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" onclick="delete_article('{{article._id}}')" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

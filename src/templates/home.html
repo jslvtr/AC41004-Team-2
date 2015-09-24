@@ -40,10 +40,10 @@
     <div id="news-panel">
         <h1>Latest News</h1>
 
-        <div class ="pages">
+        <div class="pages">
             <ul>
                 {% for article in news %}
-                <li >
+                <li>
                     <div class="article">
                         <h2><a href="/article/{{article._id}}">{{ article.title }}</a></h2>
 
@@ -54,32 +54,16 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="pagination"></div>
+        {% if news|length == 3 %}
+        <h4 class="see-more"><a href="/news">See all news</a></h4>
+        {% endif %}
     </div>
     <div id="events-panel">
         <h1>Upcoming Events</h1>
-        <div class="pages">
-            <ul>
         {% for event in events %}
-                <li>
-                    {% include 'event_small.html' %}
+                    {% include 'items/event_small.html' %}
                     <hr class="separator"/>
-                </li>
         {% endfor %}
-            </ul>
-        </div>
-        <div class="pagination"></div>
+        <h4 class="see-more"><a href="/events">See event calendar</a></h4>
     </div>
-    <!--To the right of these items a Calender?-->
 </div>
-​
-
-<script>
-
-	 pagingsys.init({selector: $("#news-panel"),
-				     max_on_one_page: 2,
-				   });
-	 pagingsys.init({selector: $("#events-panel"),
-				     max_on_one_page: 2,
-				   });
-</script>

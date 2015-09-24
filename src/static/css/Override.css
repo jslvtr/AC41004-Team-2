@@ -3,6 +3,10 @@
     margin: 70px auto;
 }
 
+.footer {
+    max-width: 720px;
+}
+
 .content-small {
     max-width: 480px;
     margin: 70px auto;
@@ -15,6 +19,13 @@
 .pagination {
     margin: 0;
     cursor: pointer;
+}
+
+.see-more {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 200;
+    text-decoration: underline;
 }
 
 .navbar-brand {
@@ -34,7 +45,7 @@
 }
 
 .hero {
-    margin-top: 15px;
+    margin-top: 18px;
     width: 100%;
     border-bottom: 1px solid #f2f2f2;
 }
@@ -104,20 +115,38 @@ td.center.middle {
     cursor: pointer;
 }
 
-.event > h2 {
+.event-small h2 {
     font-weight: 100;
+}
+
+.date {
+    text-align: center;
+}
+
+.date p {
+    margin: 0;
+}
+
+.date h3 {
+    font-size: 200%;
+    color: #942239;
+    margin-bottom: 0;
 }
 
 .article > h2 {
     font-weight: 100;
 }
 
-.event > p {
+.event-small>p {
     font-size: 15px;
 }
 
 .article > p {
     font-size: 15px;
+}
+
+.event-day {
+    font-size: 18px;
 }
 
 .bronze {

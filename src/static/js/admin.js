@@ -3,7 +3,7 @@
     {
         $.ajax({
           type: "DELETE",
-          url: "/event/"+id,
+          url: "/admin/event/"+id,
           success: function(ss){location.reload();},
         });
     }
@@ -15,7 +15,7 @@
         var xx = sdf.val(tinyMCE.get('description'+id).getContent());
         $.ajax({
             type: "PUT",
-            url: "/event",
+            url: "/admin/event",
             data: $("#event_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",
@@ -23,15 +23,15 @@
         });
     }
 
-    function add_event()
+    function add_event(id)
     {
-        var formData = $("#event_edit_form_new");
-        var sdf = formData.find('#description_new');
-        var xx = sdf.val(tinyMCE.get('description_new').getContent());
+        var formData = $("#event_edit_form"+id);
+        var sdf = formData.find('#description'+id);
+        var xx = sdf.val(tinyMCE.get('description'+id).getContent());
         $.ajax({
             type: "POST",
-            url: "/event",
-            data: $("#event_edit_form_new").serialize(),
+            url: "/admin/event",
+            data: $("#event_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",
             success: function(ss){
@@ -48,7 +48,7 @@
     {
         $.ajax({
           type: "DELETE",
-          url: "/article/"+id,
+          url: "/admin/article/"+id,
           success: function(ss){location.reload();},
         });
     }
@@ -60,7 +60,7 @@
         var xx = sdf.val(tinyMCE.get('summary'+id).getContent());
         $.ajax({
             type: "PUT",
-            url: "/article",
+            url: "/admin/article",
             data: $("#article_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",
@@ -68,15 +68,15 @@
         });
     }
 
-    function add_article()
+    function add_article(id)
     {
-        var formData = $("#article_edit_form_new");
-        var sdf = formData.find('#summary_new');
-        var xx = sdf.val(tinyMCE.get('summary_new').getContent());
+        var formData = $("#article_edit_form"+id);
+        var sdf = formData.find('#summary'+id);
+        var xx = sdf.val(tinyMCE.get('summary'+id).getContent());
         $.ajax({
             type: "POST",
-            url: "/article",
-            data: $("#article_edit_form_new").serialize(),
+            url: "/admin/article",
+            data: $("#article_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",
             success: function(ss){

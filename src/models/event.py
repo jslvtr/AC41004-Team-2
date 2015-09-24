@@ -1,3 +1,4 @@
+from src.common.constants import Constants
 from src.common.database import Database
 import uuid
 from datetime import datetime
@@ -18,11 +19,13 @@ class Event:
 
     COLLECTION = "events"
 
-    def __init__(self, title, description, start, end, id_=None):
+    def __init__(self, title, description, event_type, points, start, end, id_=None):
         self._title = title
         self._description = description
         self._start = start
         self._end = end
+        self._event_type = event_type
+        self._points = points
         self._id = id_
         self._synced = False
 
@@ -32,6 +35,21 @@ class Event:
     def set_title(self,title):
         self._title = title
         self._synced = False
+
+    def get_points(self):
+        return self._points
+
+    def set_title(self,points):
+        self._points = points
+        self._synced = False
+
+    def get_event_type(self):
+        return self._event_type
+
+    def set_type(self,event_type):
+        self._event_type = event_type
+        self._synced = False
+
 
     def get_start(self):
         return self._start
@@ -71,7 +89,7 @@ class Event:
     def factory_form_json(cls, event_json):
         if event_json is None:
             raise NoSuchEventExistException()
-        event_obj = cls(event_json['title'], event_json['description'], event_json['start'], event_json['end'], event_json['_id'])
+        event_obj = cls(event_json['title'], event_json['description'], event_json['event_type'], event_json['points'], event_json['start'], event_json['end'], event_json['_id'])
         event_obj._synced = True
         return event_obj
 
@@ -91,9 +109,15 @@ class Event:
             return False
         if type(self._description) is not str:
             return False
-        if type(self._start) is not datetime:
+        if type(self._event_type) is not str:
+            return False
+        if self._event_type not in Constants.EVENT_TYPES:
+            return False
+        if type(self._points) is not int:
             return False
         if type(self._start) is not datetime:
+            return False
+        if type(self._end) is not datetime:
             return False
         return True
 
@@ -102,7 +126,7 @@ class Event:
             self._synced = True
             Database.update(self.COLLECTION,
                             {'_id': self._id},
-                            {'title': self._title, 'description': self._description, 'start': self._start, 'end': self._end})
+                            {'title': self._title, 'description': self._description,'event_type': self._event_type, 'points': self._points, 'start': self._start, 'end': self._end})
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -111,6 +135,6 @@ class Event:
                     self.get_description() == other.get_description())
 
     def to_json(self):
-        return {'title': self._title, 'description': self._description, 'start': self._start, 'end': self._end, '_id': self._id}
+        return {'title': self._title, 'description': self._description, 'event_type': self._event_type, 'points': self._points, 'start': self._start, 'end': self._end, '_id': self._id}
 
 

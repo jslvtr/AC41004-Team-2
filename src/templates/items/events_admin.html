@@ -1,0 +1,49 @@
+
+<div class="content row container ">
+
+    <div id="events-panel" class="panel panel-success">
+       <div class="panel-heading"><h4>Events</h4></div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#EventEditroModalNew">Add new Event</button>
+        </div>
+     </div>
+</div>
+    <!--Retrive 3 News from db based on current date-->
+    <!-- I am assuming below 'article' are separate entries in the news table -->
+<div class="content">
+    <div class="pages">
+            <table class="table table-bordered">
+
+            {% for event in events %}
+                <tr>
+                    {% include 'items/event_admin.html' %}
+                    <!--<hr class="separator"/>-->
+                </tr>
+            {% endfor %}
+            </table>
+    </div>
+<div class="pagination"></div>
+
+    <!--To the right of these items a Calender?-->
+</div>
+
+
+<script>
+
+	 pagingsys.init({selector: $("#events-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
+
+
+<script>
+
+	 pagingsys.init({selector: $("#events-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
+
+
+
+
+

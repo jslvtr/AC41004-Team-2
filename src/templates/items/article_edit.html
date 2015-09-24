@@ -1,0 +1,75 @@
+
+<div class="row">
+    <div class="col-xs-0 col-sm-2 col-md-2">
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-8 well">
+        <div >
+            {% if atcion_type == "Add" %}
+                <h1>New article</h1>
+            {% elif atcion_type == "Edit" %}
+                <h1>Edit event</h1>
+            {% endif %}
+        </div>
+        <form id="article_edit_form{{article._id}}" >
+                <label for="title{{article._id}}" class="control-label">Title:</label>
+                <input type="text" class="form-control" name="title" id="title{{article._id}}" value="{{article.title}}">
+                <label for="title{{article.publication}}" class="control-label">Publication:</label>
+                {% if article.publication != "None" %}
+                    <input type="text" class="form-control" name="publication" id="title{{article.publication}}" value="{{article.publication}}">
+                {% else  %}
+                    <input type="text" class="form-control" name="publication" id="title{{article.publication}}">
+                {% endif %}
+                <input type="hidden" value="{{article._id}}" name="id">
+                <label for="date" class="control-label">Date:</label>
+
+                <!-- Date Picker -->
+                <div class="container">
+                    <div class="row">
+                        <div class='col-sm-6'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker{{article._id}}'>
+                                    <input type='text' class="form-control" id="date" value="{{article.date.strftime('%m/%d/%Y %I:%M %p')}}" name="date"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker{{article._id}}').datetimepicker();
+                            });
+                        </script>
+                    </div>
+                </div>
+                <!-- Date Picker END -->
+
+                <!-- Editor -->
+                <script type="text/javascript" >
+                tinymce.init({
+                    selector: "#summary{{article._id}}",
+                    plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table contextmenu paste"
+                    ],
+                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+                });
+                </script>
+
+                <label for="summary{{article._id}}" class="control-label">summary:</label>
+                <textarea name="summary" id="summary{{article._id}}" style="width:100%">
+                    {{ article.summary }}
+                </textarea>
+                <!-- Editor END -->
+                {% if atcion_type == "Add" %}
+                    <button type="button" onclick="add_article('{{article._id}}')" class="btn btn-primary">Add</button>
+                {% elif atcion_type == "Edit" %}
+                    <button type="button" onclick="update_article('{{article._id}}')" class="btn btn-primary">Edit</button>
+                {% endif %}
+
+            </form>
+    </div>
+    <div class="col-xs-0 col-sm-2 col-md-2">
+    </div>
+</div>

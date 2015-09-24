@@ -1,0 +1,29 @@
+
+    <div class="content row container">
+   <!-- <h4>Add an Article</h4>-->
+        <div class="panel panel-success">
+            <div class="panel-heading"><h4>Articles</h4></div>
+            <div class="panel-body">
+                <a href="/admin/article/add">Add</a>
+
+            </div>
+        </div>
+    </div>
+    <!--Retrive 3 News from db based on current date-->
+    <!-- I am assuming below 'article' are separate entries in the news table -->
+
+    <div class="content">
+    <!--<h4>Current Articles</h4>-->
+        <ul>
+            {% for article in news %}
+                {% include 'items/article_admin.html' %}
+            {% endfor %}
+        </ul>
+
+
+<script>
+
+	 pagingsys.init({selector: $("#news-panel"),
+				     max_on_one_page: 2,
+				   });
+</script>
