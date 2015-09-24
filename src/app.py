@@ -411,21 +411,20 @@ def view_event_registrations(event_id):
             abort(401)
 
 
-@app.route('/update-attended', methods=['POST'])
-def update_attended():
-    checkboxes = request.form.getlist("user")
-    category = request.form['category']
-    event = request.form['event']
-    points = 30
-    for user in checkboxes:
-        if EventRegister.get_user_attended(user, event):
-            EventRegister.set_user_attended(user, event)
-            User.update_user_points(user, category, -points)
-        else:
-            User.update_user_points(user, category, points)
-            EventRegister.set_user_attended(user, event)
+@app.route('/admin/update-attended/<user>/<event>', methods=['GET'])
+def update_attended(user, event):
+    #checkboxes = request.form.getlist("user")
+    category = "practice" #event.getcategory should be here
+    points = 30 #event.getpoints should be here
 
-    return redirect(url_for('view_event_registrations', event_id=event))
+    if EventRegister.get_user_attended(user, event):
+        EventRegister.set_user_attended(user, event)
+        User.update_user_points(user, category, -points)
+    else:
+        User.update_user_points(user, category, points)
+        EventRegister.set_user_attended(user, event)
+
+    return jsonify({"message": "ok"}), 200
 
 
 

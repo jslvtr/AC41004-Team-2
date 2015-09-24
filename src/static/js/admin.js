@@ -85,6 +85,22 @@
         });
     }
 
+    function change_attended(name, event, object) {
+    $.ajax({
+            type: "GET",
+            url: "/admin/update-attended/" + name + "/" + event,
+            success: function(ss){
+                                       if($(object).hasClass('glyphicon-ok')) {
+                                            $(object).removeClass('glyphicon-ok');
+                                            $(object).addClass('glyphicon-ban-circle');
+                                       } else {
+                                            $(object).removeClass('glyphicon-ban-circle');
+                                            $(object).addClass('glyphicon-ok');
+                                       }
+                                 }
+        });
+    }
+
     function change_permission(name, access, object) {
         $.ajax({
             type: "GET",
