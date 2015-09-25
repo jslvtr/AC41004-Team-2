@@ -1,9 +1,9 @@
 
 <div class="content container">
         <div >
-            {% if atcion_type == "Add" %}
+            {% if action_type == "Add" %}
                 <h1>New event</h1>
-            {% elif atcion_type == "Edit" %}
+            {% elif action_type == "Edit" %}
                 <h1>Edit event</h1>
             {% endif %}
         </div>
@@ -86,9 +86,9 @@
                 {{ event.description }}
             </textarea>
             <!-- Editor END -->
-            {% if atcion_type == "Add" %}
+            {% if action_type == "Add" %}
                 <button type="button" onclick="add_event('{{event._id}}')" class="btn btn-primary">Add</button>
-            {% elif atcion_type == "Edit" %}
+            {% elif action_type == "Edit" %}
                 <button type="button" onclick="update_event('{{event._id}}')" class="btn btn-primary">Edit</button>
             {% endif %}
 
