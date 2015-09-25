@@ -4,7 +4,7 @@
         <div class="panel panel-success">
             <div class="panel-heading"><h4>Articles</h4></div>
             <div class="panel-body">
-                <a href="/admin/article/add"><button type="button" class="btn btn-info btn-lg">Add</button></a>
+                <a href="/admin/article/add"><button type="button" class="btn btn-success btn-lg">Add new Article</button></a>
 
             </div>
         </div>
@@ -16,14 +16,16 @@
     <!--<h4>Current Articles</h4>-->
         <ul>
             {% for article in news %}
+            <li>
                 {% include 'items/article_admin.html' %}
+            </li>
             {% endfor %}
         </ul>
+    </div>
 
+    <script>
 
-<script>
-
-	 pagingsys.init({selector: $("#news-panel"),
-				     max_on_one_page: 2,
-				   });
-</script>
+         pagingsys.init({selector: $("#news-panel"),
+                         max_on_one_page: 2,
+                       });
+    </script>

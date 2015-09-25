@@ -104,7 +104,7 @@ def events_page():
         event['end'] = int(event['end'].strftime('%s')) * 1000
         event['url'] = "/event/{}".format(event['id'])
 
-    return render_template('events.html',
+    return render_template('items/events.html',
                            events=events)
 
 
