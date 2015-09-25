@@ -157,7 +157,7 @@ def get_access_level():
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
     for event in events:
-        del event['descriptionf']
+        del event['description']
     return render_template('items/events_admin.html', events=events)
 
 
