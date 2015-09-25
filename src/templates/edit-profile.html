@@ -12,27 +12,31 @@
                     <option value="England">England</option>
                     </select>
             <br>
-            <label>Place of Study</label> <select class="form-control" name="university">
+            <label>Place of Study</label> <select class="form-control" id="university" name="university"
+                                                  onchange="populate_colleges((this.options[this.selectedIndex].value))">
                     {% for university in universities %}
-                    <option value="{{university.name}}">{{university.name}}</option>
-                    {% endfor %}
+                    <option value="{{university.name}}" >{{university.name}}</option>
+                    {%endfor%}
                     </select>
             <br>
-            <label>Level of Study</label> <select class="form-control" name="level">
-                    <option value="Undergraduate">Undergraduate</option>
-                    <option value="Postgraduate">Postgraduate</option>
-                    </select>
-            <br>
-            <label>School Within University</label> <select class="form-control" name="school">
+            <label>School Within University</label> <select class="form-control" id="college" name="college">
                     {% for college in colleges %}
-                    <option value="{{college.name}}">{{college.name}}</option>
-                    {% endfor %}
+                    <option value="{{college.name}}">
+                        {{college.name}}</option>
+                    {%endfor%}
                     </select>
             <br>
             <label>Degree Subject</label> <select class="form-control" name="subject">
                     {% for course in courses %}
-                    <option value="{{course.name}}">{{course.name}}</option>
-                    {% endfor %}
+                    <option value="{{course.name}}">
+                        {{course.name}}</option>
+                    {%endfor%}
+                    </select>
+
+            <br>
+                <label>Level of Study</label> <select class="form-control" name="level">
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
                     </select>
             <br>
             <label>Year Of Study</label> <select class="form-control" name="yearofstudy">

@@ -14,16 +14,16 @@ class University(object):
 
     @staticmethod
     def get_uni(university):
-        return Database.find(COLLECTION, {"name": university})
+        return Database.find_one(COLLECTION, {"name": university})
 
     @staticmethod
     def get_college(university, college):
-        return Database.find(COLLECTION, {"name": university, "colleges.name": college})
+        return Database.find_one(COLLECTION, {"name": university, "colleges.name": college})
 
     @staticmethod
     def get_course(university, college, course):
 
-        return Database.find(COLLECTION, {"name": university, "colleges.name": college,
+        return Database.find_one(COLLECTION, {"name": university, "colleges.name": college,
                                           "colleges[name][courses][name]": course})
 
     @staticmethod

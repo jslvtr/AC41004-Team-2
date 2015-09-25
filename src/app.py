@@ -1,5 +1,7 @@
 import base64
 from functools import wraps
+import json
+from bson import json_util
 from werkzeug.exceptions import abort
 from src.common.database import Database
 from src.models.article import Article, NoSuchArticleExistException
@@ -418,20 +420,18 @@ def edit_profile_courses():
             return
 
 
-
-
-
-
 @app.route('/edit-profile')
 def edit_profile_page():
     universities = University.get_uni_list()
-    colleges = list()
-    courses = list()
-    for university in universities:
-        colleges.append(University.get_uni(university))
-        for college in colleges:
-            courses.append(University.get_college(university, college))
-    return render_template('edit-profile.html', universities=universities, colleges=colleges, courses=courses)
+    return render_template('edit-profile.html', universities=universities)
+
+
+@app.route('/populate-colleges/<university>', methods=["GET"])
+def populate_colleges(university):
+    university = University.get_uni(university)
+    colleges = [college['name'] for college in university['colleges']]
+    return jsonify({"colleges": colleges})
+
 
 
 @app.route('/logout')
