@@ -1,0 +1,42 @@
+<ul id="sidebar_page_list">
+    <li>
+        <a> fsdklfsmlk </a>
+    </li>
+    <li>
+        <a> fsdklfsmlk </a>
+    </li>
+    <li>
+        <a> fsdklfsmlk </a>
+    </li>
+</ul>
+<ul id="sidebar_new_page">
+    <li>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#pageAddModal">
+          Add
+        </button>
+    </li>
+</ul>
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="pageAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <label for="new_page_name_textbox" class="control-label">Title:</label>
+        <input type="text" class="form-control" id="new_page_name_textbox" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="pageDesigner.add_page($(new_page_name_textbox).val())" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

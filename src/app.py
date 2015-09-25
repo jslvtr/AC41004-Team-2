@@ -9,6 +9,7 @@ from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
 from src.models.image import Image
+from src.models.page import Page
 
 from src.models.permissions import Permissions
 from src.models.user import User
@@ -525,6 +526,18 @@ def register_page():
 @app.route('/login')
 def login_page():
     return render_template('login.html')
+
+
+@app.route('/admin/designer', methods=['GET'])
+def designer():
+    return render_template('designer/main.html')
+
+
+@app.route('/admin/page/add/<title>', methods=['Post'])
+def designer_add(title):
+    page = Page(title,[],0)
+    page.save_to_db()
+    return jsonify({"message": "ok"}), 200
 
 
 @app.before_first_request

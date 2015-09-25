@@ -1,0 +1,31 @@
+#page-designer-sidebar{
+    height:100%;
+    background-color: black;
+    color:white;
+}
+#page-designer-sidebar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#page-designer-sidebar a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
+#page-designer-sidebar a:hover {
+    display: block;
+    width: 100%;
+    background-color: grey;
+    text-decoration: none;
+}
+
+
+#page-designer-content{
+    height:100%;
+    background-color: gray;
+}
+
