@@ -7,6 +7,12 @@
     max-width: 720px;
 }
 
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
 .content-small {
     max-width: 480px;
     margin: 90px auto;
