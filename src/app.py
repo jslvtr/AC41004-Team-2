@@ -156,6 +156,8 @@ def get_access_level():
 @secure("events")
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
+    for event in events:
+        del event['descriptionf']
     return render_template('items/events_admin.html', events=events)
 
 
@@ -302,6 +304,8 @@ def event_get(event_id):
 @secure("articles")
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
+    for article in news:
+        del article['summary']
     return render_template('items/articles_admin.html', news=news)
 
 
