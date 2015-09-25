@@ -1,0 +1,29 @@
+<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image">
+</div>
+<div class="content container">
+    <div id="events-panel">
+        <h1>Events</h1>
+
+        <div class="pages">
+            <ul>
+                {% for event in events %}
+                <li>
+                    {% include 'items/event_small.html' %}
+                    <hr class="separator"/>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if events|length > 5 %}
+        <div class="pagination"></div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+
+	 pagingsys.init({selector: $("#events-panel"),
+				     max_on_one_page: 5,
+				   });
+
+</script>

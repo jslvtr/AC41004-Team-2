@@ -104,7 +104,18 @@ def events_page():
         event['end'] = int(event['end'].strftime('%s')) * 1000
         event['url'] = "/event/{}".format(event['id'])
 
-    return render_template('events.html',
+    return render_template('items/events.html',
+                           events=events)
+
+
+@app.route('/events-list')
+def events_list_page():
+    events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING)]
+
+    for event in events:
+        event['description'] = Utils.clean_for_homepage(event['description'])
+
+    return render_template('items/events-list.html',
                            events=events)
 
 
