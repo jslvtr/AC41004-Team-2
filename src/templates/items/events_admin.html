@@ -10,38 +10,31 @@
 </div>
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-<div class="content">
+<div id="to-page" class="content">
     <div class="pages">
-            <table class="table table-bordered">
-
+        <ul>
             {% for event in events %}
-                <tr>
+                <li >
                     {% include 'items/event_admin.html' %}
                     <!--<hr class="separator"/>-->
-                </tr>
+                </li >
             {% endfor %}
-            </table>
+        </ul>
     </div>
-<div class="pagination"></div>
+    <div class="pagination">
 
-    <!--To the right of these items a Calender?-->
+    </div><!--To the right of these items a Calender?-->
 </div>
 
 
 <script>
 
-	 pagingsys.init({selector: $("#events-panel"),
+	 pagingsys.init({selector: $("#to-page"),
 				     max_on_one_page: 2,
 				   });
 </script>
 
 
-<script>
-
-	 pagingsys.init({selector: $("#events-panel"),
-				     max_on_one_page: 2,
-				   });
-</script>
 
 
 

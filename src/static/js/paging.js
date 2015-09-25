@@ -42,7 +42,7 @@ function Pagingsys() {
 				$(lis[i]).hide("fast");
 				$(object).parents('ul').children(".active").removeClass("active");
 		$(object).parent().addClass("active");
-		$(lis[page]).show('slide', {direction: 'right'}, 400);
+		$(lis[page]).show("fast");
 	}
 }
 

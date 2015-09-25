@@ -4,11 +4,11 @@
 
 
 <div>
-    <div class="event">
-        <a href="/admin/event/edit/{{event._id}}">Edit</a>
+    <div class="">
+        <a href="/admin/event/edit/{{event._id}}"><button type="button" class="btn btn-info btn-lg">Edit</button></a>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
 
-        <a href=""> View Registered Users</a>
+        <a href="/admin/event/registrations/{{event._id}}"><button type="button" class="btn btn-info btn-lg"> View Registered Users</button></a>
 
     </div>
     <div class="panel-body">
