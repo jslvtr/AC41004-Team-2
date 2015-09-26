@@ -18,9 +18,11 @@ class TestEventRegister(TestCase):
     def test_event_register(self):
         user = "Jamie"
         event = Event(title="Test event",
-              description="Test description",
-              start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
-              end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'))
+                      description="Test description",
+                      start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
+                      end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'),
+                      event_type="action",
+                      points=10)
         event.save_to_db()
 
         EventRegister.register_for_event(user, event.get_id())
@@ -33,9 +35,11 @@ class TestEventRegister(TestCase):
     def test_event_unregister(self):
         user = "Jamie"
         event = Event(title="Test event",
-              description="Test description",
-              start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
-              end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'))
+                      description="Test description",
+                      start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
+                      end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'),
+                      event_type="action",
+                      points=10)
         event.save_to_db()
 
         EventRegister.register_for_event(user, event.get_id())
@@ -49,9 +53,11 @@ class TestEventRegister(TestCase):
     def test_user_attended(self):
         user = "Jamie"
         event = Event(title="Test event",
-              description="Test description",
-              start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
-              end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'))
+                      description="Test description",
+                      start=datetime.datetime.utcnow().strftime('%m/%d/%Y %I:%M %p'),
+                      end=(datetime.datetime.utcnow() + datetime.timedelta(hours=1)).strftime('%m/%d/%Y %I:%M %p'),
+                      event_type="action",
+                      points=10)
         event.save_to_db()
 
         EventRegister.register_for_event(user, event.get_id())
@@ -65,6 +71,3 @@ class TestEventRegister(TestCase):
         self.assertEquals(EventRegister.get_user_attended(user, event.get_id().hex), False)
 
         Database.remove(Event.COLLECTION, {'_id': event.get_id()})
-
-
-
