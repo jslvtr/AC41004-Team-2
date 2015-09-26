@@ -433,6 +433,12 @@ def populate_colleges(university):
     return jsonify({"colleges": colleges})
 
 
+@app.route('/populate-courses/<university>/<college>')
+def populate_courses(university, college):
+    college = University.get_college(university, college)
+    courses = [course for course in college['courses']]
+    return jsonify({"courses": courses})
+
 
 @app.route('/logout')
 def logout():

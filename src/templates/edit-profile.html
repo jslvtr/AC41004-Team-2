@@ -13,24 +13,19 @@
                     </select>
             <br>
             <label>Place of Study</label> <select class="form-control" id="university" name="university"
-                                                  onchange="populate_colleges((this.options[this.selectedIndex].value))">
+                                                  onchange="populate_colleges()">
                     {% for university in universities %}
                     <option value="{{university.name}}" >{{university.name}}</option>
                     {%endfor%}
                     </select>
             <br>
-            <label>School Within University</label> <select class="form-control" id="college" name="college">
-                    {% for college in colleges %}
-                    <option value="{{college.name}}">
-                        {{college.name}}</option>
-                    {%endfor%}
+            <label>School Within University</label> <select class="form-control" id="college" name="college"
+                                                            onchange="populate_courses()">
+
                     </select>
             <br>
-            <label>Degree Subject</label> <select class="form-control" name="subject">
-                    {% for course in courses %}
-                    <option value="{{course.name}}">
-                        {{course.name}}</option>
-                    {%endfor%}
+            <label>Degree Subject</label> <select class="form-control" id="course" name="course">
+
                     </select>
 
             <br>
