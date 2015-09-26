@@ -52,3 +52,9 @@ class University(object):
                            {"$set": {"colleges[name][courses][name]": course}}, upsert=True):
             return True
         return False
+
+    @staticmethod
+    def delete_university(university):
+        if Database.remove("universities", {"name": university}):
+            return True
+        return False

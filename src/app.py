@@ -456,7 +456,14 @@ def add_university():
     json = request.get_json()
     uni = json['uni']
     University.add_university(uni)
+    return jsonify({"message": "OK"}), 201
+
+@app.route('/remove-uni/<university>', methods=["DELETE"])
+def remove_university(university):
+    University.delete_university(university)
     return jsonify({"message": "OK"}), 200
+
+
 
 
 @app.route('/logout')

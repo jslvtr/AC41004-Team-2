@@ -53,6 +53,18 @@ function add_university()
         });
 }
 
+function delete_university()
+{
+    $uni = $("#university").val();
+    $.ajax({
+            type: "DELETE",
+            url: "/remove-uni/" + $uni,
+            success: function(ss){
+                                       $("#university").find('option[value=\'' + $uni + '\']').remove()
+                                 }
+        });
+}
+
 
 $( document ).ready(function() {
     populate_colleges($("#university").val());
