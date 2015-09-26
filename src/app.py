@@ -119,11 +119,15 @@ def layout(response):
     if response.content_type == 'text/html; charset=utf-8' and 'static/' not in request.base_url:
         data = response.get_data()
         data = data.decode('utf-8')
+        pages = Page.get_all()
+        pages_json = []
+        for page in pages:
+            pages_json.append(page.to_json())
         if str(request.url_rule).startswith("/admin"):
-            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('admin.html', access_level=get_access_level(), pages=pages_json, data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), pages=pages_json, data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         else:
-            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), pages=pages_json, data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
         response.set_data(data)
         response.direct_passthrough = False
 
@@ -530,13 +534,43 @@ def login_page():
 
 @app.route('/admin/designer', methods=['GET'])
 def designer():
-    return render_template('designer/main.html')
+    pages = Page.get_all()
+    pages_json = []
+    active_page = None
+    for page in pages:
+        if page is pages[0]:
+            active_page = pages[0].to_json()
+        pages_json.append(page.to_json())
+    return render_template('designer/main.html', pages=pages_json, active_page=active_page )
 
 
-@app.route('/admin/page/add/<title>', methods=['Post'])
+@app.route('/admin/designer/<title>', methods=['GET'])
+def designer_s(title):
+    pages = Page.get_all()
+    pages_json = []
+    active_page = None
+    for page in pages:
+        if page.get_title() == title:
+            active_page=page.to_json()
+        pages_json.append(page.to_json())
+    return render_template('designer/main.html', pages=pages_json, active_page=active_page )
+
+
+@app.route('/admin/page/add/<title>', methods=['POST'])
 def designer_add(title):
-    page = Page(title,[],0)
+    page = Page(title,"")
     page.save_to_db()
+    return jsonify({"message": "ok"}), 200
+
+
+@app.route('/admin/page/edit/', methods=['PUT'])
+def designer_edit():
+    page = Page(request.form.get('title'),
+                      request.form.get('content'),
+                      bool(request.form.get('feed')),
+                      bool(request.form.get('active')),
+                      request.form.get('id'))
+    page.sync_to_db()
     return jsonify({"message": "ok"}), 200
 
 

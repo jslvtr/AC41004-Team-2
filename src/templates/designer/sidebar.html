@@ -1,21 +1,11 @@
-<ul id="sidebar_page_list">
-    <li>
-        <a> fsdklfsmlk </a>
-    </li>
-    <li>
-        <a> fsdklfsmlk </a>
-    </li>
-    <li>
-        <a> fsdklfsmlk </a>
-    </li>
-</ul>
-<ul id="sidebar_new_page">
-    <li>
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#pageAddModal">
-          Add
-        </button>
-    </li>
-</ul>
+<h4 class="text-muted">Pages <a class="btn btn-sm" data-toggle="modal" data-target="#pageAddModal"><i class="fa fa-plus"></i></a></h4>
+{% for page in pages %}
+    <div class="nav-item" data-bind="click: $root.selectSite, css: {active: isActive}">
+        <a href="/admin/designer/{{ page._id }}">{{ page.title }} </a>
+    </div>
+{% endfor %}
+
+
 
 
 <!-- Button trigger modal -->
@@ -27,7 +17,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
+        <h4 class="modal-title">New Page</h4>
       </div>
       <div class="modal-body">
         <label for="new_page_name_textbox" class="control-label">Title:</label>

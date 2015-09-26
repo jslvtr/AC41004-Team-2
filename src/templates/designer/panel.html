@@ -1,1 +1,41 @@
-Panel
+<form id="edit-page-form">
+    <h1>Edit {{ active_page.title }} Page</h1>
+    <input type="hidden" name="id" value="{{ active_page.title }}"/><br>
+
+    <label for="page_title" class="control-label">Title:</label>
+    <input type="text" id="page_title" name="title" value="{{ active_page.title }}" class="form-control"/><br>
+
+    <label for="page_hasfeed" class="control-label">Has Feed:</label>
+    {% if active_page.feed %}
+        <input type="checkbox" name="feed" id="page_hasfeed" checked /><br>
+    {% else %}
+        <input type="checkbox" name="feed" id="page_hasfeed" /><br>
+    {% endif %}
+    <p class="help-block">Example block-level help text here.</p>
+
+    <label for="page_active" class="control-label">Active:</label>
+    {% if active_page.active %}
+        <input type="checkbox" name="active" id="page_active" checked /><br>
+    {% else %}
+        <input type="checkbox" name="active" id="page_active" /><br>
+    {% endif %}
+    
+
+    <script type="text/javascript" >
+    tinymce.init({
+        selector: "#page_content",
+        plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    });
+    </script>
+
+    <label for="page_content" class="control-label">summary:</label>
+    <textarea name="content" id="page_content" style="width:100%">
+        {{ active_page.content }}
+    </textarea>
+    <input type="button" onclick="pageDesigner.edit_page()" calss="form-control" value="Save">
+</form>

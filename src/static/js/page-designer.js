@@ -1,7 +1,6 @@
 function PageDesigner(){
     var sidebar;
     var panel;
-    var toolbar;
 
     this.init = function(obj){
         sidebar = obj.sidebar;
@@ -15,7 +14,7 @@ function PageDesigner(){
             url: "/admin/page/add/"+title,
             success: function(){
                 var haha = sidebar.find("#sidebar_page_list");
-                sidebar.find("#sidebar_page_list").append("<li>"+title+"</li>");
+                sidebar.find("#sidebar_page_list").append("<li><a>"+title+"</a></li>");
             },
         });
     }
@@ -24,11 +23,17 @@ function PageDesigner(){
 
     }
 
-    this.select_page = function(title){
-
+    this.edit_page = function(){
+        $.ajax({
+            type: "PUT",
+            url: "/admin/page/edit/",
+            data: $("#edit-page-form").serialize(),
+            processData: false,
+            contentType: "application/x-www-form-urlencoded",
+            success: function(){location.reload();},
+        });
     }
 
 }
 
 var pageDesigner = new PageDesigner();
-var ifdsf = 2;

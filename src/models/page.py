@@ -1,9 +1,7 @@
 import uuid
 from src.common.database import Database
-from src.models.page_content import PageContent
 
 _author_ = 'stamas01'
-
 
 
 class NoSuchPageExistException(Exception):
@@ -13,23 +11,24 @@ class NoSuchPageExistException(Exception):
     def __str__(self):
         return repr(self.message)
 
+
 class Page:
     COLLECTION = "pages"
 
-    def __init__(self, title, contents, number, id=None):
-        self._contents = contents;
-        self._title = title;
-        self._id = id;
-        self._number = number
+    def __init__(self, title, content, feed=False, active=False, id=None):
+        self._content = content
+        self._title = title
+        self._id = id
+        if id is None:
+            self._id = title
+        self._feed = feed
+        self._active = active
 
-    def get_id(self):
-        return self._id
+    def get_content(self):
+        return self._content
 
-    def get_contents(self):
-        return self._contents
-
-    def set_contents(self,contents):
-        self._contents = contents
+    def set_content(self,content):
+        self._content = content
 
     def get_title(self):
         return self._title
@@ -37,20 +36,26 @@ class Page:
     def set_title(self,title):
         self._title = title
 
-    def get_number(self):
-        return self._number
+    def get_feed(self):
+        return self._feed
 
-    def set_number(self,number):
-        self._number = number
+    def set_feed(self,feed):
+        self._feed = feed
+
+    def get_active(self):
+        return self._active
+
+    def set_active(self,active):
+        self._active = active
 
     def is_valid_model(self):
-        if type(self._title) is not str:
+        if isinstance(self._title,bool):
             return False
-        if not isinstance(self._contents, list):
+        if isinstance(self._content,bool):
             return False
-        if type(self._title) is not int:
+        if isinstance(self._feed,bool):
             return False
-        if next((x for x in self._contents if not x.is_valid_model()), False):
+        if isinstance(self._active,bool):
             return False
         return True
 
@@ -59,35 +64,31 @@ class Page:
             self._id = uuid.uuid4()
         Database.insert(self.COLLECTION, self.to_json())
 
+    def sync_to_db(self):
+        Database.update(self.COLLECTION,
+                        {'_id': self._id},
+                        {'title': self._title, 'content': self._content, 'feed': self._feed, 'active': self._active, '_id': self._title})
+        self._id = self._title
+
     @classmethod
     def get_all(cls):
-        event = Database.find_one(cls.COLLECTION, {'title': title})
-        return Page.factory_form_json(event)
+        pages  = Database.find(cls.COLLECTION,{})
+        result = []
+        for page in pages:
+            result.append(Page.factory_form_json(page))
+        return result
 
     @classmethod
     def get_by_title(cls, title):
-        event = Database.find_one(cls.COLLECTION, {'title': title})
-        return Page.factory_form_json(event)
-
-    @classmethod
-    def get_by_id(cls, id_):
-        event = Database.find_one(cls.COLLECTION, {'_id': id_})
-        return Page.factory_form_json(event)
+        page = Database.find_one(cls.COLLECTION, {'title': title})
+        return Page.factory_form_json(page)
 
     @classmethod
     def factory_form_json(cls, json):
         if json is None:
             raise NoSuchPageExistException()
-        contents = []
-        for content in json['contents']:
-            contents.append(PageContent.factory_form_json(content));
-        obj = cls(json['title'], contents, json['event_type'], json['number'], json['_id'])
+        obj = cls(json['title'], json['content'], json['feed'], json['active'])
         return obj
 
     def to_json(self):
-        json_s = "["
-        for content in self._contents:
-            json_s+=str(content.to_json())
-            json_s+=","
-        json_s=json_s[:-1]
-        return {'title': self._title, 'content': json_s, 'number': self._number, '_id': self._id}
+        return {'title': self._title, 'content': self._content, 'feed': self._feed, 'active': self._active, '_id': self._id}
