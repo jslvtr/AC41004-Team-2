@@ -36,6 +36,22 @@ function populate_courses()
     });
 }
 
+function add_university()
+{
+    $uni = $("#unitoadd").val();
+    data = {uni: $uni};
+    $.ajax({
+        type: "POST",
+            url: "/add-uni",
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: "application/json",
+            success: function(ss)
+            {
+                $("#university").append('<option value="' + $uni + '">' + $uni + '</option>');
+            }
+        });
+}
 
 
 $( document ).ready(function() {

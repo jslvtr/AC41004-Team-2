@@ -433,11 +433,30 @@ def populate_colleges(university):
     return jsonify({"colleges": colleges})
 
 
-@app.route('/populate-courses/<university>/<college>')
+@app.route('/populate-courses/<university>/<college>', methods=["GET"])
 def populate_courses(university, college):
     college = University.get_college(university, college)
     courses = [course for course in college['courses']]
     return jsonify({"courses": courses})
+
+
+@app.route('/edit-universities')
+def edit_uni_page():
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            universities = University.get_uni_list()
+            return render_template('university-update.html', universities=universities)
+
+    else:
+        abort(401)
+
+
+@app.route('/add-uni', methods=["POST"])
+def add_university():
+    json = request.get_json()
+    uni = json['uni']
+    University.add_university(uni)
+    return jsonify({"message": "OK"}), 200
 
 
 @app.route('/logout')

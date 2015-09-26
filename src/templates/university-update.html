@@ -1,0 +1,16 @@
+<label>Place of Study</label> <select size="5" class="form-control" id="university" name="university"
+                                                  onchange="populate_colleges()">
+                    {% for university in universities %}
+                    <option value="{{university.name}}" >{{university.name}}</option>
+                    {%endfor%}</select>
+    <br>
+    <input type="text" id="unitoadd"><br>
+    <input type="submit" value="Submit" onclick="add_university()">
+
+            <br>
+            <label>School Within University</label> <select size="5" class="form-control" id="college" name="college"
+                                                            onchange="populate_courses()">
+                    </select>
+            <br>
+            <label>Degree Subject</label> <select size="5" class="form-control" id="course" name="course">
+                    </select>
