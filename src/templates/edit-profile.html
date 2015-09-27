@@ -2,51 +2,51 @@
     <p>
 
     <form class="form-group" id="edit-profile" action="user/edit-profile" method="POST">
-            <label>First Name</label>
-            <input class="form-control" type="text" name="firstname">
-            <br>
-            <label>Last Name</label> <input class="form-control" type="text" name="lastname">
-            <br>
-            <label>Country</label> <select class="form-control" name="country">
-                    <option value="Scotland">Scotland</option>
-                    <option value="England">England</option>
-                    </select>
-            <br>
-            <label>Place of Study</label> <select class="form-control" id="university" name="university"
-                                                  onchange="populate_colleges()">
-                    {% for university in universities %}
-                    <option value="{{university.name}}" >{{university.name}}</option>
-                    {%endfor%}
-                    </select>
-            <br>
-            <label>School Within University</label> <select class="form-control" id="college" name="college"
-                                                            onchange="populate_courses()">
+        <label>First Name</label>
+        <input class="form-control" type="text" name="firstname">
+        <br>
+        <label>Last Name</label> <input class="form-control" type="text" name="lastname">
+        <br>
+        <label>Country</label> <select class="form-control" name="country">
+        <option value="Scotland">Scotland</option>
+        <option value="England">England</option>
+    </select>
+        <br>
+        <label>Place of Study</label> <select class="form-control" id="university" name="university"
+                                              onchange="populate_colleges()">
+        {% for university in universities %}
+        <option value="{{university.name}}">{{university.name}}</option>
+        {%endfor%}
+    </select>
+        <br>
+        <label>School Within University</label> <select class="form-control" id="college" name="college"
+                                                        onchange="populate_courses()">
 
-                    </select>
-            <br>
-            <label>Degree Subject</label> <select class="form-control" id="course" name="course">
+    </select>
+        <br>
+        <label>Degree Subject</label> <select class="form-control" id="course" name="course">
 
-                    </select>
+    </select>
 
-            <br>
-                <label>Level of Study</label> <select class="form-control" name="level">
-                    <option value="Undergraduate">Undergraduate</option>
-                    <option value="Postgraduate">Postgraduate</option>
-                    </select>
-            <br>
-            <label>Year Of Study</label> <select class="form-control" name="yearofstudy">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-            <br>
-            <br>
-                <label>Enter Your Current Password</label>
-                <input class="form-control" type="password" name="password">
-            <br>
+        <br>
+        <label>Level of Study</label> <select class="form-control" name="level">
+        <option value="Undergraduate">Undergraduate</option>
+        <option value="Postgraduate">Postgraduate</option>
+    </select>
+        <br>
+        <label>Year Of Study</label> <select class="form-control" name="yearofstudy">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+        <br>
+        <br>
+        <label>Enter Your Current Password</label>
+        <input class="form-control" type="password" name="password">
+        <br>
 
-            <input class="btn btn-default" type="submit" Value="Submit">
-        </form>
+        <input class="btn btn-default" type="submit" Value="Submit">
+    </form>
     </p>
 </div>

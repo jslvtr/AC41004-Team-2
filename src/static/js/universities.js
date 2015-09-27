@@ -1,16 +1,14 @@
 function populate_colleges()
 {
-    $uni = $("#university").val();
+    uni = $("#university").val();
+    $("#college").empty();
+    $("#course").empty();
     $.ajax({
-
         type: "GET",
-            url: "/populate-colleges/" + $uni,
-            data: $uni,
+            url: "/populate-colleges/" + uni,
             datatype: 'json',
             success: function(colleges)
             {
-                $("#college").empty();
-
                 $.each(colleges.colleges, function(key, value){
                 $("#college").append('<option value="' + value + '">' + value + '</option>');
                 });
@@ -21,16 +19,14 @@ function populate_colleges()
 
 function populate_courses()
 {
-    $uni = $("#university").val();
-    $college = $("#college").val();
+    uni = $("#university").val();
+    college = $("#college").val();
     $.ajax({
         type: "GET",
-            url: "/populate-courses/" + $uni + "/" + $college,
-            data: $uni,
+            url: "/populate-courses/" + uni + "/" + college,
             datatype: 'json',
             success: function(courses)
             {
-                $("#course").empty();
                 $.each(courses.courses, function(key, value){
                 $("#course").append('<option value="' + value + '">' + value + '</option>');
                 });
@@ -40,8 +36,8 @@ function populate_courses()
 
 function add_university()
 {
-    $uni = $("#unitoadd").val();
-    data = {uni: $uni};
+    uni = $("#unitoadd").val();
+    data = {uni: uni};
     $.ajax({
         type: "POST",
             url: "/add-uni",
@@ -50,7 +46,7 @@ function add_university()
             contentType: "application/json",
             success: function(ss)
             {
-                $("#university").append('<option value="' + $uni + '">' + $uni + '</option>');
+                $("#university").append('<option value="' + uni + '">' + uni + '</option>');
             }
         });
 }
@@ -62,24 +58,23 @@ function delete_university()
 
     if (confirm == true)
     {
-    $uni = $("#university").val();
+    uni = $("#university").val();
     $.ajax({
             type: "DELETE",
-            url: "/remove-uni/" + $uni,
+            url: "/remove-uni/" + uni,
             success: function(ss){
-                                       $("#university").find('option[value=\'' + $uni + '\']').remove()
+                                       $("#university").find('option[value=\'' + uni + '\']').remove()
                                  }
         });
     }
-    else
-    {}
+
 }
 
 function add_college()
 {
-    $uni = $("#university").val();
-    $college = $("#collegetoadd").val();
-    data = {uni: $uni, college: $college};
+    uni = $("#university").val();
+    college = $("#collegetoadd").val();
+    data = {uni: uni, college: college};
     $.ajax({
         type: "POST",
             url: "/add-college",
@@ -88,30 +83,30 @@ function add_college()
             contentType: "application/json",
             success: function(ss)
             {
-                $("#college").append('<option value="' + $college + '">' + $college + '</option>');
+                $("#college").append('<option value="' + college + '">' + college + '</option>');
             }
         });
 }
 
 function delete_college()
 {
-    $uni = $("#university").val();
-    $college = $("#college").val();
+    uni = $("#university").val();
+    college = $("#college").val();
     $.ajax({
             type: "DELETE",
-            url: "/remove-college/" + $uni + "/" + $college,
+            url: "/remove-college/" + uni + "/" + college,
             success: function(ss){
-                                       $("#college").find('option[value=\'' + $college + '\']').remove()
+                                       $("#college").find('option[value=\'' + college + '\']').remove()
                                  }
         });
 }
 
 function add_course()
 {
-    $uni = $("#university").val();
-    $college = $("#college").val();
-    $course = $('#coursetoadd').val();
-    data = {uni: $uni, college: $college, course: $course};
+    uni = $("#university").val();
+    college = $("#college").val();
+    course = $('#coursetoadd').val();
+    data = {uni: uni, college: college, course: course};
     $.ajax({
         type: "POST",
             url: "/add-course",
@@ -120,21 +115,21 @@ function add_course()
             contentType: "application/json",
             success: function(ss)
             {
-                $("#course").append('<option value="' + $course + '">' + $course + '</option>');
+                $("#course").append('<option value="' + course + '">' + course + '</option>');
             }
         });
 }
 
 function delete_course()
 {
-    $uni = $("#university").val();
-    $college = $("#college").val();
-    $course = $("#course").val();
+    uni = $("#university").val();
+    college = $("#college").val();
+    course = $("#course").val();
     $.ajax({
             type: "DELETE",
-            url: "/remove-course/" + $uni + "/" + $college + "/" + $course,
+            url: "/remove-course/" + uni + "/" + college + "/" + course,
             success: function(ss){
-                                       $("#course").find('option[value=\'' + $course + '\']').remove()
+                                       $("#course").find('option[value=\'' + course + '\']').remove()
                                  }
         });
 }

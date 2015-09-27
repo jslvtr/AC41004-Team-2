@@ -18,13 +18,12 @@ class University(object):
 
     @staticmethod
     def get_college(university, college_to_find):
-        uni = Database.find_one(COLLECTION, {"name": university, "colleges.name": college_to_find})
+        uni = Database.find_one(COLLECTION, {"name": university})
         colleges = [college for college in uni['colleges']]
         for college in colleges:
             if college_to_find == college['name']:
                 return college
-            else:
-                return False
+        return False
 
 
     @staticmethod

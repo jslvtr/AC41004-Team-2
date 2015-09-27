@@ -1,39 +1,40 @@
 <div class="content container">
     <p>
 
-<label>Place of Study</label> <select size="5" class="form-control" id="university" name="university"
-                                                  onchange="populate_colleges()">
-                    {% for university in universities %}
-                    <option value="{{university.name}}" >{{university.name}}</option>
-                    {%endfor%}</select>
-    <br>
-    <input class="form-control"  type="text" id="unitoadd">
-    <input class="btn btn-default" type="submit" value="Add" onclick="add_university()">
- <input class="btn btn-default" type="submit" value="Delete" onclick="delete_university()">
+        <label>Place of Study</label> <select size="5" class="form-control" id="university" name="university"
+                                              onchange="populate_colleges()">
+        {% for university in universities %}
+        <option value="{{university.name}}">{{university.name}}</option>
+        {%endfor%}</select>
+        <br>
+        <input class="form-control" type="text" id="unitoadd">
+        <input class="btn btn-default" type="submit" value="Add" onclick="add_university()">
+        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_university()">
 
 
-            <br>
-            <label>School Within University</label> <select size="5" class="form-control" id="college" name="college"
-                                                            onchange="populate_courses()">
-                    </select>
-            <br>
-<input class="form-control"  type="text" id="collegetoadd">
-    <input class="btn btn-default" type="submit" value="Add" onclick="add_college()">
- <input class="btn btn-default" type="submit" value="Delete" onclick="delete_college()">
+        <br>
+        <label>School Within University</label> <select size="5" class="form-control" id="college" name="college"
+                                                        onchange="populate_courses()">
+    </select>
+        <br>
+        <input class="form-control" type="text" id="collegetoadd">
+        <input class="btn btn-default" type="submit" value="Add" onclick="add_college()">
+        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_college()">
 
         <br>
 
-            <label>Degree Subject</label> <select size="5" class="form-control" id="course" name="course">
-                    </select>
+        <label>Degree Subject</label> <select size="5" class="form-control" id="course" name="course">
+    </select>
 
-<input class="form-control"  type="text" id="coursetoadd">
-    <input class="btn btn-default" type="submit" value="Add" onclick="add_course()">
- <input class="btn btn-default" type="submit" value="Delete" onclick="delete_course()">
+        <input class="form-control" type="text" id="coursetoadd">
+        <input class="btn btn-default" type="submit" value="Add" onclick="add_course()">
+        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_course()">
 
-         <br>
-                <label>Enter Your Current Password</label>
-                <input class="form-control" type="password" name="password">
-            <br>
+        <br>
+        <label>Enter Your Current Password</label>
+        <input class="form-control" type="password" name="password">
+        <br>
 
-   </p></div>
+    </p>
+</div>
 

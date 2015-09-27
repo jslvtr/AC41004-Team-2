@@ -84,10 +84,16 @@ def layout(response):
         data = response.get_data()
         data = data.decode('utf-8')
         if str(request.url_rule).startswith("/admin"):
-            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('admin.html', access_level=get_access_level(), data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         else:
-            data = render_template('layout.html', data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         response.set_data(data)
 
         return response
@@ -108,10 +114,12 @@ def secure(type):
 
     return tags_decorator
 
+
 def get_access_level():
     if session.contains('email') and session['email'] is not None:
         return User.find_by_email(session['email']).permissions
     return ""
+
 
 @app.route('/admin', methods=['GET'])
 @app.route('/admin/events', methods=['GET'])
@@ -121,12 +129,11 @@ def events_get_admin():
     return render_template('events_admin.html', events=events)
 
 
-
 @app.route('/admin/upload', methods=['POST'])
 @secure("events")
 def upload_image():
     file_data = request.files['file']
-    image = Image(file_data.read(),file_data.mimetype)
+    image = Image(file_data.read(), file_data.mimetype)
     image.save_to_db()
     return jsonify({"id": image.get_id()}), 200
 
@@ -134,10 +141,9 @@ def upload_image():
 @app.route('/images/<uuid:image_id>', methods=['GET'])
 def images(image_id):
     image = Image.get_by_id(image_id)
-    fr = make_response( image.get_data() )
+    fr = make_response(image.get_data())
     fr.headers['Content-Type'] = image.get_content_type()
     return fr
-
 
 
 @app.route('/admin/articles', methods=['GET'])
@@ -146,11 +152,11 @@ def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
     return render_template('articles_admin.html', news=news)
 
+
 @app.route('/admin/filemanager', methods=['GET'])
 @secure("articles")
 def filemanager_admin():
-
-    filess = {"name": "folder1", "type": "dir", "files":""}
+    filess = {"name": "folder1", "type": "dir", "files": ""}
     return render_template('filemanager.html')
 
 
@@ -260,7 +266,8 @@ def article_post():
         if request.form.get('publication') is "":
             new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
         else:
-            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date, request.form.get('publication'))
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date,
+                                  request.form.get('publication'))
         if not new_article.is_valid_model():
             abort(500)
         new_article.save_to_db()
@@ -282,10 +289,10 @@ def article_put():
                                   uuid.UUID(request.form.get('id')))
         else:
             new_article = Article(request.form.get('title'),
-                      request.form.get('summary'),
-                      article_date,
-                      request.form.get('publication'),
-                      uuid.UUID(request.form.get('id')))
+                                  request.form.get('summary'),
+                                  article_date,
+                                  request.form.get('publication'),
+                                  uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
             abort(500)
         new_article.sync_to_db()
@@ -344,7 +351,8 @@ def view_profile():
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
         totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                               rank=profile.get_point_rank())
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
@@ -397,7 +405,8 @@ def admin_view_profile(user_email):
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
-            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints, rank=profile.get_point_rank())
+            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
+                                   rank=profile.get_point_rank())
 
     else:
         abort(401)
@@ -458,10 +467,12 @@ def add_university():
     University.add_university(uni)
     return jsonify({"message": "OK"}), 201
 
+
 @app.route('/remove-uni/<university>', methods=["DELETE"])
 def remove_university(university):
     University.delete_university(university)
     return jsonify({"message": "OK"}), 200
+
 
 @app.route('/add-college', methods=["POST"])
 def add_college():
