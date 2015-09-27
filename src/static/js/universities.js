@@ -57,6 +57,11 @@ function add_university()
 
 function delete_university()
 {
+
+    confirm = window.confirm("Are you sure you wish to delete this university? All departments and courses will also be deleted.");
+
+    if (confirm == true)
+    {
     $uni = $("#university").val();
     $.ajax({
             type: "DELETE",
@@ -65,6 +70,9 @@ function delete_university()
                                        $("#university").find('option[value=\'' + $uni + '\']').remove()
                                  }
         });
+    }
+    else
+    {}
 }
 
 function add_college()
