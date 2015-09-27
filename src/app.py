@@ -6,6 +6,7 @@ from src.common.constants import Constants
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.article import Article, NoSuchArticleExistException
+from src.models.award import Award
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
 from src.models.image import Image
@@ -428,8 +429,13 @@ def view_profile():
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
         totalpoints = profile.total_points()
+        user_points = profile.data['points'] if 'points' in profile.data.keys() else None
+        awards = []
+        if user_points is not None:
+            awards = Award.check_user_awards(profile.data['points'])
+
         return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
-                               rank=profile.get_point_rank())
+                               rank=profile.get_point_rank(), awards=awards)
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
