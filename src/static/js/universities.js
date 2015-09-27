@@ -98,6 +98,38 @@ function delete_college()
         });
 }
 
+function add_course()
+{
+    $uni = $("#university").val();
+    $college = $("#college").val();
+    $course = $('#coursetoadd').val();
+    data = {uni: $uni, college: $college, course: $course};
+    $.ajax({
+        type: "POST",
+            url: "/add-course",
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: "application/json",
+            success: function(ss)
+            {
+                $("#course").append('<option value="' + $course + '">' + $course + '</option>');
+            }
+        });
+}
+
+function delete_course()
+{
+    $uni = $("#university").val();
+    $college = $("#college").val();
+    $course = $("#course").val();
+    $.ajax({
+            type: "DELETE",
+            url: "/remove-course/" + $uni + "/" + $college + "/" + $course,
+            success: function(ss){
+                                       $("#course").find('option[value=\'' + $course + '\']').remove()
+                                 }
+        });
+}
 
 $( document ).ready(function() {
     populate_colleges($("#university").val());

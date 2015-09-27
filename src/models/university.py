@@ -41,7 +41,7 @@ class University(object):
 
     @staticmethod
     def add_college(university, college):
-        if Database.update(COLLECTION, {"name": university}, {"$push": {"colleges":{"name": college}}},
+        if Database.update(COLLECTION, {"name": university}, {"$addToSet": {"colleges": {"name": college}}},
                                 upsert=True):
             return True
         return False
@@ -49,7 +49,7 @@ class University(object):
     @staticmethod
     def add_course(university, college, course):
         if Database.update(COLLECTION, {"name": university, "colleges.name": college},
-                           {"$push": {"colleges": { "$push": {"courses": course}}}}, upsert=True):
+                           {"$addToSet": {'colleges.$.courses': course}}):
             return True
         return False
 
@@ -65,4 +65,10 @@ class University(object):
             return True
         return False
 
+    @staticmethod
+    def delete_course(university, college, course):
+        if Database.update(COLLECTION, {"name": university, "colleges.name": college},
+                           {"$pull": {'colleges.$.courses': course}}):
+            return True
+        return False
 

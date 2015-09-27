@@ -471,12 +471,27 @@ def add_college():
     University.add_college(uni, college)
     return jsonify({"message": "OK"}), 201
 
+
 @app.route('/remove-college/<university>/<college>', methods=["DELETE"])
 def remove_college(university, college):
-    University.delete_college(university,college)
+    University.delete_college(university, college)
     return jsonify({"message": "OK"}), 200
 
 
+@app.route('/add-course', methods=["POST"])
+def add_course():
+    json = request.get_json()
+    uni = json['uni']
+    college = json['college']
+    course = json['course']
+    University.add_course(uni, college, course)
+    return jsonify({"message": "OK"}), 201
+
+
+@app.route('/remove-course/<university>/<college>/<course>', methods=["DELETE"])
+def remove_course(university, college, course):
+    University.delete_course(university, college, course)
+    return jsonify({"message": "OK"}), 200
 
 
 @app.route('/logout')

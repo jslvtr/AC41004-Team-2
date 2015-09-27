@@ -27,13 +27,15 @@ class TestUniversity(TestCase):
         self.assertIsNotNone(University.get_college(university, college))
 
     def test_course_add(self):
-        university = "Test Uni"
-        college = "Test College"
-        course = "Test Course"
+        university = "University Of Dundee"
+        college = "Maths, Physics, Computing"
+        course = "Test Course3"
 
         University.add_course(university, college, course)
+        University.delete_course(university, college, course)
 
         self.assertIsNotNone(University.get_course(university,college,course))
+
 
         #Database.remove("universities", {"name": university})
 
