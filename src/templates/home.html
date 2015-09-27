@@ -37,27 +37,7 @@
 <div class="content container">
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-    <div id="news-panel">
-        <h1>Latest News</h1>
-
-        <div class="pages">
-            <ul>
-                {% for article in news %}
-                <li>
-                    <div class="article">
-                        <h2><a href="/article/{{article._id}}">{{ article.title }}</a></h2>
-
-                        <p>{{ article.summary | safe}}</p>
-                        <hr class="separator"/>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% if news|length == 3 %}
-        <h4 class="see-more"><a href="/news">See all news</a></h4>
-        {% endif %}
-    </div>
+   {% include 'items/news_panel.html' %}
     <div id="events-panel">
         <h1>Upcoming Events</h1>
         {% for event in events %}

@@ -1,29 +1,39 @@
 <form id="edit-page-form">
-    <h1>Edit {{ active_page.title }} Page</h1>
-    <input type="hidden" name="id" value="{{ active_page.title }}"/><br>
-
-    <label for="page_title" class="control-label">Title:</label>
-    <input type="text" id="page_title" name="title" value="{{ active_page.title }}" class="form-control"/><br>
-
-    <label for="page_hasfeed" class="control-label">Has Feed:</label>
-    {% if active_page.feed %}
-        <input type="checkbox" name="feed" id="page_hasfeed" checked /><br>
+    {% if not active_page.title %}
+        <h1>Create Page</h1>
     {% else %}
-        <input type="checkbox" name="feed" id="page_hasfeed" /><br>
+        <h1>Edit {{ active_page.title }} Page</h1><a data-toggle="modal" data-target="#PageDeleteConfirmModal" style="color:red;">Delete</a>
     {% endif %}
+    <hr>
+
+    <input type="hidden" name="id" value="{{ active_page._id }}"/><br>
+
+    <label for="page_title" class="control-label">Title:</label><br>
+    <span class="help-inline" style="color: red;" id="title-error-message"></span>
+    <input type="text" id="page_title" placeholder="Enter Title.." name="title" value="{{ active_page.title }}" class="form-control"/><br>
+
+
+    <label for="page_hasfeed" class="control-label">Has Feed:</label><br>
     <p class="help-block">Example block-level help text here.</p>
-
-    <label for="page_active" class="control-label">Active:</label>
-    {% if active_page.active %}
-        <input type="checkbox" name="active" id="page_active" checked /><br>
+    {% if active_page.feed %}
+        <input type="checkbox" name="feed" data-toggle="toggle" id="page_hasfeed" checked data-on="Yes" data-off="No" />
     {% else %}
-        <input type="checkbox" name="active" id="page_active" /><br>
+        <input type="checkbox" name="feed" data-toggle="toggle" id="page_hasfeed" data-on="Yes" data-off="No" />
     {% endif %}
-    
+    <br>
+    <label for="page_active" class="control-label">Active:</label><br>
+    <p class="help-block">Example block-level help text here.</p>
+    {% if active_page.active %}
+        <input type="checkbox" name="active" data-toggle="toggle" id="page_active" checked data-on="Yes" data-off="No" />
+    {% else %}
+        <input type="checkbox" name="active" data-toggle="toggle" id="page_active" data-on="Yes" data-off="No" />
+    {% endif %}
+    <br>
 
     <script type="text/javascript" >
     tinymce.init({
         selector: "#page_content",
+        height : 500,
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
@@ -37,5 +47,32 @@
     <textarea name="content" id="page_content" style="width:100%">
         {{ active_page.content }}
     </textarea>
-    <input type="button" onclick="pageDesigner.edit_page()" calss="form-control" value="Save">
+
+    {% if not active_page.title %}
+        <input type="button" onclick="pageDesigner.add_page()" calss="form-control btn" value="Save">
+    {% else %}
+        <input type="button" onclick="pageDesigner.edit_page()" calss="form-control btn" value="Save">
+    {% endif %}
+
 </form>
+
+
+<!-- Delete -->
+<div id="PageDeleteConfirmModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Are you sure you want to delete this page and all the feed elements which might be associated with it?</h4>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" onclick="pageDesigner.delete_page('{{active_page._id}}')" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -38,17 +38,18 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Feeds<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/admin/events" title="Info & Team">Events</a></li>
-                        <li><a href="/admin/articles" title="Our supporters">News</a></li>
+                        <li><a href="/admin/articles/00000000-0000-0000-0000-000000000000" title="Our supporters">News</a></li>
                         {% for page in pages %}
                             {% if page.feed %}
-                                <li><a href="/pages/{{ page.title }}">{{ page.title }} </a></li>
+                                <li><a href="/admin/articles/{{ page._id }}">{{ page.title }} </a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>
              </li>
 
              {% if "admin" in access_level %}
-                <li><a href="/admin/permissions">User permissions  </a></li>
+                <li><a href="/admin/permissions">User permissions  </a>
+                <li><a href="/admin/designer">Manage Pages</a></li>
               {% endif %}
           </ul>
         </div>

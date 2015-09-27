@@ -1,32 +1,12 @@
-<h4 class="text-muted">Pages <a class="btn btn-sm" data-toggle="modal" data-target="#pageAddModal"><i class="fa fa-plus"></i></a></h4>
+<h4 class="text-muted">Pages <a href="/admin/designer/add" class="btn btn-sm" ><i class="fa fa-plus"></i></a></h4>
 {% for page in pages %}
-    <div class="nav-item" data-bind="click: $root.selectSite, css: {active: isActive}">
-        <a href="/admin/designer/{{ page._id }}">{{ page.title }} </a>
-    </div>
+    {% if page.title == active_page.title %}
+      <div class="nav-item active">
+          <a href="/admin/designer/{{ page.title }}">{{ page.title }} </a>
+      </div>
+    {% else %}
+      <div class="nav-item">
+          <a href="/admin/designer/{{ page.title }}">{{ page.title }} </a>
+      </div>
+    {% endif %}
 {% endfor %}
-
-
-
-
-<!-- Button trigger modal -->
-
-
-<!-- Modal -->
-<div class="modal fade" id="pageAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">New Page</h4>
-      </div>
-      <div class="modal-body">
-        <label for="new_page_name_textbox" class="control-label">Title:</label>
-        <input type="text" class="form-control" id="new_page_name_textbox" value="">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="pageDesigner.add_page($(new_page_name_textbox).val())" data-dismiss="modal">Add</button>
-      </div>
-    </div>
-  </div>
-</div>

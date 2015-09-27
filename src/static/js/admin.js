@@ -60,7 +60,7 @@
         var xx = sdf.val(tinyMCE.get('summary'+id).getContent());
         $.ajax({
             type: "PUT",
-            url: "/admin/article",
+            url: "/admin/article/",
             data: $("#article_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",
@@ -75,7 +75,7 @@
         var xx = sdf.val(tinyMCE.get('summary'+id).getContent());
         $.ajax({
             type: "POST",
-            url: "/admin/article",
+            url: "/admin/article/",
             data: $("#article_edit_form"+id).serialize(),
             processData: false,
             contentType: "application/x-www-form-urlencoded",

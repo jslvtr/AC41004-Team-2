@@ -7,24 +7,25 @@
 <br>
 <br>
 
+<div id="page-designer-wrapper">
 
-<div class="container-fluid">
+    <div id="page-designer-sidebar-wrapper">
+        <ul class="page-designer-sidebar-nav">
+            {% include 'designer/sidebar.html' %}
+        </ul>
+    </div>
+    <div id="page-designer-content-wrapper">
+        <div class="page-designer-content">
 
-    <div id="main-content">
+                        {% if active_page %}
+                            {% include 'designer/panel.html' %}
+                        {% endif %}
 
-        <div class="row">
-            <div class="col-xs-2 col-sm-2 col-md-2" style="border-right: 1px solid #111; background: #2f4354" data-bind="style: {height: screenHeight}">
-                {% include 'designer/sidebar.html' %}
-            </div>
-
-            <div id="page-designer-content" class="col-xs-10 col-sm-10 col-md-10">
-                {% if active_page %}
-                    {% include 'designer/panel.html' %}
-                {% endif %}
-            </div>
         </div>
     </div>
 </div>
+
+
 <script>
     pageDesigner.init({sidebar: $("#page-designer-sidebar"),
                        panel: $("#page-designer-sidebar")})
