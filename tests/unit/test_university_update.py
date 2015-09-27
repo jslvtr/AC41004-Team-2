@@ -35,6 +35,6 @@ class TestUniversity(TestCase):
 
         self.assertIsNotNone(University.get_course(university,college,course))
 
-        Database.remove("universities", {"name": university})
+        #Database.remove("universities", {"name": university})
 
 

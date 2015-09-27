@@ -440,7 +440,7 @@ def populate_courses(university, college):
     return jsonify({"courses": courses})
 
 
-@app.route('/edit-universities')
+@app.route('/admin/edit-universities')
 def edit_uni_page():
     if session.contains('email') and session['email'] is not None:
         if User.get_user_permissions(session['email']) == 'admin':
@@ -461,6 +461,19 @@ def add_university():
 @app.route('/remove-uni/<university>', methods=["DELETE"])
 def remove_university(university):
     University.delete_university(university)
+    return jsonify({"message": "OK"}), 200
+
+@app.route('/add-college', methods=["POST"])
+def add_college():
+    json = request.get_json()
+    uni = json['uni']
+    college = json['college']
+    University.add_college(uni, college)
+    return jsonify({"message": "OK"}), 201
+
+@app.route('/remove-college/<university>/<college>', methods=["DELETE"])
+def remove_college(university, college):
+    University.delete_college(university,college)
     return jsonify({"message": "OK"}), 200
 
 
