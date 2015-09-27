@@ -1,8 +1,8 @@
 <form id="edit-page-form">
     {% if not active_page.title %}
-        <h1>Create Page</h1>
+        <h1>Create new page</h1>
     {% else %}
-        <h1>Edit {{ active_page.title }} Page</h1><a data-toggle="modal" data-target="#PageDeleteConfirmModal" style="color:red;">Delete</a>
+        <h1>Editing '{{ active_page.title }}'</h1><a data-toggle="modal" data-target="#PageDeleteConfirmModal" style="color:red;">Delete</a>
     {% endif %}
     <hr>
 
@@ -14,7 +14,7 @@
 
 
     <label for="page_hasfeed" class="control-label">Has Feed:</label><br>
-    <p class="help-block">Example block-level help text here.</p>
+    <p class="help-block">If you want to be able to add posts to the page that will appear below the main page content (e.g. news articles, publications, or interviews might be good topics for feeds).</p>
     {% if active_page.feed %}
         <input type="checkbox" name="feed" data-toggle="toggle" id="page_hasfeed" checked data-on="Yes" data-off="No" />
     {% else %}
@@ -22,7 +22,7 @@
     {% endif %}
     <br>
     <label for="page_active" class="control-label">Active:</label><br>
-    <p class="help-block">Example block-level help text here.</p>
+    <p class="help-block">You can un-check this to prevent users from accessing the page, but without having to delete it.</p>
     {% if active_page.active %}
         <input type="checkbox" name="active" data-toggle="toggle" id="page_active" checked data-on="Yes" data-off="No" />
     {% else %}
@@ -49,9 +49,9 @@
     </textarea>
 
     {% if not active_page.title %}
-        <input type="button" onclick="pageDesigner.add_page()" calss="form-control btn" value="Save">
+        <input type="button" onclick="pageDesigner.add_page()" class="form-control btn btn-success margin-top" value="Create page">
     {% else %}
-        <input type="button" onclick="pageDesigner.edit_page()" calss="form-control btn" value="Save">
+        <input type="button" onclick="pageDesigner.edit_page()" class="form-control btn btn-success margin-top" value="Update page">
     {% endif %}
 
 </form>
