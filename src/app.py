@@ -12,6 +12,7 @@ from src.models.eventregister import EventRegister
 from src.models.image import Image
 
 from src.models.permissions import Permissions
+from src.models.point_type import PointType
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -223,6 +224,39 @@ def add_permission():
 
     permission = Permissions(name, access)
     permission.save_to_db()
+
+    return jsonify({"message": "ok"}), 201
+
+
+@app.route('/admin/point_types', methods=['GET'])
+@secure("admin")
+def point_types_get_admin():
+    point_types = [type for type in Database.find(PointType.COLLECTION, {})]
+    point_types_objects = []
+    for type in point_types:
+        del type['_id']
+        type_obj = PointType(**type)
+        type_obj.total = type_obj.users_with_point()
+        point_types_objects.append(type_obj)
+
+    return render_template('admin-point-types.html', point_types=point_types_objects)
+
+
+@app.route('/admin/point_types/<string:name>', methods=['DELETE'])
+@secure("admin")
+def remove_point_type(name):
+    PointType.find_by_name(name).remove_from_db()
+    return jsonify({"message": "ok"}), 200
+
+
+@app.route('/admin/point_types', methods=['POST'])
+@secure("admin")
+def add_point_type():
+    json = request.get_json()
+    name = json['name']
+
+    point_type = PointType(name)
+    point_type.save_to_db()
 
     return jsonify({"message": "ok"}), 201
 

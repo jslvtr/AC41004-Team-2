@@ -1,0 +1,28 @@
+<div class="point-types content container">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Point Types Editor</div>
+
+        <!-- Table -->
+        <table class="table">
+            <tr>
+                <th>Point Type Name</th>
+                <th class="center">Total points across all users</th>
+                <th class="center">Created date</th>
+                <th class="center">Actions</th>
+            </tr>
+            {% for type in point_types %}
+            <tr>
+                <td>{{ type.name }}</td>
+                <td class="center">{{ type.total }}</td>
+                <td class="center">{{ type.date.strftime("%d-%m-%Y") }}</td>
+                <td class="center"><span class="glyphicon glyphicon-remove" onclick="remove_point_type('{{ type.name }}', this)"></span></td>
+            </tr>
+            {% endfor %}
+            <tr id="add-point-type">
+                <td colspan="3"><input type="text" class="form-control" id="new-point-type" name="new-point-type" placeholder="name..."/></td>
+                <td class="center"><button class="btn btn-primary" type="button" onclick="add_point_type()">Add</button></td>
+            </tr>
+        </table>
+    </div>
+</div>

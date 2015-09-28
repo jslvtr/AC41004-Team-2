@@ -1,4 +1,6 @@
+import datetime
 from src.common.database import Database
+from src.models.user import User
 
 __author__ = 'jslvtr'
 
@@ -6,8 +8,9 @@ __author__ = 'jslvtr'
 class PointType(object):
     COLLECTION = "point_types"
 
-    def __init__(self, name):
+    def __init__(self, name, date=datetime.datetime.utcnow()):
         self.name = name
+        self.date = date
 
     @classmethod
     def find_by_name(cls, name):
@@ -24,10 +27,19 @@ class PointType(object):
 
     def json(self):
         json = {
-            "name": self.name
+            "name": self.name,
+            "date": self.date
         }
 
         return json
+
+    def users_with_point(self):
+        users = Database.find(User.COLLECTION, {"points.{}".format(self.name): {"$exists": True}})
+        total = 0
+        for user in users:
+            total += user['points'][self.name]
+
+        return total
 
     @staticmethod
     def get_point_types():
