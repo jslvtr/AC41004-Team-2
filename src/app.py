@@ -13,6 +13,7 @@ from src.models.page import Page, NoSuchPageExistException
 
 from src.models.permissions import Permissions
 from src.models.quiz import Quiz
+from src.models.quiz_profile import QuizProfile
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -650,14 +651,14 @@ def page_delete(page_id):
 @app.route('/quizzes', methods=['GET'])
 @secure("user")
 def get_quizzes_view():
-    quizzez = Quiz.get_all()
-    return render_template('quiz/user/list.html', quizzez=quizzez)
+    quizzes = Quiz.get_all()
+    return render_template('quiz/user/list.html', quizzes=quizzes)
 
 
 @app.route('/quiz_profile/<uuid:quiz_id>', methods=['GET'])
 @secure("user")
 def get_quiz_profile_view(quiz_id):
-    quiz = Quiz.get_by_id(quiz_id)
+    quiz = QuizProfile.get_by_composite_id(quiz_id,session['email'])
     return render_template('quiz/user/quiz_profile.html', quiz=quiz)
 
 
@@ -668,10 +669,43 @@ def get_quiz_view(quiz_id):
     return render_template('quiz/user/quiz.html', quiz=quiz)
 
 
-@app.route('/quiz', methods=['DELETE'])
-@secure("user")
-def get_quizzes_view(page_id):
-    return "Not implemented"
+@app.route('/admin/quizzes/<uuid:quiz_id>', methods=['GET'])
+@secure("admin")
+def get_admin_quizzes_view(quiz_id=None):
+    quizzes = Quiz.get_all()
+    quiz =None
+    if quiz_id is not None:
+        Quiz.get_by_id(quiz_id)
+    return render_template('quiz/admin/main.html', quizzes=quizzes, active_quiz = quiz)
+
+@app.route('/admin/quizzes/add', methods=['GET'])
+@secure("admin")
+def get_admin_quizzes_view_add(quiz_id=None):
+    quizzes = Quiz.get_all()
+    quiz =None
+    if quiz_id is not None:
+        Quiz.get_by_id(quiz_id)
+    return render_template('quiz/admin/main.html', quizzes=quizzes, active_quiz = quiz, it_is_new="True")
+
+@app.route('/admin/quiz', methods=['POST'])
+@secure("admin")
+def add_quiz(quiz_id):
+    quiz = Quiz.get_by_id(quiz_id)
+    return render_template('quiz/user/quiz.html', quiz=quiz)
+
+
+@app.route('/admin/quiz/<uuid:quiz_id>', methods=['PUT'])
+@secure("admin")
+def edit_quiz(quiz_id):
+    quiz = Quiz.get_by_id(quiz_id)
+    return render_template('quiz/user/quiz.html', quiz=quiz)
+
+
+@app.route('/admin/quiz/<uuid:quiz_id>', methods=['Delete'])
+@secure("admin")
+def delete_quiz(quiz_id):
+    quiz = Quiz.remove_from_db(quiz_id)
+    return render_template('quiz/user/quiz.html', quiz=quiz)
 
 @app.before_first_request
 def initdb():
