@@ -89,7 +89,10 @@
                 {{ event.description }}
             </textarea>
             <!-- Editor END -->
-            {% if atcion_type == "Add" %}
+
+            <br>
+            {% if action_type == "Add" %}
+
                 <button type="button" onclick="add_event('{{event._id}}')" class="btn btn-primary">Add</button>
             {% elif atcion_type == "Edit" %}
                 <button type="button" onclick="update_event('{{event._id}}')" class="btn btn-primary">Edit</button>

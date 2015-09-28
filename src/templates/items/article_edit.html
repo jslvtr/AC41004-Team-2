@@ -61,6 +61,7 @@
                 <textarea name="summary" id="summary{{article._id}}" style="width:100%">
                     {{ article.summary }}
                 </textarea>
+                <br>
                 <!-- Editor END -->
                 {% if atcion_type == "Add" %}
                     <button type="button" onclick="add_article('{{article._id}}')" class="btn btn-primary">Add</button>

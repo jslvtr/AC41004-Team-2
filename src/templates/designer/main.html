@@ -1,0 +1,24 @@
+<div id="page-designer-wrapper" class="content-margin-top">
+
+    <div id="page-designer-sidebar-wrapper">
+        <ul class="page-designer-sidebar-nav">
+            {% include 'designer/sidebar.html' %}
+        </ul>
+    </div>
+    <div id="page-designer-content-wrapper">
+        <div class="page-designer-content">
+
+                        {% if active_page %}
+                            {% include 'designer/panel.html' %}
+                        {% endif %}
+
+        </div>
+    </div>
+</div>
+<br>
+
+<script>
+    pageDesigner.init({sidebar: $("#page-designer-sidebar"),
+                       panel: $("#page-designer-sidebar")})
+
+</script>

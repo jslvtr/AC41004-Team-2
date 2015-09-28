@@ -319,7 +319,10 @@ def articles_get_admin():
 @app.route('/admin/article/add', methods=['GET'])
 def article_add_get():
     try:
-        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), atcion_type="Add")
+
+        return render_template('items/article_edit.html', article=Article("", "", datetime.now(), page_id).to_json(),
+                               action_type="Add")
+
     except NoSuchArticleExistException:
         abort(404)
 

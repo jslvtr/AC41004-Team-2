@@ -1,22 +1,25 @@
-<!-- Model required: article -->
-<br>
-<br>
-<br>
-<br>
 
 
+<div class="margin-top panel panel-default">
+    <div class="panel-heading">
 
+<a href="/admin/article/edit/{{article._id}}"><button type="button" class="btn btn-default btn-group-sm">Edit</button></a>
+<button type="button" class="btn btn-default btn-group-sm" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
+        </div>
+    <div class="panel-body">
+    <h2>{{ article.title }}</h2>
+        {#article.start.strftime('%m/%d/%Y %I:%M %p')#}
+        </div>
+    <br>
+</div>
+<div>
 
-<a href="/admin/article/edit/{{article._id}}"><button type="button" class="btn btn-info btn-lg">Edit</button></a>
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
-
-<td>
     <div class="article">
         <h2>{{ article.title }}</h2>
         <p>{{ article.summary | safe}}</p>
         <hr class="separator"/>
     </div>
-</td>
+</div>
 
 
 
