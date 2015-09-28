@@ -2,7 +2,7 @@
 <div class="content row container">
 
     <div id="events-panel" class="panel panel-success">
-       <div class="panel-heading"><h4>Events</h4></div>
+       <div class="panel-heading"><h4>Events Admin</h4></div>
         <div class="panel-body">
             <button type="button" class="btn btn-success btn-lg" onclick="location.href='/admin/event/add';">Add new Event</button>
         </div>
@@ -10,7 +10,7 @@
 </div>
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
-<div id="to-page" class="content">
+<div id="to-page" class="content row container">
     <div class="pages">
         <ul>
             {% for event in events %}
@@ -30,7 +30,7 @@
 <script>
 
 	 pagingsys.init({selector: $("#to-page"),
-				     max_on_one_page: 2,
+				     max_on_one_page: 3,
 				   });
 </script>
 

@@ -348,7 +348,7 @@ def articles_get_admin(page_id):
 def article_add_get(page_id):
     try:
         return render_template('items/article_edit.html', article=Article("", "", datetime.now(), page_id).to_json(),
-                               atcion_type="Add")
+                               action_type="Add")
     except NoSuchArticleExistException:
         abort(404)
 
