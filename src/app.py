@@ -649,7 +649,7 @@ def designer_edit():
 def get_page(title):
     try:
         page = Page.get_by_title(title)
-        news = None
+        news = []
         if page.get_feed():
             news = [article for article in Database.find("articles",
                                                          {"page_id": page.get_id()},
