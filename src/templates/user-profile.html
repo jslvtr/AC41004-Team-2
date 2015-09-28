@@ -159,7 +159,7 @@
 
 
     <div class="table-responsive margin-top">
-        <h2>My Events</h2>
+        <h2>Upcoming Events</h2>
         <table class="table table-bordered table-striped">
             <tr>
                 <td><b>Event Name</b></td>
@@ -167,10 +167,28 @@
             </tr>
             {% for event in events %}
             <tr>
+                {% if event.start > date %}
                 <td><a href="/event/{{event._id}}">{{ event.title }}</a></td>
                 <td>{{event.start.strftime("%d-%m-%Y at %H:%M")}}</td>
+                {% endif %}
             </tr>
-
+            {% endfor %}
+        </table>
+    </div>
+        <div class="table-responsive margin-top">
+        <h2>Previous Events</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <td><b>Event Name</b></td>
+                <td><b>Event Date and Time</b></td>
+            </tr>
+            {% for event in events %}
+            <tr>
+                {% if event.start < date %}
+                <td><a href="/event/{{event._id}}">{{ event.title }}</a></td>
+                <td>{{event.start.strftime("%d-%m-%Y at %H:%M")}}</td>
+                {% endif %}
+            </tr>
             {% endfor %}
         </table>
     </div>

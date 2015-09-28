@@ -18,7 +18,7 @@ from flask import Flask, session, jsonify, request, render_template, redirect, u
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, time
 
 __author__ = 'jslvtr and stamas01 and jkerr123'
 
@@ -461,9 +461,11 @@ def view_profile():
     if session.contains('email') and session['email'] is not None:
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
+        current_date = datetime.now()
+        #current_date = current_date.strftime("%d-%m-%Y at %H:%M")
         totalpoints = profile.total_points()
         return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
-                               rank=profile.get_point_rank())
+                               rank=profile.get_point_rank(), date=current_date)
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
