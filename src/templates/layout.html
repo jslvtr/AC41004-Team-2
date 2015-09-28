@@ -23,7 +23,7 @@
 <body>
 
 <nav class="navbar navbar-fixed-top navbar-default ">
-    <div class="container-fluid">
+    <div class="container-fluid" id="custom-nav">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
@@ -32,8 +32,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand navbar-brand-override" href="/"><img src="{{ url_for('static', filename='img/logo.png') }}"
-                                                  class="img-responsive" alt="Responsive image"></a>
+            <div id="logo-container"><a class="navbar-brand navbar-brand-override" href="/"><img src="{{ url_for('static', filename='img/logo.png') }}"
+                                                  class="img-responsive" alt="Responsive image"></a></div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -114,24 +114,22 @@
 <!-- Footer with Social Media Sharing buttons - Facebook, Youtube, Twitter and LinkedIn-->
 
 <div class="footer-border"></div>
-<footer class="footer container">
+<footer class="footer">
     ​
-    <div class="row container">
-        <div class="col-md-4">
-            <img class="img-responsive" src="{{ url_for('static', filename='img/logo.png') }}"
+    <div>
+        <div class="">
+            <img src="{{ url_for('static', filename='img/logo.png') }}"
                  alt="the enterprise gym logo">
         </div>
     </div>
-    <div class="row container">
-        <div class="col-xs-1"><a href="https://twitter.com/Enterprise_Gym" class="fa fa-twitter "></a></div>
-        <div class="col-xs-1"><a href="https://www.facebook.com/EnterpriseGym" class="fa fa-facebook"></a></div>
-        <div class="col-xs-1"><a href="http://www.linkedin.com/groups?mostPopular&gid=3278209"
-                                 class="fa fa-linkedin"></a></div>
-        <div class="col-xs-1"><a href="https://www.youtube.com/user/EnterpriseGym" class="fa fa-youtube"></a></div>
-    </div>
+    <ul id="social">
+        <li class="social-item"><a href="https://twitter.com/Enterprise_Gym" class="fa fa-twitter "></a></li>
+        <li class="social-item"><a href="https://www.facebook.com/EnterpriseGym" class="fa fa-facebook"></a></li>
+        <li class="social-item"><a href="http://www.linkedin.com/groups?mostPopular&gid=3278209" class="fa fa-linkedin"></a></li>
+        <li class="social-item"><a href="https://www.youtube.com/user/EnterpriseGym" class="fa fa-youtube"></a></li>
+    </ul>
     ​
-    <div class="row container">
-
+    <div>
         <p>Copyright © 2015 The Enterprise Gym. All Rights Reserved. <a href="/contact">Contact Us.<br></a> Proudly
             designed and developed at <a href="http://www.dundee.ac.uk/">The University of Dundee.</a><br>
             This website is generously sponsored by the <a href="http://james-keiller-estates.com/Keller Estates">James
