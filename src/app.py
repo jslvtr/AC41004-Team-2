@@ -12,6 +12,7 @@ from src.models.image import Image
 from src.models.page import Page, NoSuchPageExistException
 
 from src.models.permissions import Permissions
+from src.models.quiz import Quiz
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -43,7 +44,6 @@ assert app.session_interface is not None, "The app session interface was None ev
 
 app.secret_key = os.urandom(32)
 assert app.secret_key is not None, "The app secret key was None even though we tried to set it!"
-
 
 def get_db():
     Database.initialize(mongodb_user, mongodb_password, mongo_url, int(mongo_port), mongo_database)
@@ -646,6 +646,32 @@ def page_delete(page_id):
     except NoSuchPageExistException:
         abort(404)
 
+
+@app.route('/quizzes', methods=['GET'])
+@secure("user")
+def get_quizzes_view():
+    quizzez = Quiz.get_all()
+    return render_template('quiz/user/list.html', quizzez=quizzez)
+
+
+@app.route('/quiz_profile/<uuid:quiz_id>', methods=['GET'])
+@secure("user")
+def get_quiz_profile_view(quiz_id):
+    quiz = Quiz.get_by_id(quiz_id)
+    return render_template('quiz/user/quiz_profile.html', quiz=quiz)
+
+
+@app.route('/quiz/<uuid:quiz_id>', methods=['GET'])
+@secure("user")
+def get_quiz_view(quiz_id):
+    quiz = Quiz.get_by_id(quiz_id)
+    return render_template('quiz/user/quiz.html', quiz=quiz)
+
+
+@app.route('/quiz', methods=['DELETE'])
+@secure("user")
+def get_quizzes_view(page_id):
+    return "Not implemented"
 
 @app.before_first_request
 def initdb():
