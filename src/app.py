@@ -167,6 +167,8 @@ def get_access_level():
 @secure("events")
 def events_get_admin():
     events = [event for event in Database.find("events", {})]
+    for event in events:
+        del event['description']
     return render_template('items/events_admin.html', events=events)
 
 
@@ -230,7 +232,7 @@ def add_permission():
 @secure("events")
 def event_add_get():
     try:
-        return render_template('items/event_edit.html', event=Event("","","","",datetime.now(),datetime.now()).to_json(), atcion_type ="Add", event_types=Constants.EVENT_TYPES)
+        return render_template('items/event_edit.html', event=Event("","","","",datetime.now(),datetime.now()).to_json(), action_type ="Add", event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -260,7 +262,7 @@ def event_add_post():
 def event_edit_get(event_id):
     try:
         event = Event.get_by_id(event_id)
-        return render_template('items/event_edit.html', event=event.to_json(), atcion_type="Edit", event_types=Constants.EVENT_TYPES)
+        return render_template('items/event_edit.html', event=event.to_json(), action_type="Edit", event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -313,13 +315,15 @@ def event_get(event_id):
 @secure("articles")
 def articles_get_admin():
     news = [article for article in Database.find("articles", {})]
+    for article in news:
+        del article['summary']
     return render_template('items/articles_admin.html', news=news)
 
 
 @app.route('/admin/article/add', methods=['GET'])
 def article_add_get():
     try:
-        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), atcion_type="Add")
+        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), action_type="Add")
     except NoSuchArticleExistException:
         abort(404)
 
@@ -347,7 +351,7 @@ def article_add_post ():
 def article_edit_get(article_id):
     try:
         old_article = Article.get_by_id(article_id)
-        return render_template('items/article_edit.html', article=old_article.to_json(), atcion_type="Edit")
+        return render_template('items/article_edit.html', article=old_article.to_json(), action_type="Edit")
     except NoSuchArticleExistException:
         abort(404)
 

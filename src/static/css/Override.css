@@ -1,15 +1,21 @@
 .content {
     max-width: 720px;
-    margin: 70px auto;
+    margin: 90px auto;
 }
 
 .footer {
     max-width: 720px;
 }
 
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
 .content-small {
     max-width: 480px;
-    margin: 70px auto;
+    margin: 90px auto;
 }
 
 .navbar > div{
@@ -45,7 +51,7 @@
 }
 
 .hero {
-    margin-top: 18px;
+    margin-top: 30px;
     width: 100%;
     border-bottom: 1px solid #f2f2f2;
 }
