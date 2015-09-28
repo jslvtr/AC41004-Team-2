@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-​
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,6 +49,18 @@
 
                 <li><a href="/activites" title="What we offer">Activities</a></li>
                 <li><a href="/news" title="All the latest">News</a></li>
+                {% if access_level == 'admin' %}
+                    {% for page in pages %}
+                        <li><a href="/page/{{ page.title }}">{{ page.title }} </a></li>
+                    {% endfor %}
+                {% else %}
+                    {% for page in pages %}
+                        {% if page.active %}
+                            <li><a href="/page/{{ page.title }}">{{ page.title }} </a></li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
 

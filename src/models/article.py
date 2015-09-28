@@ -14,12 +14,20 @@ class NoSuchArticleExistException(Exception):
 
 
 class Article:
-    def __init__(self, title, summary, date, publication=None, id_=None):
+    def __init__(self, title, summary, date, page_id, publication=None, id_=None):
         self._title = title
         self._summary = summary
         self._date = date
         self._publication = publication
         self._id = id_
+        self._page_id = page_id
+        self._synced = False
+
+    def get_page_id(self):
+        return self._page_id
+
+    def set_page_id(self,page_id):
+        self._page_id = page_id
         self._synced = False
 
     def get_title(self):
@@ -52,6 +60,12 @@ class Article:
         return Article.factory_form_json(article)
 
     @classmethod
+    def get_by_page(cls, page_id):
+        article = Database.find_one('articles', {'page_id': page_id})
+        return Article.factory_form_json(article)
+
+
+    @classmethod
     def get_by_id(cls, id_):
         article = Database.find_one('articles', {'_id': id_})
         return Article.factory_form_json(article)
@@ -60,7 +74,7 @@ class Article:
     def factory_form_json(cls, article_json):
         if article_json is None:
             raise NoSuchArticleExistException()
-        article_obj = cls(article_json['title'], article_json['summary'],  article_json['date'], article_json['publication'], article_json['_id'])
+        article_obj = cls(article_json['title'], article_json['summary'],  article_json['date'], article_json['page_id'], article_json['publication'], article_json['_id'])
         article_obj._synced = True
         return article_obj
 
@@ -82,6 +96,8 @@ class Article:
             return False
         if type(self._publication) is not str and self._publication is not None:
             return False
+        if not isinstance(self._page_id, uuid.UUID):
+            return False
         if type(self._date) is not datetime:
             return False
         return True
@@ -89,7 +105,14 @@ class Article:
     def sync_to_db(self):
         if self._synced is False:
             self._synced = True
-            Database.update('articles', {'_id': self._id}, {'title': self._title, 'summary': self._summary, 'publication': self._publication, 'date': self._date})
+            Database.update('articles',
+                            {'_id': self._id},
+                            {'title': self._title,
+                                'summary': self._summary,
+                                'page_id': self._page_id,
+                                'publication': self._publication,
+                                'date': self._date
+                            })
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -99,6 +122,6 @@ class Article:
                     self.get_publication() == other.get_publication())
 
     def to_json(self):
-        return {'title': self._title, 'summary': self._summary, 'date': self._date, 'publication': self._publication, '_id': self._id}
+        return {'title': self._title, 'summary': self._summary, 'date': self._date, 'page_id': self._page_id, 'publication': self._publication, '_id': self._id}
 
 

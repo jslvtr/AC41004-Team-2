@@ -9,6 +9,9 @@
             {% endif %}
         </div>
         <form id="article_edit_form{{article._id}}" >
+                <input type="hidden" name="page_id" value="{{article.page_id}}">
+
+
                 <label for="title{{article._id}}" class="control-label">Title:</label>
                 <input type="text" class="form-control" name="title" id="title{{article._id}}" value="{{article.title}}">
                 <label for="title{{article.publication}}" class="control-label">Publication:</label>

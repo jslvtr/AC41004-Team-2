@@ -9,6 +9,7 @@ from src.models.article import Article, NoSuchArticleExistException
 from src.models.event import Event, NoSuchEventExistException
 from src.models.eventregister import EventRegister
 from src.models.image import Image
+from src.models.page import Page, NoSuchPageExistException
 
 from src.models.permissions import Permissions
 from src.models.user import User
@@ -65,7 +66,11 @@ def not_found(ex):
 
 @app.route('/')
 def index():
-    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING, limit=3)]
+    news = [article for article in Database.find("articles",
+                                                 {"page_id": uuid.UUID('{00000000-0000-0000-0000-000000000000}')},
+                                                 sort='date',
+                                                 direction=pymongo.DESCENDING,
+                                                 limit=3)]
     events = [event for event in Database.find("events", {}, sort='start', direction=pymongo.DESCENDING, limit=3)]
 
     for article in news:
@@ -78,9 +83,15 @@ def index():
                            news=news)
 
 
-@app.route('/news')
-def news_page():
-    news = [article for article in Database.find("articles", {}, sort='date', direction=pymongo.DESCENDING)]
+@app.route('/news/<uuid:page_id>')
+@app.route('/news/')
+def news_page(page_id=None):
+    if page_id is None:
+        page_id = uuid.UUID('{00000000-0000-0000-0000-000000000000}')
+    news = [article for article in Database.find("articles",
+                                                 {"page_id": page_id},
+                                                 sort='date',
+                                                 direction=pymongo.DESCENDING)]
 
     for article in news:
         article['summary'] = Utils.clean_for_homepage(article['summary'])
@@ -129,11 +140,21 @@ def layout(response):
     if response.content_type == 'text/html; charset=utf-8' and 'static/' not in request.base_url:
         data = response.get_data()
         data = data.decode('utf-8')
+        pages = Page.get_all()
+        pages_json = []
+        for page in pages:
+            pages_json.append(page.to_json())
         if str(request.url_rule).startswith("/admin"):
-            data = render_template('admin.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
-            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('admin.html', access_level=get_access_level(), pages=pages_json, data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), pages=pages_json, data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         else:
-            data = render_template('layout.html', access_level=get_access_level(), data=data, user=session['email'] if session.contains('email') and session['email'] is not None else None)
+            data = render_template('layout.html', access_level=get_access_level(), pages=pages_json, data=data,
+                                   user=session['email'] if session.contains('email') and session[
+                                                                                              'email'] is not None else None)
         response.set_data(data)
         response.direct_passthrough = False
 
@@ -232,7 +253,9 @@ def add_permission():
 @secure("events")
 def event_add_get():
     try:
-        return render_template('items/event_edit.html', event=Event("","","","",datetime.now(),datetime.now()).to_json(), action_type ="Add", event_types=Constants.EVENT_TYPES)
+        return render_template('items/event_edit.html',
+                               event=Event("", "", "", "", datetime.now(), datetime.now()).to_json(), action_type="Add",
+                               event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -262,7 +285,8 @@ def event_add_post():
 def event_edit_get(event_id):
     try:
         event = Event.get_by_id(event_id)
-        return render_template('items/event_edit.html', event=event.to_json(), action_type="Edit", event_types=Constants.EVENT_TYPES)
+        return render_template('items/event_edit.html', event=event.to_json(), action_type="Edit",
+                               event_types=Constants.EVENT_TYPES)
     except NoSuchEventExistException:
         abort(404)
 
@@ -311,33 +335,36 @@ def event_get(event_id):
         abort(404)
 
 
-@app.route('/admin/articles', methods=['GET'])
+@app.route('/admin/articles/<uuid:page_id>', methods=['GET'])
 @secure("articles")
-def articles_get_admin():
-    news = [article for article in Database.find("articles", {})]
+def articles_get_admin(page_id):
+    news = [article for article in Database.find("articles", {'page_id': page_id})]
     for article in news:
         del article['summary']
-    return render_template('items/articles_admin.html', news=news)
+    return render_template('items/articles_admin.html', news=news, page_id=page_id)
 
 
-@app.route('/admin/article/add', methods=['GET'])
-def article_add_get():
+@app.route('/admin/article/add/<uuid:page_id>', methods=['GET'])
+def article_add_get(page_id):
     try:
-        return render_template('items/article_edit.html', article=Article("","",datetime.now()).to_json(), action_type="Add")
+        return render_template('items/article_edit.html', article=Article("", "", datetime.now(), page_id).to_json(),
+                               atcion_type="Add")
     except NoSuchArticleExistException:
         abort(404)
 
 
-@app.route('/admin/article', methods=['POST'])
+@app.route('/admin/article/', methods=['POST'])
 @secure("articles")
-def article_add_post ():
+def article_add_post():
     try:
         article_date = datetime.strptime(request.form.get('date'), '%m/%d/%Y %I:%M %p')
         new_article = None
         if request.form.get('publication') is "":
-            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date)
+            new_article = Article(request.form.get('title'), request.form.get('summary'), article_date,
+                                  uuid.UUID(request.form.get('page_id')), )
         else:
             new_article = Article(request.form.get('title'), request.form.get('summary'), article_date,
+                                  uuid.UUID(request.form.get('page_id')),
                                   request.form.get('publication'))
         if not new_article.is_valid_model():
             abort(500)
@@ -356,7 +383,7 @@ def article_edit_get(article_id):
         abort(404)
 
 
-@app.route('/admin/article', methods=['PUT'])
+@app.route('/admin/article/', methods=['PUT'])
 @secure("articles")
 def article_edit_put():
     try:
@@ -365,12 +392,14 @@ def article_edit_put():
             new_article = Article(request.form.get('title'),
                                   request.form.get('summary'),
                                   article_date,
+                                  uuid.UUID(request.form.get('page_id')),
                                   None,
                                   uuid.UUID(request.form.get('id')))
         else:
             new_article = Article(request.form.get('title'),
                                   request.form.get('summary'),
                                   article_date,
+                                  uuid.UUID(request.form.get('page_id')),
                                   request.form.get('publication'),
                                   uuid.UUID(request.form.get('id')))
         if not new_article.is_valid_model():
@@ -381,7 +410,7 @@ def article_edit_put():
         abort(500)
 
 
-@app.route('/article/<uuid:article_id>', methods=['DELETE'])
+@app.route('/admin/article/<uuid:article_id>', methods=['DELETE'])
 @secure("articles")
 def article_delete(article_id):
     try:
@@ -521,7 +550,6 @@ def update_attended(user, event_id):
     return jsonify({"message": "ok"}), 200
 
 
-
 @app.route('/edit-profile')
 def edit_profile_page():
     return render_template('edit-profile.html')
@@ -541,6 +569,109 @@ def register_page():
 @app.route('/login')
 def login_page():
     return render_template('login.html')
+
+
+@app.route('/admin/designer', methods=['GET'])
+@secure("admin")
+def designer():
+    pages = Page.get_all()
+    pages_json = []
+    active_page = None
+    for page in pages:
+        if page is pages[0]:
+            active_page = pages[0].to_json()
+        pages_json.append(page.to_json())
+    return render_template('designer/main.html', pages=pages_json, active_page=active_page)
+
+
+@app.route('/admin/designer/add', methods=['GET'])
+@secure("admin")
+def designer_add_get():
+    pages = Page.get_all()
+    pages_json = []
+    active_page = Page("", "")
+    for page in pages:
+        pages_json.append(page.to_json())
+    return render_template('designer/main.html', pages=pages_json, active_page=active_page)
+
+
+@app.route('/admin/designer/<title>', methods=['GET'])
+@secure("admin")
+def designer_s(title=None):
+    pages = Page.get_all()
+    pages_json = []
+    active_page = None
+    for page in pages:
+        if page.get_title() == title:
+            active_page = page.to_json()
+        pages_json.append(page.to_json())
+    return render_template('designer/main.html', pages=pages_json, active_page=active_page)
+
+
+@app.route('/admin/page/add/', methods=['POST'])
+@secure("admin")
+def designer_add():
+    page = Page(request.form.get('title'),
+                request.form.get('content'),
+                bool(request.form.get('feed')),
+                bool(request.form.get('active')))
+    if not page.is_valid_model():
+        return jsonify({"result": "error", "field": "", "message": "Unknown Error"}), 200
+
+    if len(page.get_title()) == 0:
+        return jsonify({"result": "error", "field": "title", "message": "Title cannot be empty!"}), 200
+    if page.is_there_any_with_title(page.get_title()):
+        return jsonify({"result": "error", "field": "title", "message": "Title has to be unique!"}), 200
+    page.save_to_db()
+
+    return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+
+
+@app.route('/admin/page/edit/', methods=['PUT'])
+@secure("admin")
+def designer_edit():
+    page = Page(request.form.get('title'),
+                request.form.get('content'),
+                bool(request.form.get('feed')),
+                bool(request.form.get('active')),
+                uuid.UUID(request.form.get('id')))
+    if not page.is_valid_model():
+        return jsonify({"result": "error", "field": "", "message": "Unknown Error"}), 200
+
+    if len(page.get_title()) == 0:
+        return jsonify({"result": "error", "field": "title", "message": "Title cannot be empty!"}), 200
+    page.sync_to_db()
+
+    return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+
+
+@app.route('/page/<title>', methods=['GET'])
+def get_page(title):
+    try:
+        page = Page.get_by_title(title)
+        news = None
+        if page.get_feed():
+            news = [article for article in Database.find("articles",
+                                                         {"page_id": page.get_id()},
+                                                         sort='date',
+                                                         direction=pymongo.DESCENDING,
+                                                         limit=3)]
+            for article in news:
+                article['summary'] = Utils.clean_for_homepage(article['summary'])
+        return render_template('page.html', page=page.to_json(), news=news)
+    except NoSuchPageExistException as e:
+        abort(401)
+
+
+@app.route('/admin/page/<uuid:page_id>', methods=['DELETE'])
+@secure("admin")
+def page_delete(page_id):
+    try:
+        old_page = Page.get_by_id(page_id)
+        old_page.remove_from_db()
+        return jsonify({"message": "Done"}), 200
+    except NoSuchPageExistException:
+        abort(404)
 
 
 @app.before_first_request
