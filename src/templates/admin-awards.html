@@ -1,0 +1,58 @@
+<div class="content container">
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Awards Editor</div>
+
+        <div class="level-0">
+            <select id="top-selector">
+                <option value="All of the following">All of the following</option>
+                <option value="Any of the following">Any of the following</option>
+            </select>
+
+            <div class="level-1">
+                <select>
+
+                </select>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <table class="table">
+            <tr>
+                <td colspan="7">
+                    <select id="top-selector">
+                        <option value="All of the following">All of the following</option>
+                        <option value="Any of the following">Any of the following</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td colspan="5">
+                    <select>
+                        <option value="All of the following">All of the following</option>
+                        <option value="Any of the following">Any of the following</option>
+                        {% for type in point_types %}
+                            <option value="{{ type.name }}">{{ type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td class="center"><span class="glyphicon glyphicon-remove"
+                                         onclick="remove_permission('{{ permission.name }}', this)"></span></td>
+            </tr>
+            <tr id="add-permission">
+                <td><input type="text" class="form-control" id="new-permission" name="new-permission"
+                           placeholder="name..."/></td>
+                <td class="center middle"><input type="checkbox" class="center" id="admin-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="events-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="articles-permission"></td>
+                <td class="center middle"><input type="checkbox" class="center" id="user-permission"></td>
+                <td class="center">
+                    <button class="btn btn-primary" type="button" onclick="add_permission()">Add</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
