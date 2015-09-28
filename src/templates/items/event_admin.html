@@ -1,21 +1,17 @@
 <!-- Model required: event -->
 
-
-<div class="content container">
-    <div class="content container">
+<div>
         <a href="/admin/event/edit/{{event._id}}"><button type="button" class="btn btn-info btn-lg">Edit</button></a>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
 
         <a href="/admin/event/registrations/{{event._id}}"><button type="button" class="btn btn-info btn-lg"> View Registered Users</button></a>
 
-    </div>
     <div class="panel-body">
         <h1>{{ event.title}}</h1>
         <p>{{ event.description|safe }}{#Sub heading data here, possibly might need to truncate this #}</p >
         {#event.start.strftime('%m/%d/%Y %I:%M %p')#}
     </div>
 </div>
-
 
 
 <!-- Delete -->
