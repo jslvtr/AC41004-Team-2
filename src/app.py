@@ -12,6 +12,7 @@ from src.models.image import Image
 from src.models.page import Page, NoSuchPageExistException
 
 from src.models.permissions import Permissions
+from src.models.university import University
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -552,7 +553,101 @@ def update_attended(user, event_id):
 
 @app.route('/edit-profile')
 def edit_profile_page():
-    return render_template('edit-profile.html')
+    universities = University.get_uni_list()
+    return render_template('edit-profile.html', universities=universities)
+
+
+@app.route('/populate-colleges/<university>', methods=["GET"])
+def populate_colleges(university):
+    university = University.get_uni(university)
+    colleges = [college['name'] for college in university['colleges']]
+    return jsonify({"colleges": colleges})
+
+
+@app.route('/populate-courses/<university>/<college>', methods=["GET"])
+def populate_courses(university, college):
+    college = University.get_college(university, college)
+    courses = [course for course in college['courses']]
+    return jsonify({"courses": courses})
+
+
+@app.route('/admin/edit-universities')
+@secure("admin")
+def edit_uni_page():
+    if session.contains('email') and session['email'] is not None:
+        if User.get_user_permissions(session['email']) == 'admin':
+            universities = University.get_uni_list()
+            return render_template('university-update.html', universities=universities)
+
+    else:
+        abort(401)
+
+
+@app.route('/add-uni', methods=["POST"])
+@secure("admin")
+def add_university():
+    json = request.get_json()
+    uni = json['uni']
+    if University.get_uni(uni):
+        return jsonify({"error": "University already exists"}), 201
+    University.add_university(uni)
+    return jsonify({"message": "OK"}), 201
+
+
+@app.route('/remove-uni/<university>', methods=["DELETE"])
+@secure("admin")
+def remove_university(university):
+    University.delete_university(university)
+    return jsonify({"message": "OK"}), 200
+
+
+@app.route('/add-college', methods=["POST"])
+@secure("admin")
+def add_college():
+    json = request.get_json()
+    uni = json['uni']
+    college = json['college']
+    if University.get_college(uni, college):
+        return jsonify({"error": "College already exists"}), 201
+    University.add_college(uni, college)
+    return jsonify({"message": "OK"}), 201
+
+
+@app.route('/remove-college/<university>/<college>', methods=["DELETE"])
+@secure("admin")
+def remove_college(university, college):
+    University.delete_college(university, college)
+    return jsonify({"message": "OK"}), 200
+
+
+@app.route('/add-course', methods=["POST"])
+@secure("admin")
+def add_course():
+    json = request.get_json()
+    uni = json['uni']
+    college = json['college']
+    course = json['course']
+    if University.get_course(uni, college, course):
+        return jsonify({"error": "Course already exists"}), 201
+    University.add_course(uni, college, course)
+    return jsonify({"message": "OK"}), 201
+
+
+@app.route('/remove-course/<university>/<college>/<course>', methods=["DELETE"])
+@secure("admin")
+def remove_course(university, college, course):
+    University.delete_course(university, college, course)
+    return jsonify({"message": "OK"}), 200
+
+
+@app.route('/check-password', methods=["POST"])
+def check_password():
+    json = request.get_json()
+    password = json['password']
+    if User.check_login(session['email'], password):
+        return jsonify({"message": "OK"}), 201
+    return jsonify({"error": "Password is incorrect"}), 201
+
 
 
 @app.route('/logout')
