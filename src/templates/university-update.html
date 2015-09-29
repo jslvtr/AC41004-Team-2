@@ -1,7 +1,13 @@
 <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"></script>
 <script src="/static/js/universities.js"></script>
 
-<div class="content container">
+<div class="content container edit-uni">
+    <h1>Edit University List</h1>
+    <br>
+        <label>Enter your current password to edit the University List</label>
+        <input class="form-control" type="password" id="password" name="password">
+
+        <br>
     <p>
 
         <label>Place of Study</label> <select size="5" class="form-control" id="university" name="university"
@@ -10,33 +16,43 @@
         <option value="{{university.name}}">{{university.name}}</option>
         {%endfor%}</select>
         <br>
-        <input class="form-control" type="text" id="unitoadd">
-        <input class="btn btn-default" type="submit" value="Add" onclick="add_university()">
-        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_university()">
-
+        <div class="form-group">
+            <label>University Name</label>
+            <input class="form-control" type="text" id="unitoadd" placeholder="Add university name">
+        </div>
+        <div class="form-group">
+            <input class="btn btn-info btn-sm" type="submit" value="Add" onclick="add_university()">
+            <input class="btn btn-info btn-sm" type="submit" value="Delete" onclick="delete_university()">
+        </div>
 
         <br>
         <label>Department Within University</label> <select size="5" class="form-control" id="college" name="college"
                                                         onchange="populate_courses()">
     </select>
         <br>
-        <input class="form-control" type="text" id="collegetoadd">
-        <input class="btn btn-default" type="submit" value="Add" onclick="add_college()">
-        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_college()">
-
+    <div class="form-group">
+            <label>Department Name</label>
+            <input class="form-control" type="text" id="collegetoadd" placeholder="Add Department">
+    </div>
+    <div class="form-group">
+        <input class="btn btn-info btn-sm" type="submit" value="Add" onclick="add_college()">
+        <input class="btn btn-info btn-sm" type="submit" value="Delete" onclick="delete_college()">
+    </div>
         <br>
 
         <label>Degree Subject</label> <select size="5" class="form-control" id="course" name="course">
     </select>
 
-        <input class="form-control" type="text" id="coursetoadd">
-        <input class="btn btn-default" type="submit" value="Add" onclick="add_course()">
-        <input class="btn btn-default" type="submit" value="Delete" onclick="delete_course()">
+    <div class="form-group">
+        <label>Degree Subject</label>
+        <input class="form-control" type="text" id="coursetoadd" placeholder="Degree Subject">
+    </div>
+    <div class="form-group">
+        <input class="btn btn-info btn-sm" type="submit" value="Add" onclick="add_course()">
+        <input class="btn btn-info btn-sm" type="submit" value="Delete" onclick="delete_course()">
+    </div>
 
-        <br>
-        <label>Enter Your Current Password</label>
-        <input class="form-control" type="password" id="password" name="password">
-        <br>
+
 
     </p>
 </div>
