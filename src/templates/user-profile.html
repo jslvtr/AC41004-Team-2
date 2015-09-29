@@ -4,6 +4,9 @@
     {% elif profile %}
     <h2>Profile</h2>
 
+    <a class="btn btn-success btn-lg dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+
+
     {% if profile.data|length != 0 %}
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -181,13 +184,15 @@
             <tr>
                 <td><b>Event Name</b></td>
                 <td><b>Event Date and Time</b></td>
+                <td><b>Points Gained</b></td>
             </tr>
-            {% for event in events %}
+            {% for event in attended_events %}
             <tr>
-                {% if event.start < date %}
+
                 <td><a href="/event/{{event._id}}">{{ event.title }}</a></td>
-                <td>{{event.start.strftime("%d-%m-%Y at %H:%M")}}</td>
-                {% endif %}
+                <td>{{event.start.strftime("%d-%m-%Y")}}</td>
+                <td>{{event.points}}</td>
+
             </tr>
             {% endfor %}
         </table>

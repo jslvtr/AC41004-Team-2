@@ -25,7 +25,6 @@ class University(object):
                 return college
         return False
 
-
     @staticmethod
     def get_course(university, college, course_to_find):
         college = University.get_college(university, college)

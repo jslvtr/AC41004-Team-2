@@ -38,6 +38,9 @@ class EventRegister(object):
             else:
                 return False
 
+
+
+
         @staticmethod
         def list_registered_users(event):
             return Database.find("registrations", {"event": event})

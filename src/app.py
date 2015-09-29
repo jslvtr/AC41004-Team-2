@@ -461,11 +461,12 @@ def view_profile():
     if session.contains('email') and session['email'] is not None:
         profile = User.find_by_email(session['email'])
         events = profile.get_registered_events(session['email'])
+        attended_events = profile.get_all_attended(session['email'])
         current_date = datetime.now()
         #current_date = current_date.strftime("%d-%m-%Y at %H:%M")
         totalpoints = profile.total_points()
-        return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
-                               rank=profile.get_point_rank(), date=current_date)
+        return render_template('user-profile.html', profile=profile, events=events, attended_events=attended_events,
+        totalpoints=totalpoints, rank=profile.get_point_rank(), date=current_date)
     else:
         return render_template('user-profile.html', message="Not Logged In")
 
@@ -477,8 +478,8 @@ def edit_profile():
         user = User.find_by_email(session['email'])
         user.data.update(firstname=request.form['firstname'], lastname=request.form['lastname'],
                          university=request.form['university'], level=request.form['level'],
-                         country=request.form['country'], school=request.form['school'],
-                         subject=request.form['subject'], year=request.form['yearofstudy'])
+                         country=request.form['country'], school=request.form['college'],
+                         subject=request.form['course'], year=request.form['yearofstudy'])
 
         user.save_to_db()
         return make_response(view_profile())
@@ -556,7 +557,8 @@ def update_attended(user, event_id):
 @app.route('/edit-profile')
 def edit_profile_page():
     universities = University.get_uni_list()
-    return render_template('edit-profile.html', universities=universities)
+    profile = User.find_by_email(session['email'])
+    return render_template('edit-profile.html', universities=universities, profile=profile)
 
 
 @app.route('/populate-colleges/<university>', methods=["GET"])

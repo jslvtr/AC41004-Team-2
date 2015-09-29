@@ -67,6 +67,16 @@ class User(object):
         return None
 
     @staticmethod
+    def get_all_attended(user):
+        events_attended = Database.find("registrations", {"user": user, "attended": "Yes"})
+        if events_attended is not None:
+            events = list()
+            for event in events_attended:
+                events.append(Database.find_one("events", {"_id": event['event']}))
+            return events
+        return None
+
+    @staticmethod
     def get_user_list():
         return Database.find("users", {})
 
