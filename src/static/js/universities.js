@@ -44,6 +44,7 @@ function populate_courses()
 
     var uni = $("#university").val();
     var college = $("#college").val();
+    $("#course").empty();
     $.ajax({
         type: "GET",
             url: "/populate-courses/" + uni + "/" + college,

@@ -1,51 +1,60 @@
+<script src="/static/js/countries.js"></script>
+<script src="/static/js/universities.js"></script>
+
 <div class="content container">
     <p>
 
     <form class="form-group" id="edit-profile" action="user/edit-profile" method="POST">
-            <label>First Name</label>
-            <input class="form-control" type="text" name="firstname">
-            <br>
-            <label>Last Name</label> <input class="form-control" type="text" name="lastname">
-            <br>
-            <label>Country</label> <select class="form-control" name="country">
-                    <option value="Scotland">Scotland</option>
-                    <option value="England">England</option>
-                    </select>
-            <br>
-            <label>Place of Study</label> <select class="form-control" name="university">
-                    <option value="Dundee">University Of Dundee</option>
-                    <option value="Abertay">Abertay</option>
-                    </select>
-            <br>
-            <label>Level of Study</label> <select class="form-control" name="level">
-                    <option value="Undergraduate">Undergraduate</option>
-                    <option value="Postgraduate">Postgraduate</option>
-                    </select>
-            <br>
-            <label>School Within University</label> <select class="form-control" name="school">
-                    <option value="Maths, Physics, Computing">Maths, Physics, Computing</option>
-                    <option value="Other School">Other School</option>
-                    </select>
-            <br>
-            <label>Degree Subject</label> <select class="form-control" name="subject">
-                        <option value="Applied Computing">Applied Computing</option>
-                        <option value="Computing Science">Computing Science</option>
-                        <option value="Other Subject">Other Subject</option>
-                    </select>
-            <br>
-            <label>Year Of Study</label> <select class="form-control" name="yearofstudy">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-            <br>
-            <br>
-                <label>Enter Your Current Password</label>
-                <input class="form-control" type="password" name="password">
-            <br>
+        <label>First Name</label>
+        <input class="form-control" type="text" name="firstname" value="{{profile.data['firstname']}}">
+        <br>
+        <label>Last Name</label>
+        <input class="form-control" type="text" name="lastname" value="{{profile.data['lastname']}}">
+        <br>
+        <label>Country</label> <select class="form-control" id="country" name="country">
+        <option selected>{{profile.data['country']}}</option>
 
-            <input class="btn btn-default" type="submit" Value="Submit">
-        </form>
+    </select>
+        <br>
+        <label>Place of Study</label> <select class="form-control" id="university" name="university"
+                                              onchange="populate_colleges()">
+        {% for university in universities %}
+        {% if university.name == profile.data['university']%}
+        <option selected value="{{university.name}}">{{university.name}}</option>
+        {% else %}
+        <option value="{{university.name}}">{{university.name}}</option>
+        {%endif%}
+        {%endfor%}
+    </select>
+        <br>
+        <label>School Within University</label> <select class="form-control" id="college" name="college"
+                                                        onchange="populate_courses()">
+
+    </select>
+        <br>
+        <label>Degree Subject</label> <select class="form-control" id="course" name="course">
+
+    </select>
+
+        <br>
+        <label>Level of Study</label> <select class="form-control" name="level">
+        <option value="Undergraduate">Undergraduate</option>
+        <option value="Postgraduate">Postgraduate</option>
+    </select>
+        <br>
+        <label>Year Of Study</label> <select class="form-control" name="yearofstudy">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+        <br>
+        <br>
+        <label>Enter Your Current Password</label>
+        <input class="form-control" type="password" name="password">
+        <br>
+
+        <input class="btn btn-default" type="submit" Value="Submit">
+    </form>
     </p>
 </div>
