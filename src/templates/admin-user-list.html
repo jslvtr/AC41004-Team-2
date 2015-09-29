@@ -1,7 +1,7 @@
 <div class="content container">
     <h2>User List</h2>
-        <table class="table table-bordered table-striped table-condensed">
-            <tr><td><b>Email</b></td><td><b>View Profile</b></td></tr>
+        <table class="table table-bordered table-striped table-condensed table-responsive">
+            <tr class="active"><td><b>Email</b></td><td><b>View Profile</b></td></tr>
             {% for user in users %}
             <tr>
                 <td>{{user.email}}</td>
