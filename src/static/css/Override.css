@@ -377,23 +377,17 @@ td.center.middle {
     color: #ffd700;
 }
 
+
+.topNav {
+    z-index: 100;
+}
+
 .admin-bar {
     margin-top: 35px;
     border-radius: 0 !important;
+    z-index; 1;
 }
 
 .admin-fixed-spacer {
     margin-top: 51px;
-}
-
-/*
-@import 'bootstrap.less';
-div.my-class {
-    .border-radius( 5px );
-*/
-
-@import 'bootstrap.less';
-div.edit-uni {
-    background: #F0F0F0;
-    .border-radius( 5px );
 }
