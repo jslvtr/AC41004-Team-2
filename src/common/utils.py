@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 
 class Utils(object):
 
+
+
     @staticmethod
     def email_is_valid(email):
         address = re.compile('^[\w\d.+-]+@([\w\d.]+\.)+[\w]+$')

@@ -1,5 +1,9 @@
+import csv
 from hashlib import sha256
 import uuid
+from io import StringIO
+
+from flask import make_response
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.event import Event
@@ -89,6 +93,25 @@ class User(object):
     def get_by_id(user_id):
         user = Database.find_one("users", {"_id": user_id})
         return user
+
+    @staticmethod
+    def get_by_filtering(query):
+        return Database.find("users", query)
+
+    @staticmethod
+    def export_to_csv(users):
+        fieldnames = ["firstname", "lastname", "email", 'permissions', 'level',
+                      'university', 'points', 'password', '_id', 'country', 'subject', 'school', 'year']
+
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for user in users:
+            writer.writerow(user)
+        file = make_response(si.getvalue())
+        file.headers["Content-Disposition"] = "attachment; filename=export.csv"
+        file.headers["Content-type"] = "text/csv"
+        return file
+
 
     def save_to_db(self):
         Database.update(self.COLLECTION, {"email": self.email}, {'$set': self.json()}, upsert=True)

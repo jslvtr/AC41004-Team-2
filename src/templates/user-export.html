@@ -1,0 +1,54 @@
+<script src="/static/js/countries.js"></script>
+<script src="/static/js/universities.js"></script>
+
+<div class="content container">
+    <p>
+
+    <form class="form-group" id="export-users" action="/admin/export-users/export" method="POST">
+
+        <label>Country</label> <select class="form-control" id="country" name="country">
+
+
+    </select>
+        <br>
+        <label>Place of Study</label> <select class="form-control" id="university" name="university"
+                                              onchange="populate_colleges()">
+        <option value="None"></option>
+
+        {% for university in universities %}
+        <option value="{{university.name}}">{{university.name}}</option>
+        {%endfor%}
+    </select>
+        <br>
+        <label>School Within University</label> <select class="form-control" id="college" name="college"
+                                                        onchange="populate_courses()">
+        <option value="None"></option>
+
+    </select>
+        <br>
+        <label>Degree Subject</label> <select class="form-control" id="course" name="course">
+        <option value="None"></option>
+
+
+    </select>
+
+        <br>
+        <label>Level of Study</label> <select class="form-control" id="level" name="level">
+        <option value="None"></option>
+        <option value="Undergraduate">Undergraduate</option>
+        <option value="Postgraduate">Postgraduate</option>
+    </select>
+        <br>
+        <label>Year Of Study</label> <select class="form-control" id="yearofstudy" name="yearofstudy">
+        <option value="None"></option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+        <br>
+        <br>
+        <input class="btn btn-default" type="submit" Value="Export Users">
+    </form>
+    </p>
+</div>
