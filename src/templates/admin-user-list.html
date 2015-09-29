@@ -1,9 +1,15 @@
 <div class="content container">
-        <ul>
+    <h2>User List</h2>
+        <table class="table table-bordered table-striped table-condensed">
+            <tr><td><b>Email</b></td><td><b>View Profile</b></td></tr>
             {% for user in users %}
-            <li><a href="/admin/view-profile/{{user.email}}">{{user.email}}</a></li>
+            <tr>
+                <td>{{user.email}}</td>
+                <td><a href="/admin/view-profile/{{user.email}}" ><button class="btn btn-default btn-sm">View</button></a>
+                </td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
 
 
