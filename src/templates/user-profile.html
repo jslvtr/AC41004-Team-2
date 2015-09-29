@@ -4,9 +4,11 @@
     {% elif profile %}
     <h2>Profile</h2>
 
-    <a class="btn btn-success btn-lg dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    <div class="">
+        <a class="btn btn-success btn-sm dropdown-menu-right dropdown-menu-right" href="/edit-profile">Edit Profile</a>
 
-
+    </div>
+    
     {% if profile.data|length != 0 %}
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
