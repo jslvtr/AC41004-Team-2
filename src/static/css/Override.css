@@ -27,8 +27,8 @@
 
 
 .content {
-    /*max-width: 720px;
-    margin: 90px auto;*/
+    max-width: 720px;
+    margin: 90px auto;
 }
 
 .footer {
@@ -383,5 +383,5 @@ td.center.middle {
 }
 
 .admin-fixed-spacer {
-    margin-top: 55px;
+    margin-top: 51px;
 }
