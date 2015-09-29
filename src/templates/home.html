@@ -35,16 +35,19 @@
     </div>
 </div>
 
-<div class="content container">
+
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
+<div id="event-news-container-center">
+  <div id="event-news-container">
    {% include 'items/news_panel.html' %}
     <div id="events-panel">
-        <h1>Upcoming Events</h1>
+        <h2>Upcoming Events:</h2>
         {% for event in events %}
                     {% include 'items/event_small.html' %}
-                    <hr class="separator"/>
+                    <!--<hr class="separator"/>-->
         {% endfor %}
-        <h4 class="see-more"><a href="/events">See event calendar</a></h4>
+        <!--<h4 class="see-more"><a href="/events">See event calendar</a></h4>-->
     </div>
+  </div>
 </div>
