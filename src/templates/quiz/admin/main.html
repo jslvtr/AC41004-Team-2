@@ -7,18 +7,10 @@
     </div>
     <div id="page-designer-content-wrapper">
         <div class="page-designer-content">
-
-                {% if active_page %}
-                    <!--{% include 'quiz/admin/panel.html' %}-->
+                {% if active_quiz or it_is_new %}
+                    {% include 'quiz/admin/panel.html' %}
                 {% endif %}
 
         </div>
     </div>
 </div>
-
-
-<script>
-    pageDesigner.init({sidebar: $("#page-designer-sidebar"),
-                       panel: $("#page-designer-sidebar")})
-
-</script>

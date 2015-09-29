@@ -1,4 +1,4 @@
-<form id="edit-page-form">
+<form id="edit-quiz-form">
     {% if it_is_new %}
         <h1>Create new quiz</h1>
     {% else %}
@@ -6,56 +6,35 @@
     {% endif %}
     <hr>
 
-    <input type="hidden" name="id" value="{{ active_page._id }}"/><br>
+    <input type="hidden" name="id" value="{{ active_quiz._id }}"/><br>
 
-    <label for="page_title" class="control-label">Title:</label><br>
+    <label for="quiz_title" class="control-label">Title:</label><br>
     <span class="help-inline" style="color: red;" id="title-error-message"></span>
-    <input type="text" id="page_title" placeholder="Enter Title.." name="title" value="{{ active_page.title }}" class="form-control"/><br>
+    <input type="text" id="quiz_title" placeholder="Enter Title.." name="quiz_title" value="{{ active_quiz.title }}" class="form-control"/><br>
+
+    <label for="quiz_points" class="control-label">Points:</label><br>
+    <span class="help-inline" style="color: red;" id="points-error-message"></span>
+    <input type="text" id="quiz_points" placeholder="Enter Points.." name="quiz_points" value="{{ active_quiz.points }}" class="form-control"/><br>
 
 
-    <label for="page_hasfeed" class="control-label">Has Feed:</label><br>
-    <p class="help-block">If you want to be able to add posts to the page that will appear below the main page content (e.g. news articles, publications, or interviews might be good topics for feeds).</p>
-    {% if active_page.feed %}
-        <input type="checkbox" name="feed" data-toggle="toggle" id="page_hasfeed" checked data-on="Yes" data-off="No" />
+    {% include 'quiz/shared/quiz.html' %}
+
+
+    {% if it_is_new %}
+        <input type="button" onclick="quizJs.add_quiz()" class="form-control btn btn-success margin-top" value="Create page">
     {% else %}
-        <input type="checkbox" name="feed" data-toggle="toggle" id="page_hasfeed" data-on="Yes" data-off="No" />
-    {% endif %}
-    <br>
-    <label for="page_active" class="control-label">Active:</label><br>
-    <p class="help-block">You can un-check this to prevent users from accessing the page, but without having to delete it.</p>
-    {% if active_page.active %}
-        <input type="checkbox" name="active" data-toggle="toggle" id="page_active" checked data-on="Yes" data-off="No" />
-    {% else %}
-        <input type="checkbox" name="active" data-toggle="toggle" id="page_active" data-on="Yes" data-off="No" />
-    {% endif %}
-    <br>
-
-    <script type="text/javascript" >
-    tinymce.init({
-        selector: "#page_content",
-        height : 500,
-        plugins: [
-            "advlist autolink lists link image charmap print preview anchor",
-            "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-    });
-    </script>
-
-    <label for="page_content" class="control-label">summary:</label>
-    <textarea name="content" id="page_content" style="width:100%">
-        {{ active_page.content }}
-    </textarea>
-
-    {% if not active_page.title %}
-        <input type="button" onclick="pageDesigner.add_page()" class="form-control btn btn-success margin-top" value="Create page">
-    {% else %}
-        <input type="button" onclick="pageDesigner.edit_page()" class="form-control btn btn-success margin-top" value="Update page">
+        <input type="button" onclick="quizJs.edit_quiz()" class="form-control btn btn-success margin-top" value="Update page">
     {% endif %}
 
 </form>
 
+<script>
+quizJs.init(    {
+                    obj: $("#quiz-container"),
+                    edit: true
+                }
+           );
+</script>
 
 <!-- Delete -->
 <div id="QuizDeleteConfirmModal" class="modal fade" role="dialog">
@@ -70,7 +49,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" onclick="pageDesigner.delete_page('{{active_page._id}}')" class="btn btn-primary">Delete</button>
+          <button type="button" onclick="quizJs.delete_quiz('{{active_quiz._id}}')" class="btn btn-primary">Delete</button>
       </div>
     </div>
 

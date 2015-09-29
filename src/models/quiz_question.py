@@ -18,13 +18,9 @@ class QuizQuestion:
 
     COLLECTION = "quiz"
 
-    def __init__(self, question, answers, id_=None):
+    def __init__(self, question, answers):
         self._question = question
         self._answers = answers
-        self._id = id_
-
-    def get_id(self):
-        return self._get_id
 
     def get_question(self):
         return self._question
@@ -35,60 +31,35 @@ class QuizQuestion:
     def get_answers(self):
         return self._answers
 
-    def set_publication(self, answers):
-        self._answers = answers
-
-    @classmethod
-    def get_by_id(cls, id_):
-        quiz_question = Database.find_one(QuizQuestion.COLLECTION, {'_id': id_})
-        return QuizQuestion.factory_form_json(quiz_question)
+    def set_answers(self, answers ):
+        self._answers  = answers
 
     @classmethod
     def factory_form_json(cls, quiz_question_json):
         if quiz_question_json is None:
             raise NoSuchQuizQuestionExistException()
         answers = []
-        for answer in quiz_question_json['answers']:
-            answers.append(QuizAnswer.factory_form_json(answer))
+        if quiz_question_json['answers'] is not None:
+            for answer in quiz_question_json['answers']:
+                answers.append(QuizAnswer.factory_form_json(answer))
 
-        quiz_question_obj = cls(quiz_question_json['question'], quiz_question_json['answers'], quiz_question_json['_id'])
+        quiz_question_obj = cls(quiz_question_json['question'], answers)
         return quiz_question_obj
 
-    def save_to_db(self):
-        if self._id is None:
-            self._id = uuid.uuid4()
-            Database.insert('articles', self.to_json())
 
-    def remove_from_db(self):
-        Database.remove('articles', {'_id': self._id})
 
-    def is_synced(self):
-        return self._synced
+
 
     def is_valid_model(self):
-        if type(self._title) is not str:
+        if not isinstance(self._question, str):
             return False
-        if type(self._summary) is not str:
+        if not isinstance(self._answers, list):
             return False
-        if type(self._publication) is not str and self._publication is not None:
-            return False
-        if not isinstance(self._page_id, uuid.UUID):
-            return False
-        if type(self._date) is not datetime:
-            return False
+        for answer in self._answers:
+            if not answer.is_valid_model():
+                return False
         return True
 
-    def sync_to_db(self):
-        if self._synced is False:
-            self._synced = True
-            Database.update('articles',
-                            {'_id': self._id},
-                            {'title': self._title,
-                             'summary': self._summary,
-                             'page_id': self._page_id,
-                             'publication': self._publication,
-                             'date': self._date
-                             })
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -96,4 +67,8 @@ class QuizQuestion:
                     self.get_question() == other.get_question())
 
     def to_json(self):
-        return {'question': self.get_question(),'answers': self._answers.to_json(), '_id': self._id}
+        answers = []
+        if self._answers is not None:
+            for answer in self._answers:
+                answers.append(answer.to_json())
+        return {'question': self.get_question(),'answers': answers}

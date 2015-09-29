@@ -14,6 +14,7 @@ from src.models.page import Page, NoSuchPageExistException
 from src.models.permissions import Permissions
 from src.models.quiz import Quiz
 from src.models.quiz_profile import QuizProfile
+from src.models.quiz_question import NoSuchQuizQuestionExistException
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
 from src.common.sessions import MongoSessionInterface
@@ -652,52 +653,87 @@ def page_delete(page_id):
 @secure("user")
 def get_quizzes_view():
     quizzes = Quiz.get_all()
-    return render_template('quiz/user/list.html', quizzes=quizzes)
+    quizzes_json = []
+    for quiz in quizzes:
+        quizzes_json.append(quiz.to_json())
+    return render_template('quiz/user/list.html', quizzes=quizzes_json)
 
 
 @app.route('/quiz_profile/<uuid:quiz_id>', methods=['GET'])
 @secure("user")
 def get_quiz_profile_view(quiz_id):
-    quiz = QuizProfile.get_by_composite_id(quiz_id,session['email'])
-    return render_template('quiz/user/quiz_profile.html', quiz=quiz)
+    quiz_profile = None
+    try:
+        quiz_profile = QuizProfile.get_by_composite_id(quiz_id,session['email'])
+    except NoSuchQuizQuestionExistException as e:
+        bin = None
+    return render_template('quiz/user/quiz_profile.html', quiz_profile=quiz_profile, quiz_id=quiz_id)
 
 
 @app.route('/quiz/<uuid:quiz_id>', methods=['GET'])
 @secure("user")
 def get_quiz_view(quiz_id):
     quiz = Quiz.get_by_id(quiz_id)
-    return render_template('quiz/user/quiz.html', quiz=quiz)
+    return render_template('quiz/user/quiz.html', active_quiz = quiz.to_json())
 
 
-@app.route('/admin/quizzes/<uuid:quiz_id>', methods=['GET'])
+@app.route('/admin/quizzes/<quiz_title>', methods=['GET'])
 @secure("admin")
-def get_admin_quizzes_view(quiz_id=None):
+def get_admin_quizzes_view(quiz_title=None):
     quizzes = Quiz.get_all()
-    quiz =None
-    if quiz_id is not None:
-        Quiz.get_by_id(quiz_id)
-    return render_template('quiz/admin/main.html', quizzes=quizzes, active_quiz = quiz)
+    quizzes_json = []
+    active_quiz = None
+    for quiz in quizzes:
+        if quiz._title == quiz_title:
+            active_quiz=quiz.to_json()
+        quizzes_json.append(quiz.to_json())
+    return render_template('quiz/admin/main.html', quizzes=quizzes_json, active_quiz = active_quiz)
+
 
 @app.route('/admin/quizzes/add', methods=['GET'])
 @secure("admin")
-def get_admin_quizzes_view_add(quiz_id=None):
+def get_admin_quizzes_view_add():
     quizzes = Quiz.get_all()
-    quiz =None
-    if quiz_id is not None:
-        Quiz.get_by_id(quiz_id)
-    return render_template('quiz/admin/main.html', quizzes=quizzes, active_quiz = quiz, it_is_new="True")
+    quizzes_json = []
+    active_quiz = None
+    for quiz in quizzes:
+        quizzes_json.append(quiz.to_json())
+    return render_template('quiz/admin/main.html', quizzes=quizzes_json, active_quiz=None, it_is_new="True")
+
 
 @app.route('/admin/quiz', methods=['POST'])
 @secure("admin")
-def add_quiz(quiz_id):
-    quiz = Quiz.get_by_id(quiz_id)
-    return render_template('quiz/user/quiz.html', quiz=quiz)
+def add_quiz():
+    if request.get_json() is None:
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    quiz = Quiz.factory_form_json(request.get_json())
+    if quiz.get_points() is "":
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be empty"}), 200
+    if not quiz.is_valid_model():
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    if len(quiz.get_title()) == 0:
+        return jsonify({"result": "error", "field": "title", "message": "Title cannot be empty!"}), 200
+    if quiz.get_points() < 0:
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be less then 0!"}), 200
+    quiz.save_to_db()
+    return jsonify({"message": "Done"}), 200
 
 
-@app.route('/admin/quiz/<uuid:quiz_id>', methods=['PUT'])
+@app.route('/admin/quiz', methods=['PUT'])
 @secure("admin")
-def edit_quiz(quiz_id):
-    quiz = Quiz.get_by_id(quiz_id)
+def edit_quiz():
+    if request.get_json() is None:
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    quiz = Quiz.factory_form_json(request.get_json())
+    if quiz.get_points() is "":
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be empty"}), 200
+    if not quiz.is_valid_model():
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    if len(quiz.get_title()) == 0:
+        return jsonify({"result": "error", "field":"title", "message": "Title cannot be empty!"}), 200
+    if quiz.get_points() < 0:
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be less then 0!"}), 200
+    quiz.sync_to_db();
     return render_template('quiz/user/quiz.html', quiz=quiz)
 
 

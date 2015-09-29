@@ -44,42 +44,47 @@ class Quiz:
         self._points = points
 
     @classmethod
-    def get_all(cls, id_):
-        quizzez_json = Database.find_one(QuizQuestion.COLLECTION, {})
-        quizzez = []
-        for quiz in quizzez_json:
-            quizzez.append(quiz.factory_form_json())
-        return quizzez
+    def get_all(cls,):
+        quizzes_json = Database.find(QuizQuestion.COLLECTION, {})
+        quizzes = []
+        for quiz in quizzes_json:
+            quizzes.append(Quiz.factory_form_json(quiz))
+        return quizzes
 
     @classmethod
     def get_by_id(cls, id_):
         quiz_question = Database.find_one(QuizQuestion.COLLECTION, {'_id': id_})
-        return QuizQuestion.factory_form_json(quiz_question)
+        return Quiz.factory_form_json(quiz_question)
+
+    @classmethod
+    def get_by_title(cls, title):
+        quiz_question = Database.find_one(QuizQuestion.COLLECTION, {'_title': title})
+        return Quiz.factory_form_json(quiz_question)
 
     @classmethod
     def factory_form_json(cls, quiz_json):
         if quiz_json is None:
             raise NoSuchQuizExistException()
         questions = []
-        for question in quiz_json['questions']:
-            questions.append(QuizQuestion.factory_form_json(question))
+        if quiz_json['questions'] is not None:
+            for question in quiz_json['questions']:
+                questions.append(QuizQuestion.factory_form_json(question))
             
-        quiz_obj = cls(questions, quiz_json['points'])
+        quiz_obj = cls(quiz_json['title'], questions, int(quiz_json['points']),  quiz_json['_id'])
         return quiz_obj
 
     def save_to_db(self):
-        if self._id is None:
-            self._id = uuid.uuid4()
-            Database.insert(self.COLLECTION, self.to_json())
+        self._id = uuid.uuid4()
+        Database.insert(self.COLLECTION, self.to_json())
 
     def remove_from_db(self):
         Database.remove(self.COLLECTION, {'_id': self._id})
 
 
     def is_valid_model(self):
-        if  isinstance(self._points, int):
+        if not isinstance(self._points, int):
             return False
-        if  isinstance(self._questions, list):
+        if not isinstance(self._questions, list):
             return False
         for question in self._questions:
             if not question.is_valid_model():
@@ -87,13 +92,16 @@ class Quiz:
         return True
 
     def sync_to_db(self):
-        if self._synced is False:
-            Database.update(self.COLLECTION,
-                            {'_id': self._id},
-                            {'title': self._title,
-                             'questions': self._questions.to_json(),
-                             'points': self._points
-                             })
+        questions = []
+        if self._questions is not None:
+            for question in self._questions:
+                questions.append(question.to_json())
+        Database.update(self.COLLECTION,
+                        {'_id': self._id},
+                        {'title': self._title,
+                         'questions': self._questions,
+                         'points': self._points
+                         })
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -102,4 +110,8 @@ class Quiz:
                     self.get_points() == other.get_points())
 
     def to_json(self):
-        return {'title': self._title, 'questions': self._questions.to_json(), 'points': self._points}
+        questions = []
+        if self._questions is not None:
+            for question in self._questions:
+                questions.append(question.to_json())
+        return {'title': self._title, 'questions': questions, 'points': self._points, '_id': self._id}

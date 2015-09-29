@@ -88,9 +88,9 @@ class QuizProfile:
         Database.remove(self.COLLECTION, {'quiz_id': self._quiz_id })
 
     def is_valid_model(self):
-        if  isinstance(self._quiz_id, uuid.UUID):
+        if not isinstance(self._quiz_id, uuid.UUID):
             return False
-        if isinstance(self._passed, bool):
+        if not isinstance(self._passed, bool):
             return False
         return True
 
