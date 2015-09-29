@@ -519,9 +519,12 @@ def admin_view_profile(user_email):
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
+            attended_events = profile.get_all_attended(profile.email)
+            current_date = datetime.now()
             permissions = User.get_user_permissions(session['email'])
             return render_template('user-profile.html', email=user_email, profile=profile, events=events, totalpoints=totalpoints,
-                                   rank=profile.get_point_rank(), permissions=permissions)
+                                   rank=profile.get_point_rank(), permissions=permissions, date=current_date,
+                                   attended_events=attended_events)
 
     else:
         abort(401)
