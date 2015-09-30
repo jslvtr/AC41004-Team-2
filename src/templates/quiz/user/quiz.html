@@ -1,8 +1,10 @@
 <br><br><br><br><br><br><br><br>
 <form id="edit-quiz-form">
     <input type="hidden" name="id" value="{{ active_quiz._id }}"/><br>
+    <input type="hidden" name="quiz_title" value="{{ active_quiz.title }}"/><br>
+    <input type="hidden" name="quiz_points" value="{{ active_quiz.points }}"/><br>
     {% include 'quiz/shared/quiz.html' %}
-    <input type="button" onclick="send_compelted_quiz()" value="Submit">
+    <input type="button" onclick="quizJs.send_compelted_quiz()" value="Submit">
 </form>
 
 <script>

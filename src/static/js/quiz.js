@@ -8,10 +8,17 @@ function QuizJs(){
     }
 
     this.init_edit = function (init_obj){
-        var quiz_list = init_obj.obj.find("ul#quiz-question-list");
+        init_obj.obj.find('.only-quiz-user-mode').remove();
+        var quiz_list = init_obj.obj.find("ul#quiz-question-list").children();
+
+        var pagination = $(init_obj.obj.find("ul.pagination"));
 
         for (var i = 0; i < quiz_list.length;i++)
             pagination.append("<li><a onclick='quizJs.selectQuestion(this)'>"+(i+1)+"</a></li>");
+
+        var select = $(pagination.children()[0]).children()[0]
+
+        this.selectQuestion(select)
     }
 
     this.init_normal = function (init_obj){
@@ -41,7 +48,10 @@ function QuizJs(){
         })
         for (var j = 0; j < questions.length ;j++)
             $(questions[j]).hide();
-        $(questions[selected-1]).show();
+        if (questions.length != $(pagination).children("li").length)
+             $(questions[selected-2]).show();
+        else
+            $(questions[selected-1]).show();
 
     }
 
@@ -88,6 +98,7 @@ function QuizJs(){
 
 
     }
+
 
 
     this.generate_obj_from_form = function()
@@ -151,7 +162,7 @@ function QuizJs(){
 
         $.ajax({
             type: "POST",
-            url: "/admin/quiz",
+            url: "/quiz",
             data: JSON.stringify(mydata),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',

@@ -41,14 +41,15 @@ class QuizProfile:
     def get_last_try(self):
         return self._last_try
 
-    def set_quiz_id(self, last_try):
+    def set_last_try(self, last_try):
         self._last_try = last_try
+
+    def set_user_id(self, user_id):
+        self._user_id = user_id
 
     def get_user_id(self):
         return self._user_id
 
-    def set_questions(self, user_id):
-        self._user_id = user_id
 
     def get_passed(self):
         return self._passed
@@ -69,8 +70,8 @@ class QuizProfile:
 
     @classmethod
     def get_by_composite_id(cls, quiz_id, user_id):
-        quiz_question = Database.find_one(QuizQuestion.COLLECTION, {'user_id': user_id, 'quiz_id': quiz_id})
-        return QuizQuestion.factory_form_json(quiz_question)
+        quiz_question = Database.find_one(QuizProfile.COLLECTION, {'user_id': user_id, 'quiz_id': quiz_id})
+        return QuizProfile.factory_form_json(quiz_question)
 
     @classmethod
     def factory_form_json(cls, quiz_profile_json):
@@ -80,9 +81,7 @@ class QuizProfile:
         return quiz_profile_obj
 
     def save_to_db(self):
-        if self._id is None:
-            self._id = uuid.uuid4()
-            Database.insert(self.COLLECTION, self.to_json())
+        Database.insert(self.COLLECTION, self.to_json())
 
     def remove_from_db(self):
         Database.remove(self.COLLECTION, {'quiz_id': self._quiz_id })

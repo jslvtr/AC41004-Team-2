@@ -16,7 +16,7 @@ from src.models.permissions import Permissions
 from src.models.university import University
 from src.models.point_type import PointType
 from src.models.quiz import Quiz
-from src.models.quiz_profile import QuizProfile
+from src.models.quiz_profile import QuizProfile, NoSuchQuizProfileExistException
 from src.models.quiz_question import NoSuchQuizQuestionExistException
 from src.models.user import User
 from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response, send_file, \
@@ -901,16 +901,53 @@ def get_quiz_profile_view(quiz_id):
     quiz_profile = None
     try:
         quiz_profile = QuizProfile.get_by_composite_id(quiz_id,session['email'])
-    except NoSuchQuizQuestionExistException as e:
-        bin = None
-    return render_template('quiz/user/quiz_profile.html', quiz_profile=quiz_profile, quiz_id=quiz_id)
+        return render_template('quiz/user/quiz_profile.html', quiz_profile=quiz_profile.to_json(), quiz_id=quiz_id)
+    except NoSuchQuizProfileExistException as e:
+       return render_template('quiz/user/quiz_profile.html', quiz_profile=None, quiz_id=quiz_id)
+
 
 
 @app.route('/quiz/<uuid:quiz_id>', methods=['GET'])
 @secure("user")
 def get_quiz_view(quiz_id):
-    quiz = Quiz.get_by_id(quiz_id)
-    return render_template('quiz/user/quiz.html', active_quiz = quiz.to_json())
+    try:
+        QuizProfile.get_by_composite_id(quiz_id,session['email'])
+        abort(401)
+    except NoSuchQuizProfileExistException as e:
+        quiz = Quiz.get_by_id(quiz_id)
+        return render_template('quiz/user/quiz.html', active_quiz=quiz.to_json())
+
+
+@app.route('/quiz', methods=['Post'])
+@secure("user")
+def submit_quiz():
+    if request.get_json() is None:
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    quiz = Quiz.factory_form_json(request.get_json())
+    if quiz.get_points() is "":
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be empty"}), 200
+    if not quiz.is_valid_model():
+        return jsonify({"result": "error", "field":"", "message": "Not valid model!"}), 200
+    if len(quiz.get_title()) == 0:
+        return jsonify({"result": "error", "field": "title", "message": "Title cannot be empty!"}), 200
+    if quiz.get_points() < 0:
+        return jsonify({"result": "error", "field":"points", "message": "Points cannot be less then 0!"}), 200
+    quiz_real = Quiz.get_by_id(uuid.UUID(quiz._id))
+
+    passed = False
+    if quiz_real.mark_subbmitted_quiz(quiz):
+        passed = True
+    try:
+        QuizProfile.get_by_composite_id(uuid.UUID(quiz._id),session['email'])
+        return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+    except:
+        new_quiz_profile = QuizProfile(uuid.UUID(quiz._id),session['email'],datetime.now(),0,passed)
+        new_quiz_profile.save_to_db()
+        return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+
+
+
+
 
 
 @app.route('/admin/quizzes/<quiz_title>', methods=['GET'])

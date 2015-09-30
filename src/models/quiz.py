@@ -9,7 +9,7 @@ __author__ = 'stamas01'
 
 class NoSuchQuizExistException(Exception):
     def __init__(self):
-        self.message = "No such quiz question exists"
+        self.message = "No such quiz exists"
 
     def __str__(self):
         return repr(self.message)
@@ -79,6 +79,21 @@ class Quiz:
 
     def remove_from_db(self):
         Database.remove(self.COLLECTION, {'_id': self._id})
+
+    def mark_subbmitted_quiz(self,quiz):
+        max = len(self._questions)
+        errors = 0
+        if len(self.get_questions()) != len(quiz.get_questions()):
+            return False
+        for q1, q2 in zip( self.get_questions(), quiz.get_questions()):
+            if q1!=q2:
+                errors=errors+1
+        if max*0.8 > max-errors:
+            return False
+        return True
+
+
+
 
 
     def is_valid_model(self):
