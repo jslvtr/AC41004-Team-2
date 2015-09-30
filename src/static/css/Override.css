@@ -783,6 +783,8 @@ td.center.middle {
 
 .admin-bar {
     margin-top: 35px;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
     border-radius: 0 !important;
     z-index; 1;
 }
