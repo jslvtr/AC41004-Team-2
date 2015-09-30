@@ -725,6 +725,11 @@ td.center.middle {
     cursor: pointer;
 }
 
+.point-types span:hover {
+    color: #15AE15;
+    cursor: pointer;
+}
+
 .event-small h2 {
     font-weight: 100;
 }

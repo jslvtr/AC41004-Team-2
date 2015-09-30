@@ -55,7 +55,8 @@
     <h2>My Points</h2>
 
     {% if rank <= 50%}
-    <p>You are {{ 'in the top ' + rank|string|truncate(2, True,end='')+'%' if rank != 0 else 'the absolute top'}} in points!</p>
+    <p>You are {{ 'in the top ' + rank|string|truncate(2, True,end='')+'%' if rank != 0 else 'the absolute top'}} in
+        points!</p>
     {% endif %}
 
 
@@ -112,50 +113,29 @@
     </div>
 
     <h2 class="margin-top">My Awards</h2>
-
-
+    {% if awards|length > 0 %}
+    {% for award in awards %}
     <div class="media">
         <div class="media-left">
             <a href="#">
-                <i class="fa fa-5x fa-star gold icon"></i>
+                <i class="fa fa-5x fa-star icon" style="color: {{ award.color }};"></i>
             </a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading">Gold Award</h4>
+            <h4 class="media-heading">{{award.name}} Award</h4>
 
-            <p>Congratulations! This gold award is for _{# Jinja here for specific award#} </p>
+            <p>Congratulations! You've got a {{ award.name|lower }} award! </p>
         </div>
     </div>
-
-    <div class="media">
-        <div class="media-left">
-            <a href="#">
-                <i class="fa fa-5x fa-star silver icon"></i>
-            </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">Silver Award</h4>
-
-            <p>Well done! This silver award is for _{# Jinja here for specific award#} </p>
-        </div>
-    </div>
-
-    <div class="media">
-        <div class="media-left">
-            <a href="#">
-                <i class="fa fa-5x fa-star bronze icon"></i>
-            </a>
-        </div>
-        <div class="media-body">
-            <h4 class="media-heading">Bronze Award</h4>
-
-            <p>Good Job! This bronze award is for _{# Jinja here for specific award#} </p>
-        </div>
-    </div>
+    {% endfor %}
+    {% else %}
+    <p>You have no awards yet! Check back after earning some more points.</p>
+    {% endif %}
 
 
     <div class="table-responsive margin-top">
         <h2>Upcoming Events</h2>
+        {% if events|length > 0 %}
         <table class="table table-bordered table-striped">
             <tr>
                 <td><b>Event Name</b></td>
@@ -189,6 +169,9 @@
             </tr>
             {% endfor %}
         </table>
+        {% else %}
+        <p>You're not registered for any events yet!</p>
+        {% endif %}
     </div>
     {% endif %}
 </div>
@@ -198,5 +181,6 @@
     }, function() {
         $(this).removeClass("fa-spin");
     });
+
 
 </script>

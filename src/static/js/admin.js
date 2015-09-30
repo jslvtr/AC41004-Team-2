@@ -156,6 +156,32 @@
         });
     }
 
+    function remove_point_type(name, object) {
+        $.ajax({
+            type: "DELETE",
+            url: "/admin/point_types/" + name,
+            success: function(ss){
+                                       $(object).parents("tr").remove()
+                                 }
+        });
+    }
+
+    function add_point_type() {
+        object = $('#add-point-type');
+        access = [];
+        data = {name: $("#new-point-type").val()};
+        $.ajax({
+            type: "POST",
+            url: "/admin/point_types",
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: "application/json",
+            success: function(ss){
+                                       location.reload();
+                                 }
+        });
+    }
+
 
 
 
