@@ -772,7 +772,7 @@ td.center.middle {
 
 
 .topNav {
-    z-index: 100;
+    z-index: 1080;
 }
 
 .admin-bar {
@@ -811,4 +811,8 @@ td.center.middle {
     margin-top: 80px;
     margin-bottom: 40px;
     padding: 30px;
+}
+
+.modal-spacer {
+    margin-top: 90px;
 }
