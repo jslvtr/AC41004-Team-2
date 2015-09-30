@@ -16,13 +16,13 @@
     <!--<h4>Current Articles</h4>-->
         <ul>
             {% for article in news %}
-            <li>
+            <li class="pages effect1">
                 {% include 'items/article_admin.html' %}
             </li>
             {% endfor %}
         </ul>
-    </div>
 
+    </div>
     <script>
 
          pagingsys.init({selector: $("#news-panel"),
