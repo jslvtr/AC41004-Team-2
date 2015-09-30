@@ -219,7 +219,9 @@ def images(image_id):
 @app.route('/admin/permissions', methods=['GET'])
 @secure("admin")
 def permissions_get_admin():
-    permissions = [permission_level for permission_level in Database.find(Permissions.COLLECTION, {})]
+    permissions = [permission_level for permission_level in Database.find(Permissions.COLLECTION, {})
+                   if not("admin" == permission_level.get("name"))]
+
     return render_template('permissions_admin.html', permissions=permissions)
 
 
