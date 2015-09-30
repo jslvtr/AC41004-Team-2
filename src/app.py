@@ -602,10 +602,82 @@ def export_users():
     if year != "None":
          query_builder.update({"year": year})
 
+    networking = request.form['networking']
+    if networking != "":
+        networking_points = int(networking)
+        if networking_points != "":
+            networking_operator = request.form['networking-operator']
+            if networking_operator == ">":
+                query_builder.update({"points.networking": {"$gt": networking_points}})
+            elif networking_operator == "<":
+                query_builder.update({"points.networking": {"$lt": networking_points}})
+            elif networking_operator == "=":
+                query_builder.update({"points.networking": networking_points})
+
+
+    action = request.form['action']
+    if action != "":
+        action_points = int(action)
+        if action_points != "":
+            action_operator = request.form['action-operator']
+            if action_operator == ">":
+                query_builder.update({"points.action": {"$gt": action_points}})
+            elif action_operator == "<":
+                query_builder.update({"points.action": {"$lt": action_points}})
+            elif action_operator == "=":
+                query_builder.update({"points.action": action_points})
+
+
+    practice = request.form['practice']
+    if practice != "":
+        practice_points = int(request.form['practice'])
+        if practice_points != "":
+            practice_operator = request.form['practice-operator']
+            if practice_operator == ">":
+                query_builder.update({"points.practice": {"$gt": practice_points}})
+            elif practice_operator == "<":
+                query_builder.update({"points.practice": {"$lt": practice_points}})
+            elif practice_operator == "=":
+                query_builder.update({"points.practice": practice_points})
+
+    project = request.form['project']
+    if project != "":
+        project_points = int(request.form['project'])
+        if project_points != "":
+            project_operator = request.form['project-operator']
+            if project_operator == ">":
+                query_builder.update({"points.project": {"$gt": project_points}})
+            elif project_operator == "<":
+                query_builder.update({"points.project": {"$lt": project_points}})
+            elif project_operator == "=":
+                query_builder.update({"points.project": project_points})
+
+    theory = request.form['theory']
+    if theory != "":
+        theory_points = int(request.form['theory'])
+        if theory_points != "":
+            theory_operator = request.form['theory-operator']
+            if theory_operator == ">":
+                query_builder.update({"points.theory": {"$gt": theory_points}})
+            elif theory_operator == "<":
+                query_builder.update({"points.theory": {"$lt": theory_points}})
+            elif theory_operator == "=":
+                query_builder.update({"points.theory": theory_points})
+
+    virtual = request.form['virtual']
+    if virtual != "":
+        virtual_points = int(request.form['virtual'])
+        if virtual_points != "":
+            virtual_operator = request.form['virtual-operator']
+            if virtual_operator == ">":
+                query_builder.update({"points.virtual": {"$gt": virtual_points}})
+            elif virtual_operator == "<":
+                query_builder.update({"points.virtual": {"$lt": virtual_points}})
+            elif virtual_operator == "=":
+                query_builder.update({"points.virtual": virtual_points})
 
     users = User.get_by_filtering(query_builder)
     users_csv = User.export_to_csv(users)
-
     return Response(users_csv, headers={"Content-Disposition": "attachment; filename=userlist.csv"}, content_type="text/csv")
 
 @app.route('/admin/export-users')
