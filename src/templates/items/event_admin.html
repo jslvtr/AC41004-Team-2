@@ -1,13 +1,13 @@
 <!-- Model required: event -->
 
-<div class="margin-top panel panel-default">
-    <div class="panel-heading">
+<div class="margin-top ">
+    <div class="">
         <a href="/admin/event/edit/{{event._id}}"><button type="button" class="btn btn-default btn-sm">Edit</button></a>
         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#EventDeleteConfirmModal{{event._id}}">Delete</button>
         <a href="/admin/event/registrations/{{event._id}}"><button type="button" class="btn btn-default btn-sm"> View Registered Users</button></a>
 </div>
 
-    <div class="panel-body">
+    <div class="">
         <h1>{{ event.title}}</h1>
         <p>{{ event.description|safe }}</p>
         {{event.start.strftime('%m/%d/%Y %I:%M %p')}}
@@ -28,7 +28,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" onclick="delete_event('{{event._id}}')" class="btn btn-primary">Delete</button>
       </div>
     </div>

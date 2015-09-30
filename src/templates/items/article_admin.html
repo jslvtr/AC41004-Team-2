@@ -1,12 +1,11 @@
-<div class="margin-top panel ">
-    <div class="panel-heading">
+<div class="margin-top ">
+    <div class="">
 
 <a href="/admin/article/edit/{{article._id}}"><button type="button" class="btn btn-default btn-group-sm">Edit</button></a>
 <button type="button" class="btn btn-default btn-group-sm" data-toggle="modal" data-target="#ArticleDeleteConfirmModal{{article._id}}">Delete</button>
         </div>
-    <div class="panel-body">
+    <div class="">
     <h2>{{ article.title }}</h2>
-        {#article.start.strftime('%m/%d/%Y %I:%M %p')#}
         </div>
     <br>
 </div>
@@ -21,7 +20,7 @@
   <div class="modal-dialog">
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" onclick="delete_article('{{article._id}}')" class="btn btn-primary">Delete</button>
           </div>
         </div>
