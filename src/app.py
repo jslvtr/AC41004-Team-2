@@ -19,7 +19,8 @@ from src.models.quiz import Quiz
 from src.models.quiz_profile import QuizProfile
 from src.models.quiz_question import NoSuchQuizQuestionExistException
 from src.models.user import User
-from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response
+from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response, send_file, \
+    Response
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
@@ -570,6 +571,43 @@ def admin_view_profile(user_email):
 
     else:
         abort(401)
+
+
+@app.route('/admin/export-users/export', methods=["POST"])
+@secure("admin")
+def export_users():
+    country = request.form['country']
+    query_builder = {}
+    if country != "None":
+        query_builder.update({"country": country})
+    university = request.form['university']
+    if university != "None":
+        query_builder.update({"university": university})
+    college = request.form['college']
+    if college != "None":
+        query_builder.update({"school": college})
+    subject = request.form['course']
+    if subject != "None":
+         query_builder.update({"subject": subject})
+    level = request.form['level']
+    if level != "None":
+         query_builder.update({"level": level})
+    year = request.form['yearofstudy']
+    if year != "None":
+         query_builder.update({"year": year})
+
+
+    users = User.get_by_filtering(query_builder)
+    users_csv = User.export_to_csv(users)
+
+    return Response(users_csv, headers={"Content-Disposition": "attachment; filename=userlist.csv"}, content_type="text/csv")
+
+@app.route('/admin/export-users')
+@secure("admin")
+def show_export_users():
+    universities = University.get_uni_list()
+    return render_template("user-export.html", universities=universities)
+
 
 
 @app.route('/admin/event/registrations/<uuid:event_id>', methods=['GET'])

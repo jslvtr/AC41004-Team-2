@@ -1,5 +1,10 @@
+import csv
 from hashlib import sha256
 import uuid
+from io import StringIO
+
+from flask import make_response
+
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.event import Event
@@ -9,7 +14,6 @@ __author__ = 'jslvtr and jkerr123'
 
 
 class User(object):
-
     COLLECTION = "users"
 
     def __init__(self, email, password, permissions=None, **kwargs):
@@ -40,7 +44,6 @@ class User(object):
             return False
         if User.find_by_email(email) is not None:
             return False
-
 
         encrypted_password = sha256(password.encode('utf-8'))
         user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default().name)
@@ -89,6 +92,24 @@ class User(object):
     def get_by_id(user_id):
         user = Database.find_one("users", {"_id": user_id})
         return user
+
+    @staticmethod
+    def get_by_filtering(query):
+        return Database.find("users", query)
+
+    @staticmethod
+    def export_to_csv(users):
+
+        string = ""
+
+        string += "firstname, lastname, email, university, school, subject, level of study, year of study, points, " \
+            "country, permissions\n"
+
+        for user in users:
+            string += "" + user['firstname'] + "," + user['lastname'] + "," + user['email'] + "," + user['university'] + "," \
+                + user['school'] + "," + user['subject'] + "\n"
+
+        return string
 
     def save_to_db(self):
         Database.update(self.COLLECTION, {"email": self.email}, {'$set': self.json()}, upsert=True)
