@@ -25,6 +25,8 @@ function populate_colleges()
     var uni = $("#university").val();
     $("#college").empty();
     $("#course").empty();
+    $("#college").append('<option value="\"None\""></option>');
+    $("#course").append('<option value="\"None\""></option>');
     $.ajax({
         type: "GET",
             url: "/populate-colleges/" + uni,
@@ -45,6 +47,8 @@ function populate_courses()
     var uni = $("#university").val();
     var college = $("#college").val();
     $("#course").empty();
+                    $("#course").append('<option value="\"None\""></option>');
+
     $.ajax({
         type: "GET",
             url: "/populate-courses/" + uni + "/" + college,

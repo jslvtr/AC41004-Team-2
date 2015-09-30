@@ -587,13 +587,13 @@ def export_users():
     if country != "None":
         query_builder.update({"country": country})
     university = request.form['university']
-    if university != "None":
+    if university != "None" and university != "":
         query_builder.update({"university": university})
     college = request.form['college']
-    if college != "None":
+    if college != "None" and college != "":
         query_builder.update({"school": college})
     subject = request.form['course']
-    if subject != "None":
+    if subject != "None" and subject != "":
          query_builder.update({"subject": subject})
     level = request.form['level']
     if level != "None":
