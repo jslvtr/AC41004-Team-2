@@ -42,12 +42,13 @@
   <div id="event-news-container">
    {% include 'items/news_panel.html' %}
     <div id="events-panel">
-        <h2>Upcoming Events:</h2>
+        <h3 class="sigmar">Upcoming Events:</h3>
         {% for event in events %}
                     {% include 'items/event_small.html' %}
                     <!--<hr class="separator"/>-->
         {% endfor %}
         <!--<h4 class="see-more"><a href="/events">See event calendar</a></h4>-->
+    	<div class="button-custom indie">MORE EVENT <span class="fa fa-chevron-right"></span></div>
     </div>
   </div>
 </div>

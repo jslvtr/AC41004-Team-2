@@ -1,18 +1,20 @@
+
 <!--<div class="hero"><img src="{{ url_for('static', filename='img/home-hero.png') }}" class="hero" alt="Responsive image">-->
+
 </div>
 <div class="content container">
-    <div id="news-panel">
-        <h1>News</h1>
+    <div id="news-panel-mine">
+        <h1 class="sigmar">News</h1>
 
-        <div class="pages">
+        <div>
             <ul>
                 {% for article in news %}
-                <li>
+                <li class="pages effect1">
                     <div class="article">
-                        <h2><a href="/article/{{article._id}}">{{ article.title }}</a></h2>
+                        <h2 class="oswald">{{ article.title }}</h2>
 
-                        <p>{{ article.summary | safe}}</p>
-                        <hr class="separator"/>
+                        <h5 class="lora">{{ article.summary | safe}}</h5>
+                        <a href="/article/{{article._id}}" id="news-open-button-a"><div class="news-open-button"><strong>+</strong></div></a>
                     </div>
                 </li>
                 {% endfor %}
