@@ -1,10 +1,11 @@
 <script src="/static/js/countries.js"></script>
 <script src="/static/js/universities.js"></script>
 
-<div class="content container">
+<div class="content container edit-uni">
+    <h2>User Export</h2>
     <p>
 
-    <form class="form-group" id="export-users" action="/admin/export-users/export" method="POST">
+    <input class="form-group" id="export-users" action="/admin/export-users/export" method="POST">
         <label>Country</label> <select class="form-control" id="country" name="country">
     </select>
         <br>
@@ -43,37 +44,76 @@
         <option value="3">3</option>
         <option value="4">4</option>
     </select>
-     </select>
         <br>
-        <label>Year Of Study</label> <select class="form-control" id="actionpoints" name="actionpoints">
-        <option value="None"></option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
-        <br>
-    <label>Action Points</label>
-    <input class="form-control" type="text" name="action">
-        <br>
-    <label>Networking Points</label>
-    <input class="form-control" type="text" name="networking">
-        <br>
-        <label>Practice Points</label>
-    <input class="form-control" type="text" name="practice">
-        <br>
-           <label>Project Points</label>
-    <input class="form-control" type="text" name="project">
-        <br>
-        <label>Networking Points</label>
-        <input class="form-control" type="text" name="networking">
-        <br>
-        <label>Theory Points</label>
-        <input class="form-control" type="text" name="theory">
-        <br>
-        <label>Virtual Points</label>
-        <input class="form-control" type="text" name="virtual">
-        <br>
+
+    <table>
+    <tr>
+    <div class="form-inline">
+    <td><label>Action Points</label></td>
+    <td><input class="form-control" type="text" name="action"></input></td>
+        <td><select id="action-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+
+    <tr>
+    <div class="form-inline">
+    <label>Networking Points</label></td>
+    <input class="form-control" type="text" name="networking"></input></td>
+        <select id="networking-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+
+    <br>
+    
+    <div class="form-inline">
+    <label>Practice Points</label>
+    <input class="form-control" type="text" name="practice"></input>
+        <select id="practice-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select>
+    </div>
+
+    <div class="form-inline">
+    <label>Project Points</label>
+    <input class="form-control" type="text" name="project"></input>
+        <select id="project-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select>
+    </div>
+
+    <div class="form-inline">
+    <label>Theory Points</label>
+    <input class="form-control" type="text" name="theory"></input>
+        <select id="theory-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select>
+    </div>
+
+   <div class="form-inline">
+    <label>Virtual Points</label>
+    <input class="form-control" type="text" name="virtual"></input>
+        <select id="virtual-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select>
+    </div>
+    </table>
+
         <input class="btn btn-default" type="submit" Value="Export Users">
     </form>
     </p>
