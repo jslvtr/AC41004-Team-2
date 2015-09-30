@@ -1,4 +1,4 @@
-<div class="content container">
+<div class="content container edit-uni">
     {% if message %}
     <div class="alert alert-danger" role="alert">{{ message }}</div>
     {% elif profile %}
@@ -6,10 +6,11 @@
     {% if permissions == "admin" %}
     <a class="btn btn-success btn-lg dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
     {% else %}
-    <a class="btn btn-success btn-lg dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    <div class="form-group">
+     <a class="btn btn-success btn-md dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    </div>
     {% endif %}
 
-    </div>
 
     {% if profile.data|length != 0 %}
     <div class="table-responsive">

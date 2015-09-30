@@ -5,17 +5,17 @@
        <div class="panel-heading">
            <h4>Events Admin</h4></div>
         <div class="panel-body">
-            <button type="button" class="btn btn-success btn-lg" onclick="location.href='/admin/event/add';">Add new Event</button>
+            <button type="button" class="btn btn-success btn-md" onclick="location.href='/admin/event/add';">Add new Event</button>
         </div>
      </div>
 </div>
     <!--Retrive 3 News from db based on current date-->
     <!-- I am assuming below 'article' are separate entries in the news table -->
 <div id="to-page" class="content row container">
-    <div class="pages">
+    <div class=""
         <ul>
             {% for event in events %}
-                <li >
+                <li class="pages effect1">
                     {% include 'items/event_admin.html' %}
                     <!--<hr class="separator"/>-->
                 </li >

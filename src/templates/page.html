@@ -1,10 +1,15 @@
 <!-- Model page is required -->
+{% if page.feed %}
 <div class="universal-page">
+{% else %}
+<div class="universal-page no-news">
+{% endif %}
 	<div class="uni-page-center">
 		<div class="universal-page-content">
 			<h1 class="oswald">{{page.title}}</h1>
 			<h4 class="lora">{{page.content | safe}}</h4>
 		</div>
+
 		<div class="universal-page-news">
 			{% include 'items/news_panel.html' %}
 		</div>
