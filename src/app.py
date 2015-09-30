@@ -14,7 +14,8 @@ from src.models.page import Page, NoSuchPageExistException
 from src.models.permissions import Permissions
 from src.models.university import University
 from src.models.user import User
-from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response, send_file
+from flask import Flask, session, jsonify, request, render_template, redirect, url_for, make_response, send_file, \
+    Response
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
@@ -551,17 +552,9 @@ def export_users():
 
 
     users = User.get_by_filtering(query_builder)
+    users_csv = User.export_to_csv(users)
 
-
-    file = User.export_to_csv(users)
-
-
-    return send_file(file, attachment_filename="userlist.csv", as_attachment=True)
-
-
-
-
-
+    return Response(users_csv, headers={"Content-Disposition": "attachment; filename=userlist.csv"}, content_type="text/csv")
 
 @app.route('/admin/export-users')
 @secure("admin")

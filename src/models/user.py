@@ -100,24 +100,16 @@ class User(object):
     @staticmethod
     def export_to_csv(users):
 
-        string = StringIO()
-        csv_writer = csv.writer(string)
+        string = ""
 
-        csv_writer.writerow(
-            "firstname, lastname, email, university, school, subject, level of study, year of study, points, " \
-            "country, permissions,\n")
+        string += "firstname, lastname, email, university, school, subject, level of study, year of study, points, " \
+            "country, permissions\n"
 
         for user in users:
-            csv_writer.writerow(
-                user['firstname'] + "," + user['lastname'] + "," + user['email'] + "," + user['university'] + "," \
-                + user['school'] + "," + user['subject'] + "\n")
+            string += "" + user['firstname'] + "," + user['lastname'] + "," + user['email'] + "," + user['university'] + "," \
+                + user['school'] + "," + user['subject'] + "\n"
 
-        file = make_response(string.getvalue())
-        file.headers["Content-Disposition"] = "attachment; filename=userlist.csv"
-        file.headers["Content-type"] = "text/csv"
-
-
-        return file
+        return string
 
     def save_to_db(self):
         Database.update(self.COLLECTION, {"email": self.email}, {'$set': self.json()}, upsert=True)
