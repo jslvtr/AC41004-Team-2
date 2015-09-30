@@ -248,11 +248,13 @@ def add_permission():
     json = request.get_json()
     name = json['name']
     access = json['access']
+    if name != "":
+        permission = Permissions(name, access)
+        permission.save_to_db()
 
-    permission = Permissions(name, access)
-    permission.save_to_db()
-
-    return jsonify({"message": "ok"}), 201
+        return jsonify({"message": "ok"}), 201
+    else:
+        return jsonify({"error": "please enter a value"}), 201
 
 
 @app.route('/admin/point_types', methods=['GET'])

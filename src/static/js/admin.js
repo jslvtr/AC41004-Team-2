@@ -151,7 +151,14 @@
             processData: false,
             contentType: "application/json",
             success: function(ss){
-                                       location.reload();
+                                       if(ss.error)
+                                       {
+                                            alert("Please enter a permission name");
+                                       }
+                                       else
+                                       {
+                                            location.reload();
+                                       }
                                  }
         });
     }
