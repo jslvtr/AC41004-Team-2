@@ -113,6 +113,7 @@ class User(object):
             return True
         return False
 
+
     def json(self):
         json = {
             "email": self.email,

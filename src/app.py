@@ -559,8 +559,12 @@ def admin_view_profile(user_email):
             profile = User.find_by_email(user_email)
             events = profile.get_registered_events(profile.email)
             totalpoints = profile.total_points()
-            return render_template('user-profile.html', profile=profile, events=events, totalpoints=totalpoints,
-                                   rank=profile.get_point_rank())
+            attended_events = profile.get_all_attended(profile.email)
+            current_date = datetime.now()
+            permissions = User.get_user_permissions(session['email'])
+            return render_template('user-profile.html', email=user_email, profile=profile, events=events, totalpoints=totalpoints,
+                                   rank=profile.get_point_rank(), permissions=permissions, date=current_date,
+                                   attended_events=attended_events)
 
     else:
         abort(401)
@@ -599,6 +603,34 @@ def edit_profile_page():
     universities = University.get_uni_list()
     profile = User.find_by_email(session['email'])
     return render_template('edit-profile.html', universities=universities, profile=profile)
+
+
+@app.route('/admin/edit-profile/<user>', methods=["GET"])
+@secure("admin")
+def admin_edit_profile_page(user):
+    universities = University.get_uni_list()
+    profile = User.find_by_email(user)
+    mypermissions = User.get_user_permissions(session['email'])
+    permissions = [permission_level for permission_level in Database.find(Permissions.COLLECTION, {})]
+    return render_template('edit-profile.html', user=user, universities=universities, profile=profile,
+                           permissions=permissions, mypermissions=mypermissions)
+
+
+@app.route('/admin/user/edit-profile', methods=["POST"])
+@secure("admin")
+def admin_update_user_profile():
+    if User.check_login(session['email'], request.form['password']):
+        user = User.find_by_email(request.form['email'])
+        user.data.update(firstname=request.form['firstname'], lastname=request.form['lastname'],
+                         university=request.form['university'], level=request.form['level'],
+                         country=request.form['country'], school=request.form['college'],
+                         subject=request.form['course'], year=request.form['yearofstudy'],
+                         permissions=request.form['permissions'])
+
+        user.save_to_db()
+        return redirect("/admin/view-profile/" + request.form['email'])
+    else:
+        return render_template('user-profile.html', message="Incorrect Password")
 
 
 @app.route('/populate-colleges/<university>', methods=["GET"])

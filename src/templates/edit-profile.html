@@ -4,16 +4,30 @@
 <div class="content container">
     <p>
 
-    <form class="form-group" id="edit-profile" action="user/edit-profile" method="POST">
+    {% if mypermissions == "admin" %}
+    <form class="form-group" action="/admin/user/edit-profile" method="POST">
+    <input type="hidden" name="email" value="{{user}}">
+
+    {% else %}
+    <form class="form-group"  action="/user/edit-profile" method="POST">
+    {% endif %}
         <label>First Name</label>
         <input class="form-control" type="text" name="firstname" value="{{profile.data['firstname']}}">
         <br>
         <label>Last Name</label>
         <input class="form-control" type="text" name="lastname" value="{{profile.data['lastname']}}">
         <br>
+    {% if mypermissions == "admin" %}
+        <label>Permissions</label> <select class="form-control" id="permissions" name="permissions">
+
+        <option selected>{{profile.permissions}}</option>
+        {% for permission in permissions %}
+        <option>{{permission.name}}</option>
+        {% endfor %}
+    {% endif %}
+        </select><br>
         <label>Country</label> <select class="form-control" id="country" name="country">
         <option selected>{{profile.data['country']}}</option>
-
     </select>
         <br>
         <label>Place of Study</label> <select class="form-control" id="university" name="university"

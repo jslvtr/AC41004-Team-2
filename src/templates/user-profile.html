@@ -3,9 +3,11 @@
     <div class="alert alert-danger" role="alert">{{ message }}</div>
     {% elif profile %}
     <h2>Profile</h2>
-
-    <div class="">
-        <a class="btn btn-success btn-sm dropdown-menu-right dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    {% if permissions == "admin" %}
+    <a class="btn btn-success btn-lg dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
+    {% else %}
+    <a class="btn btn-success btn-lg dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    {% endif %}
 
     </div>
 
