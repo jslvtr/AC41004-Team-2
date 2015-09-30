@@ -23,7 +23,12 @@
 }
 
 .quiz-answer-selected{
-    background-color: white !important;
+    background-color: #2496ed !important;
+    border-color: #1f6eab !important;
+
+    -webkit-box-shadow: 0 0 5px 0 #2496ed !important;
+    -moz-box-shadow: 0 0 5px 0 #2496ed !important;
+    box-shadow: 0 0 5px 0 #2496ed !important;
 }
 
 
@@ -38,7 +43,8 @@
 
     cursor: pointer;
 
-    background-color: #942222;
+    background-color: #74B66B;
+    border-color: #5c9055;
     color: white;
 }
 
@@ -47,7 +53,10 @@
 {
     text-align: center;
 }
-
+#quiz-answer {
+    height: 100%;
+    width: 100%;
+}
 #quiz-answer-list li
 {
     background-color: transparent;
@@ -61,7 +70,30 @@
     margin-bottom:20px;
     margin-left: 10px;
     margin-right: 10px;
-    border: 2px solid #942239;
+    border: 2px solid #5b1423;
+    color: white;
+    background-color: #942239;
+
+    -webkit-box-shadow: 0 0 5px 0 #942239;
+    -moz-box-shadow: 0 0 5px 0 #942239;
+    box-shadow: 0 0 5px 0 #942239;
+
+    cursor: pointer;
+
+    -webkit-transition-property: all;
+       -moz-transition-property: all;
+         -o-transition-property: all;
+            transition-property: all;
+
+    -webkit-transition-duration: 0.2s;
+       -moz-transition-duration: 0.2s;
+         -o-transition-duration: 0.2s;
+            transition-duration: 0.2s;
+
+    -webkit-transition-timing-function: linear;
+       -moz-transition-timing-function: linear;
+         -o-transition-timing-function: linear;
+            transition-timing-function: linear;
 }
 #quiz-answer-list li:hover {
     background-color: #942239;
