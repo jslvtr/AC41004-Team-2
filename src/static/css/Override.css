@@ -13,7 +13,7 @@
 
 
 
-body {background-color: #EEE; background-image: url("../img/ticks.png")}
+body {background-color: #EEE; background-image: url("../img/ticks.png") repeat;}
 
 #custom-nav {
     background-color: #942239;
@@ -36,14 +36,23 @@ body {background-color: #EEE; background-image: url("../img/ticks.png")}
     
     background-color: #942239;
 }
-@media only screen and (max-width: 480px) {
-    #logo-container {
-        margin-left: 0;
-}}
 @media only screen and (max-width: 767px) {
     #logo-container {
         margin-left: 0;
-}}
+    }
+    #logo-container img {
+        margin-top: -2px;
+    }
+}
+@media only screen and (max-width: 480px) {
+    #logo-container {
+        margin-left: 0;
+    }
+    #logo-container img {
+        margin-left: -15px;
+        padding-top: 2px;
+    }
+}
 #logo-container > a {
     margin-left: 20px;
     padding-top: 5px;
@@ -219,7 +228,6 @@ ul {
 
 
 
-
 .events-panel {
     width: 100%;
     height: 80px;
@@ -385,17 +393,17 @@ ul {
 #news-panel > h3 {
     padding-left: 20px;    
 }
-
-@media only screen and (max-width: 480px) {
-    #news-panel {
-        width: 100%;
-        display: block;
-}}
 @media only screen and (max-width: 767px) {
     #news-panel {
         width: 100%;
         display: block;
 }}
+@media only screen and (max-width: 480px) {
+    #news-panel {
+        width: 100%;
+        display: block;
+}}
+
 
 .news-open-button {
     width: 30px;
@@ -534,9 +542,24 @@ ul {
     margin-bottom: 40px;
     padding: 30px;
 }
+@media only screen and (max-width: 767px) {
+    .event-news-large-container {
+        width: 85%;
+        padding: 20px;
+}}
+@media only screen and (max-width: 480px) {
+    .event-news-large-container {
+        width: 95%;
+        padding: 20px;
+}}
+
 .news-large-container h1 {
     color: #942222;
 }
+@media only screen and (max-width: 480px) {
+    .news-large-container h1 {
+        margin-right: 10px;
+}}
 .news-large-container h4 {
     color: #777;
     padding-left: 20px;
@@ -550,19 +573,31 @@ ul {
 
     padding: 0 20px;
 }
-
 .button-register {
     width: 250px;
 
     margin-top: 30px;
     margin-bottom: 10px;
 }
-
 .news-large-content {
     color: #444;
     padding-left: 20px;
     margin-top: 20px;
     margin-bottom: 4px;
+
+    text-align: justify;
+}
+@media only screen and (max-width: 480px) {
+    .news-large-content {
+        padding-left: 0;
+    }
+    .event-large-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .button-register {
+        width: 200px;
+    }
 }
 
 
@@ -590,11 +625,11 @@ ul {
     width: 90%;
     margin: 0 auto;
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 767px) {
     .uni-page-center {
         width: 85%;
 }}
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 480px) {
     .uni-page-center {
         width: 85%;
 }}
@@ -612,15 +647,15 @@ ul {
     border-bottom: 0;
 
 }
-@media only screen and (max-width: 480px) {
-    .universal-page-content {
-        width: 100%;
-        padding: 0 20px;
-}}
 @media only screen and (max-width: 767px) {
     .universal-page-content {
         width: 100%;
         padding: 0 35px;
+}}
+@media only screen and (max-width: 480px) {
+    .universal-page-content {
+        width: 100%;
+        padding: 0 20px;
 }}
 .universal-page-news {
     width: 38%;
@@ -628,11 +663,11 @@ ul {
     float: right;
     display: inline-block;
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 767px) {
     .universal-page-news {
         width: 100%;
 }}
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 480px) {
     .universal-page-news {
         width: 100%;
 }}
@@ -655,13 +690,13 @@ ul {
 .no-news {
     width: 70%;
 }
-@media only screen and (max-width: 480px) {
-    .no-news {
-        width: 100%;
-}}
 @media only screen and (max-width: 767px) {
     .no-news {
         width: 90%;
+}}
+@media only screen and (max-width: 480px) {
+    .no-news {
+        width: 100%;
 }}
 
 
