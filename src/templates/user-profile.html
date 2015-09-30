@@ -4,7 +4,9 @@
     {% elif profile %}
     <h2>Profile</h2>
     {% if permissions == "admin" %}
-    <a class="btn btn-success btn-lg dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
+    <div class="form-group">
+        <a class="btn btn-success btn-md dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
+    </div>
     {% else %}
     <div class="form-group">
      <a class="btn btn-success btn-md dropdown-menu-right" href="/edit-profile">Edit Profile</a>
@@ -36,7 +38,7 @@
                 <td> {{profile.data['country']}}</td>
             </tr>
             <tr>
-                <td><strong>School</strong></td>
+                <td><strong>Department</strong></td>
                 <td> {{profile.data['school']}}</td>
             </tr>
             <tr>
