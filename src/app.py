@@ -553,9 +553,10 @@ def export_users():
     users = User.get_by_filtering(query_builder)
 
 
-    csv_file = User.export_to_csv(users)
+    file = User.export_to_csv(users)
 
-    return send_file(csv_file, attachment_filename="userlist.csv", as_attachment=True)
+
+    return send_file(file, attachment_filename="userlist.csv", as_attachment=True)
 
 
 

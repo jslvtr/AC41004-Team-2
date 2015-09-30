@@ -4,6 +4,7 @@ import uuid
 from io import StringIO
 
 from flask import make_response
+
 from src.common.database import Database
 from src.common.utils import Utils
 from src.models.event import Event
@@ -13,7 +14,6 @@ __author__ = 'jslvtr and jkerr123'
 
 
 class User(object):
-
     COLLECTION = "users"
 
     def __init__(self, email, password, permissions=None, **kwargs):
@@ -44,7 +44,6 @@ class User(object):
             return False
         if User.find_by_email(email) is not None:
             return False
-
 
         encrypted_password = sha256(password.encode('utf-8'))
         user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default().name)
@@ -100,18 +99,25 @@ class User(object):
 
     @staticmethod
     def export_to_csv(users):
-        fieldnames = ["firstname", "lastname", "email", 'permissions', 'level',
-                      'university', 'points', 'password', '_id', 'country', 'subject', 'school', 'year']
 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+        string = StringIO()
+        csv_writer = csv.writer(string)
+
+        csv_writer.writerow(
+            "firstname, lastname, email, university, school, subject, level of study, year of study, points, " \
+            "country, permissions,\n")
+
         for user in users:
-            writer.writerow(user)
-        file = make_response(si.getvalue())
-        file.headers["Content-Disposition"] = "attachment; filename=export.csv"
-        file.headers["Content-type"] = "text/csv"
-        return file
+            csv_writer.writerow(
+                user['firstname'] + "," + user['lastname'] + "," + user['email'] + "," + user['university'] + "," \
+                + user['school'] + "," + user['subject'] + "\n")
 
+        file = make_response(string.getvalue())
+        file.headers["Content-Disposition"] = "attachment; filename=userlist.csv"
+        file.headers["Content-type"] = "text/csv"
+
+
+        return file
 
     def save_to_db(self):
         Database.update(self.COLLECTION, {"email": self.email}, {'$set': self.json()}, upsert=True)
