@@ -179,9 +179,22 @@ function QuizJs(){
         $.ajax({
           type: "DELETE",
           url: "/admin/quiz/"+id,
-          success: function(ss){location.reload();},
+          success: function(ss)
+          {
+            location.reload();
+          },
         });
     }
+
+    this.markAnswer = function(that){
+        $($(that).closest("ul")).children().each(function(){
+            $(this).removeClass("quiz-answer-selected");
+            $(this).find("#answer_correct_div").remove();
+       });
+        var me = $($(that).closest("li")).addClass("quiz-answer-selected");
+        $(that).prepend('<input id="answer_correct_div" type="hidden" name="answer_correct" value="true">');
+    }
+
 
     this.edit_quiz = function(){
         $.ajax({

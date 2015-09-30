@@ -17,13 +17,51 @@
     <input type="text" id="quiz_points" placeholder="Enter Points.." name="quiz_points" value="{{ active_quiz.points }}" class="form-control"/><br>
 
 
-    {% include 'quiz/shared/quiz.html' %}
+    <div id="quiz-container">
+    <ul id="quiz-question-list">
+        {% for question in active_quiz.questions %}
+        <li>
+            <div id="quiz-question-container">
+                <div class="only-quiz-edit-mode">
+                    Question:<a onclick="quizJs.remove_question(this)">delete</a>
+                    <input CLASS="form-control" type="text" name="question_text" value="{{ question.question }}">
+
+                </div>
+                <br><br>Ansvers:
+                {% set question_index = loop.index %}
+                <ul id="">
+                {% for answer in question.answers  %}
+                    <li >
+                        <div class="only-quiz-edit-mode" >
+                            <input type="checkbox" name="answer_correct" value="{{answer.correct}}">
+                            <input type="text" name="answer_text" value="{{answer.answer_text}}">
+                            <a onclick="quizJs.remove_answer(this)">delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+                <div class="only-quiz-edit-mode">
+                    <br>
+                    <a style="cursor:pointer" onclick="quizJs.add_answer(this)">Add new answer +</a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <ul class="pagination" id="quiz-pagination">
+        <li class="only-quiz-edit-mode"><a onclick='quizJs.add_question(this)'>+</a></li>
+    </ul>
+    <div class="only-quiz-user-mode" id="quiz-completed-button" onclick="quizJs.send_compelted_quiz()">
+        Submit
+    </div>
+
+    </div>
 
 
     {% if it_is_new %}
-        <input type="button" onclick="quizJs.add_quiz()" class="form-control btn btn-success margin-top" value="Create page">
+        <input type="button" onclick="quizJs.add_quiz()" class="form-control btn btn-success margin-top" value="Create quiz">
     {% else %}
-        <input type="button" onclick="quizJs.edit_quiz()" class="form-control btn btn-success margin-top" value="Update page">
+        <input type="button" onclick="quizJs.edit_quiz()" class="form-control btn btn-success margin-top" value="Update quiz">
     {% endif %}
 
 </form>
