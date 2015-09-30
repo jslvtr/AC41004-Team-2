@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="event-title covered">
-            <h4>{{ event.title }}</h4>
+            <h4>{{ event.title|truncate(51,True,end='...')}}</h4>
         </div>
     </div>
 </a>

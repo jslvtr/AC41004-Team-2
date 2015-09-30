@@ -1,13 +1,14 @@
-
+<div class="">
 <h4 class="">Pages <a href="/admin/designer/add" class="btn btn-sm" ><i class="fa fa-plus"></i></a></h4>
 {% for page in pages %}
     {% if page.title == active_page.title %}
-      <div class="nav-item active">
+      <div class="nav-item active ">
           <a href="/admin/designer/{{ page.title }}">{{ page.title }} </a>
       </div>
     {% else %}
-      <div class="nav-item">
-          <a href="/admin/designer/{{ page.title }}">{{ page.title|truncate(10  , True,end='...') }} </a>
+      <div class="nav-item effect1">
+          <a href="/admin/designer/{{ page.title }}">{{ page.title|truncate(10 , True,end='...') }} </a>
       </div>
     {% endif %}
 {% endfor %}
+</div>
