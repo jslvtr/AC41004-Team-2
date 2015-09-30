@@ -4,18 +4,18 @@
       <ol class="carousel-indicators">
         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
         <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
       </ol>
 
       <!-- Wrapper for slides -->
-      <div class="carousel-inner" role="listbox">
+      <div class="carousel-inner carbox" role="listbox">
         <div class="item active">
-          <img src="{{ url_for('static', filename='img/home-hero.png') }}" alt="Responsive Image">
+          <img class="resizer" src="{{ url_for('static', filename='img/car1.png') }}" alt="Responsive Image">
           <div class="carousel-caption">
-
           </div>
         </div>
         <div class="item">
-          <img src="{{ url_for('static', filename='img/home-hero.png') }}" alt="Responsive Image">
+          <img class="resizer" src="{{ url_for('static', filename='img/home-hero.png') }}" alt="Responsive Image">
           <div class="carousel-caption">
 
           </div>
@@ -48,7 +48,7 @@
                     <!--<hr class="separator"/>-->
         {% endfor %}
         <!--<h4 class="see-more"><a href="/events">See event calendar</a></h4>-->
-    	<div class="button-custom indie">MORE EVENT <span class="fa fa-chevron-right"></span></div>
+    	<a href="/events" ><div class="button-custom indie">CALENDER <span class="fa fa-chevron-right"></span></div></a>
     </div>
   </div>
 </div>

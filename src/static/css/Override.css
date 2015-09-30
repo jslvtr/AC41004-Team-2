@@ -119,7 +119,7 @@ body {background-color: #EEE; background-image: url("../img/ticks.png")}
 .hero {
     margin-top: 30px;
     width: 100%;
-    height: 100%;
+    height: 100%
 
     -webkit-box-shadow: 0 10px 6px -6px #777;
        -moz-box-shadow: 0 10px 6px -6px #777;
@@ -127,6 +127,7 @@ body {background-color: #EEE; background-image: url("../img/ticks.png")}
 }
 .hero img {
     width: 100%;
+    height: 100%;
 }
 
 .content img {
@@ -793,4 +794,13 @@ td.center.middle {
 
 .footer-update {
     background-color: white;
+}
+
+.carbox {
+    height: 370px;
+}
+
+.resizer > img{
+    height: auto;
+    width: auto;
 }
