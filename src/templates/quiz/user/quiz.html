@@ -1,0 +1,14 @@
+<br><br><br><br><br><br><br><br>
+<form id="edit-quiz-form">
+    <input type="hidden" name="id" value="{{ active_quiz._id }}"/><br>
+    {% include 'quiz/shared/quiz.html' %}
+    <input type="button" onclick="send_compelted_quiz()" value="Submit">
+</form>
+
+<script>
+quizJs.init(    {
+                    obj: $("#quiz-container"),
+                    edit: false,
+                }
+           );
+</script>

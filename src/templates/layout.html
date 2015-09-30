@@ -49,6 +49,8 @@
 
                 <li><a href="/activites" title="What we offer">Activities</a></li>
                 <li><a href="/news" title="All the latest">News</a></li>
+                <li><a href="/quizzes" title="All the latest">Quiz</a></li>
+
                 {% if access_level == 'admin' %}
                     {% for page in pages %}
                         <li><a href="/page/{{ page.title }}">{{ page.title }} </a></li>

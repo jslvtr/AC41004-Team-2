@@ -1,0 +1,12 @@
+<h4 class="text-muted">Quizzes <a href="/admin/quizzes/add" class="btn btn-sm" ><i class="fa fa-plus"></i></a></h4>
+{% for quiz in quizzes %}
+    {% if not it_is_new %}
+      <div class="nav-item active">
+          <a href="/admin/quizzes/{{ quiz.title }}">{{ quiz.title }} </a>
+      </div>
+    {% else %}
+      <div class="nav-item">
+          <a href="/admin/quizzes/{{ quiz.title }}">{{ quiz.title }} </a>
+      </div>
+    {% endif %}
+{% endfor %}

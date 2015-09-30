@@ -1,0 +1,16 @@
+<div id="page-designer-wrapper" class="content-margin-top">
+
+    <div id="page-designer-sidebar-wrapper">
+        <ul class="page-designer-sidebar-nav">
+            {% include 'quiz/admin/sidebar.html' %}
+        </ul>
+    </div>
+    <div id="page-designer-content-wrapper">
+        <div class="page-designer-content">
+                {% if active_quiz or it_is_new %}
+                    {% include 'quiz/admin/panel.html' %}
+                {% endif %}
+
+        </div>
+    </div>
+</div>

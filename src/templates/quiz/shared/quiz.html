@@ -1,0 +1,39 @@
+<div id="quiz-container">
+    <ul id="quiz-question-list">
+        {% for question in active_quiz.questions %}
+        <li>
+            <div id="quiz-question-container">
+                <div class="only-quiz-edit-mode"><a onclick="quizJs.remove_question(this)">delete</a></div>
+                <div class="only-quiz-edit-mode">
+                    <input type="text" name="question_text" >
+                </div>
+                <div class="only-quiz-user-mode">
+                    <span>{{question.question}}</span>
+                </div>
+                {% set question_index = loop.index %}
+                <ul>
+                {% for answer in question.answers  %}
+                    <li>
+                        <div class="only-quiz-edit-mode">
+                            <input type="checkbox" name="answer_correct" value="{{answer.correct}}">
+                            <input type="text" name="answer_text" value="{{answer.answer_text}}">
+                            <a onclick="quizJs.remove_answer(this)">delete</a>
+                        </div>
+                        <div class="only-quiz-user-mode">
+                            <input type="checkbox" name="answer_correct">
+                            {{answer.answer_text}}
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+                <div class="only-quiz-edit-mode">
+                    <input type="text" value="Add new answer" id="disabled-text-add-answer" onclick="quizJs.add_answer(this)">
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <ul class="pagination">
+        <li class="only-quiz-edit-mode"><a onclick='quizJs.add_question(this)'>+</a></li>
+    </ul>
+</div>
