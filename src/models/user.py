@@ -115,11 +115,15 @@ class User(object):
         string += "firstname,lastname,email,university,school,subject,level of study,year of study,country," \
                   "action points,networking points,practice points,project points,theory points,virtual points \n"
 
-
         for user in users:
-            string += "\"" + str(user[headings[0]]) + "\",\"" + str(user[headings[1]]) + "\",\"" + str(user[headings[2]]) + "\",\"" + str(user[headings[3]]) + "\",\"" \
-                + str(user[headings[4]]) + "\",\"" + str(user[headings[5]]) + "\",\"" + str(user[headings[6]]) + "\",\"" + str(user[headings[7]]) + "\",\""\
-                      + str(user[headings[8]]) + "\",\""
+            # Headings up to points
+            for i in range(0, 9):
+                try:
+                    string += "\"" + str(user[headings[i]]) + "\","
+                except KeyError:
+                    string += ","
+
+            # Points headings
             for i in range(9, len(headings)):
                 string += str(user["points"][headings[i]]) + "\",\""
             string += "\"\n"
