@@ -117,8 +117,8 @@ class User(object):
 
 
         for user in users:
-            string += "\"" + user[headings[0]] + "\",\"" + user[headings[1]] + "\",\"" + user[headings[2]] + "\",\"" + user[headings[3]] + "\",\"" \
-                + user[headings[4]] + "\",\"" + user[headings[5]] + "\",\"" + user[headings[6]] + "\",\"" + user[headings[7]] + "\",\""\
+            string += "\"" + str(user[headings[0]]) + "\",\"" + str(user[headings[1]]) + "\",\"" + str(user[headings[2]]) + "\",\"" + str(user[headings[3]]) + "\",\"" \
+                + str(user[headings[4]]) + "\",\"" + str(user[headings[5]]) + "\",\"" + str(user[headings[6]]) + "\",\"" + str(user[headings[7]]) + "\",\""\
                       + str(user[headings[8]]) + "\",\""
             for i in range(9, len(headings)):
                 string += str(user["points"][headings[i]]) + "\",\""

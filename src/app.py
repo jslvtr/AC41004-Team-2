@@ -590,7 +590,7 @@ def admin_view_profile(user_email):
 def export_users():
     country = request.form['country']
     query_builder = {}
-    if country != "None":
+    if country != "None" and country != "":
         query_builder.update({"country": country})
     university = request.form['university']
     if university != "None" and university != "":
