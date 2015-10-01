@@ -376,6 +376,7 @@ def event_get(event_id):
         if session.contains('email') and session['email'] is not None:
             registered = EventRegister.check_if_registered(session['email'], event_id)
         date = datetime.now()
+        ff = old_event._end < date
         return render_template('items/event.html', event=old_event.to_json(), registered=registered, date=date)
     except NoSuchEventExistException:
         abort(404)

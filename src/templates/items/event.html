@@ -41,7 +41,7 @@
     </h4>
     
     <div class="margin-top event-large-content lora">{{ event.description | safe }}</div>
-    {% if event.end.strftime("%d-%m-%Y at %H:%M") < date.strftime("%d-%m-%Y at %H:%M") %}
+    {% if event.end > date %}
     {% if registered %}
     <span id="registered"><button type="button" class="button-custom button-register indie"
                                   onclick="register_event('{{ event._id }}', this)"><span
