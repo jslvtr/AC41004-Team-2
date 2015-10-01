@@ -1,5 +1,10 @@
 <br><br><br><br><br><br><br><br>
 
+<div id="quiz-list-user-conteiner">
 {% for quiz in quizzes %}
-    <a href="/quiz_profile/{{quiz._id}}">{{quiz.title}}</a>
+    <a href="/quiz_profile/{{quiz._id}}" class="quiz-item-user-conteiner-link"><div class="quiz-item-user-conteiner">
+        <div>{{quiz.title}}</div>
+        <div>FILL IT</div>
+    </div></a>
 {% endfor %}
+</div>

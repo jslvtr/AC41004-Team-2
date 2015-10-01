@@ -1,21 +1,27 @@
-<br><br><br><br><br><br><br><br>
+<br><br><br><br><br>
 
-<table class="table table-bordered">
-
+<table class="table quiz-profile-table" align="center">
+    <thead>
       <tr>
-        <td>Try number:</td>
-        <td>{{quiz_profile.try_number}}</td>
+        <th><h2>Quiz Status</h2></th>
       </tr>
+    </thead>
       <tr>
-        <td>Last try:</td>
+        <td>Tried at::</td>
         <td>{{quiz_profile.last_try}}</td>
       </tr>
       <tr>
         <td>Passed:</td>
+          {% if not quiz_profile %}
+            <i class="fa fa-check"></i>
+          {% else %}
+            <i class="fa fa-check"></i>
+          {% endif %}
         <td>{{quiz_profile.passed}}</td>
       </tr>
-      <tr>
-        <td><a href="/quiz/{{quiz_id}}">Start</a></td>
-      </tr>
-
+      {% if not quiz_profile %}
+          <tr>
+            <td><a href="/quiz/{{quiz_id}}">Start</a></td>
+          </tr>
+      {% endif %}
   </table>
