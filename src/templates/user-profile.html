@@ -47,7 +47,7 @@
             </tr>
             <tr>
                 <td><strong>Year of Study</strong></td>
-                <td> {{profile.data['year']}}</td>
+                <td> {{profile.data['year']|int}}</td>
             </tr>
         </table>
     </div>
@@ -76,43 +76,43 @@
             {% set points = profile.data['points'] %}
             <tr>
                 <td>Action</td>
-                <td> {{ points.action }}</td>
+                <td> {{ points.action|int }}</td>
                 <td>40</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td>Practice</td>
-                <td> {{points.practice}}</td>
+                <td> {{points.practice|int }}</td>
                 <td>40</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td>Theory</td>
-                <td> {{points.theory}}</td>
+                <td> {{points.theory|int }}</td>
                 <td>42</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td>Networking</td>
-                <td> {{points.networking}}</td>
+                <td> {{points.networking|int }}</td>
                 <td>40</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td>Virtual</td>
-                <td> {{points.virtual}}</td>
+                <td> {{points.virtual|int }}</td>
                 <td>n/a</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td>Project</td>
-                <td> {{points.project}}</td>
+                <td> {{points.project|int }}</td>
                 <td>n/a</td>
                 <td>70</td>
             </tr>
             <tr>
                 <td><b>Total</b></td>
-                <td><b>{{totalpoints}}</b></td>
+                <td><b>{{totalpoints|int }}</b></td>
             </tr>
         </table>
     </div>

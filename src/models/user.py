@@ -57,7 +57,7 @@ class User(object):
             "level": "",
             "subject": ""
         })
-        
+
         user.save_to_db()
         return True
 
@@ -119,7 +119,7 @@ class User(object):
         for user in users:
             string += "\"" + user[headings[0]] + "\",\"" + user[headings[1]] + "\",\"" + user[headings[2]] + "\",\"" + user[headings[3]] + "\",\"" \
                 + user[headings[4]] + "\",\"" + user[headings[5]] + "\",\"" + user[headings[6]] + "\",\"" + user[headings[7]] + "\",\""\
-                      + user[headings[8]] + "\",\""
+                      + str(user[headings[8]]) + "\",\""
             for i in range(9, len(headings)):
                 string += str(user["points"][headings[i]]) + "\",\""
             string += "\"\n"
