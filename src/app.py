@@ -24,7 +24,8 @@ from flask import Flask, session, jsonify, request, render_template, redirect, u
 from src.common.sessions import MongoSessionInterface
 import os
 import uuid
-from datetime import datetime, time
+from time import mktime as mktime
+from datetime import datetime
 
 __author__ = 'jslvtr and stamas01 and jkerr123'
 
@@ -117,8 +118,8 @@ def events_page():
                                                           "%d %b " if event['start'].day != event['end'].day else "")),
                                                       event['end'].strftime("{}%H:%M".format(
                                                           "%d %b " if event['start'].day != event['end'].day else "")))
-        event['start'] = int(event['start'].strftime('%s')) * 1000
-        event['end'] = int(event['end'].strftime('%s')) * 1000
+        event['start'] = int(mktime(event['start'].timetuple())) * 1000
+        event['end'] = int(mktime(event['end'].timetuple())) * 1000
         event['url'] = "/event/{}".format(event['id'])
 
     return render_template('items/events.html',
