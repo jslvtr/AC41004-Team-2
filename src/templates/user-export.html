@@ -1,14 +1,14 @@
 <script src="/static/js/countries.js"></script>
 <script src="/static/js/universities.js"></script>
+<script src="/static/js/filter-restrict.js"></script>
 
-<div class="content container">
+<div class="content container edit-uni">
+    <h2>User Export</h2>
     <p>
 
     <form class="form-group" id="export-users" action="/admin/export-users/export" method="POST">
-
-        <label>Country</label> <select class="form-control" id="country" name="country">
-
-
+        <label>Country</label>
+        <select class="form-control" id="country" name="country">
     </select>
         <br>
         <label>Place of Study</label> <select class="form-control" id="university" name="university"
@@ -47,7 +47,82 @@
         <option value="4">4</option>
     </select>
         <br>
-        <br>
+
+    <table class="table table-striped tabled-bordered">
+        <tr>
+        <div class="form-inline">
+        <td><label>Action Points</label></td>
+        <td><input class="form-control" type="text" name="action" onKeyPress="return numbersonly(this, event)"></input></td>
+            <td><select name="action-operator" class="form-control">
+                <option value=">">greater than</option>
+                <option value="<">less than</option>
+                <option value="=">equal to</option>
+            </select></td>
+        </div>
+        </tr>
+
+        <tr>
+        <div class="form-inline">
+        <td><label>Networking Points</label></td>
+        <td><input class="form-control" type="text" name="networking" onKeyPress="return numbersonly(this, event)"></input></td>
+            <td><select name="networking-operator" class="form-control">
+                <option value=">">greater than</option>
+                <option value="<">less than</option>
+                <option value="=">equal to</option>
+            </select></td>
+        </div>
+        </tr>
+
+
+    <tr>
+    <div class="form-inline">
+    <td><label>Practice Points</label></td>
+    <td><input class="form-control" type="text" name="practice" onKeyPress="return numbersonly(this, event)"></input></td>
+        <td><select name="practice-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+
+    <tr>
+    <div class="form-inline">
+    <td><label>Project Points</label></td>
+    <td><input class="form-control" type="text" name="project" onKeyPress="return numbersonly(this, event)"></input></td>
+        <td><select name="project-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+
+    <tr>
+    <div class="form-inline">
+    <td><label>Theory Points</label></td>
+    <td><input class="form-control" type="text" name="theory" onKeyPress="return numbersonly(this, event)"></input></td>
+        <td><select name="theory-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+
+    <tr>
+   <div class="form-inline">
+    <td><label>Virtual Points</label></td>
+    <td><input class="form-control" type="text" name="virtual" onKeyPress="return numbersonly(this, event)"></input></td>
+        <td><select name="virtual-operator" class="form-control">
+            <option value=">">greater than</option>
+            <option value="<">less than</option>
+            <option value="=">equal to</option>
+        </select></td>
+    </div>
+    </tr>
+    </table>
+
         <input class="btn btn-default" type="submit" Value="Export Users">
     </form>
     </p>

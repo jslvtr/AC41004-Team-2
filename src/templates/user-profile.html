@@ -1,15 +1,18 @@
-<div class="content container">
+<div class="content container edit-uni">
     {% if message %}
     <div class="alert alert-danger" role="alert">{{ message }}</div>
     {% elif profile %}
     <h2>Profile</h2>
     {% if permissions == "admin" %}
-    <a class="btn btn-success btn-lg dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
+    <div class="form-group">
+        <a class="btn btn-success btn-md dropdown-menu-right" href="/admin/edit-profile/{{email}}">Edit Profile</a>
+    </div>
     {% else %}
-    <a class="btn btn-success btn-lg dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    <div class="form-group">
+     <a class="btn btn-success btn-md dropdown-menu-right" href="/edit-profile">Edit Profile</a>
+    </div>
     {% endif %}
 
-    </div>
 
     {% if profile.data|length != 0 %}
     <div class="table-responsive">
@@ -35,7 +38,7 @@
                 <td> {{profile.data['country']}}</td>
             </tr>
             <tr>
-                <td><strong>School</strong></td>
+                <td><strong>Department</strong></td>
                 <td> {{profile.data['school']}}</td>
             </tr>
             <tr>

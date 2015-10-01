@@ -7,6 +7,7 @@ from src.common.utils import Utils
 from src.models.event import Event
 from src.models.permissions import Permissions
 
+
 __author__ = 'jslvtr and jkerr123'
 
 
@@ -97,14 +98,20 @@ class User(object):
     @staticmethod
     def export_to_csv(users):
 
+        headings=["firstname", "lastname", "email", "university", "school", "subject", "level", "year", "country", "action", \
+            "networking", "practice", "project", "theory", "virtual"]
         string = ""
+        string += "firstname,lastname,email,university,school,subject,level of study,year of study,country," \
+                  "action points,networking points,practice points,project points,theory points,virtual points \n"
 
-        string += "firstname, lastname, email, university, school, subject, level of study, year of study, points, " \
-            "country, permissions\n"
 
         for user in users:
-            string += "" + user['firstname'] + "," + user['lastname'] + "," + user['email'] + "," + user['university'] + "," \
-                + user['school'] + "," + user['subject'] + "\n"
+            string += "\"" + user[headings[0]] + "\",\"" + user[headings[1]] + "\",\"" + user[headings[2]] + "\",\"" + user[headings[3]] + "\",\"" \
+                + user[headings[4]] + "\",\"" + user[headings[5]] + "\",\"" + user[headings[6]] + "\",\"" + user[headings[7]] + "\",\""\
+                      + user[headings[8]] + "\",\""
+            for i in range(9, len(headings)):
+                string += str(user["points"][headings[i]]) + "\",\""
+            string += "\"\n"
 
         return string
 

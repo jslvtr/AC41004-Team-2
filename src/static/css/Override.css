@@ -36,23 +36,14 @@ body {background-color: #EEE; background-image: url("../img/ticks.png") repeat;}
     
     background-color: #942239;
 }
-@media only screen and (max-width: 767px) {
-    #logo-container {
-        margin-left: 0;
-    }
-    #logo-container img {
-        margin-top: -2px;
-    }
-}
 @media only screen and (max-width: 480px) {
     #logo-container {
         margin-left: 0;
-    }
-    #logo-container img {
-        margin-left: -15px;
-        padding-top: 2px;
-    }
-}
+}}
+@media only screen and (max-width: 767px) {
+    #logo-container {
+        margin-left: 0;
+}}
 #logo-container > a {
     margin-left: 20px;
     padding-top: 5px;
@@ -128,7 +119,7 @@ body {background-color: #EEE; background-image: url("../img/ticks.png") repeat;}
 .hero {
     margin-top: 30px;
     width: 100%;
-    height: 100%;
+    height: 100%
 
     -webkit-box-shadow: 0 10px 6px -6px #777;
        -moz-box-shadow: 0 10px 6px -6px #777;
@@ -136,6 +127,7 @@ body {background-color: #EEE; background-image: url("../img/ticks.png") repeat;}
 }
 .hero img {
     width: 100%;
+    height: 100%;
 }
 
 .content img {
@@ -179,9 +171,7 @@ ul {
     padding: 0;
 }
 
-
-
-
+/* ========================= Events styling ============================= */
 
 
 #event-news-container-center {
@@ -228,6 +218,7 @@ ul {
 
 
 
+
 .events-panel {
     width: 100%;
     height: 80px;
@@ -246,7 +237,6 @@ ul {
     padding: 1px 0;
 
     text-align: center;
-
 
     position: relative;
     z-index: 2;
@@ -336,13 +326,7 @@ ul {
             box-shadow: 2px 0 0 rgba(0,0,0,0.3);
 }
 
-
-
-
-
-
-
-
+/* ========================= News styling ============================= */
 
 
 #news-panel-mine {
@@ -355,30 +339,8 @@ ul {
     text-align: left;
     margin-top: 15px;
 
-    width: 70%;
+    /*width: 70%;*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #news-panel {
@@ -393,17 +355,17 @@ ul {
 #news-panel > h3 {
     padding-left: 20px;    
 }
-@media only screen and (max-width: 767px) {
-    #news-panel {
-        width: 100%;
-        display: block;
-}}
+
 @media only screen and (max-width: 480px) {
     #news-panel {
         width: 100%;
         display: block;
 }}
-
+@media only screen and (max-width: 767px) {
+    #news-panel {
+        width: 100%;
+        display: block;
+}}
 
 .news-open-button {
     width: 30px;
@@ -450,6 +412,7 @@ ul {
     color: #FFF;
 }
 
+/* ======================== pages styling ============================== */
 
 
 .pages {
@@ -476,7 +439,7 @@ ul {
             border-radius: 5px 30px 5px 30px;
 }
 
-
+/* ========================= Custom buttons ============================= */
 
 .button-custom {
     height: 50px;
@@ -521,13 +484,23 @@ ul {
     color: white;
 }
 
+/* ======================== Resising news articles ============================== */
 
+@media screen and (max-width: 767px) {
+    .event-news-large-container {
+        background-color: #FFF;
 
+        border: 2px solid rgba(148,34,34,0.7);
+            -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+           -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+                box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
 
+        margin: 0 auto;
+        margin-top: 80px;
+        margin-bottom: 40px;
+}}
 
-
-
-
+@media screen and (min-width: 767px) {
 .event-news-large-container {
     background-color: #FFF;
 
@@ -540,26 +513,15 @@ ul {
     margin: 0 auto;
     margin-top: 80px;
     margin-bottom: 40px;
-    padding: 30px;
-}
-@media only screen and (max-width: 767px) {
-    .event-news-large-container {
-        width: 85%;
-        padding: 20px;
+    padding: 10px;
 }}
-@media only screen and (max-width: 480px) {
-    .event-news-large-container {
-        width: 95%;
-        padding: 20px;
-}}
+
+/* ======================================================== */
+
 
 .news-large-container h1 {
     color: #942222;
 }
-@media only screen and (max-width: 480px) {
-    .news-large-container h1 {
-        margin-right: 10px;
-}}
 .news-large-container h4 {
     color: #777;
     padding-left: 20px;
@@ -573,19 +535,19 @@ ul {
 
     padding: 0 20px;
 }
+
 .button-register {
     width: 250px;
 
     margin-top: 30px;
     margin-bottom: 10px;
 }
+
 .news-large-content {
     color: #444;
     padding-left: 20px;
     margin-top: 20px;
     margin-bottom: 4px;
-
-    text-align: justify;
 }
 @media only screen and (max-width: 480px) {
     .news-large-content {
@@ -601,18 +563,7 @@ ul {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* ====================================================== */
 
 
 .universal-page {
@@ -622,17 +573,19 @@ ul {
     display: inline-block;
 }
 .uni-page-center {
-    width: 90%;
+    /*width: 90%;*/
     margin: 0 auto;
 }
-@media only screen and (max-width: 767px) {
-    .uni-page-center {
-        width: 85%;
-}}
+
+/*
 @media only screen and (max-width: 480px) {
     .uni-page-center {
         width: 85%;
 }}
+@media only screen and (max-width: 767px) {
+    .uni-page-center {
+        width: 85%;
+}}*/
 
 .universal-page-content {
     width: 58%;
@@ -647,15 +600,15 @@ ul {
     border-bottom: 0;
 
 }
-@media only screen and (max-width: 767px) {
-    .universal-page-content {
-        width: 100%;
-        padding: 0 35px;
-}}
 @media only screen and (max-width: 480px) {
     .universal-page-content {
         width: 100%;
         padding: 0 20px;
+}}
+@media only screen and (max-width: 767px) {
+    .universal-page-content {
+        width: 100%;
+        padding: 0 35px;
 }}
 .universal-page-news {
     width: 38%;
@@ -663,11 +616,11 @@ ul {
     float: right;
     display: inline-block;
 }
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 480px) {
     .universal-page-news {
         width: 100%;
 }}
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 767px) {
     .universal-page-news {
         width: 100%;
 }}
@@ -676,7 +629,7 @@ ul {
 }
 
 
-
+/* ====================================================== */
 
 .no-news .universal-page-news {
     display: none;
@@ -688,52 +641,19 @@ ul {
 }
 
 .no-news {
-    width: 70%;
+    /*width: 70%;*/
 }
-@media only screen and (max-width: 767px) {
-    .no-news {
-        width: 90%;
-}}
 @media only screen and (max-width: 480px) {
     .no-news {
         width: 100%;
 }}
+@media only screen and (max-width: 767px) {
+    .no-news {
+        /*width: 90%;*/
+}}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ====================================================== */
 
 
 #events-panel a {
@@ -813,13 +733,11 @@ td.center.middle {
 
 
 .topNav {
-    z-index: 100;
+    z-index: 1080;
 }
 
 .admin-bar {
     margin-top: 35px;
-    -webkit-border-radius: 0 !important;
-    -moz-border-radius: 0 !important;
     border-radius: 0 !important;
     z-index; 1;
 }
@@ -830,4 +748,32 @@ td.center.middle {
 
 .footer-update {
     background-color: white;
+}
+
+.carbox {
+    height: 370px;
+}
+
+.resizer > img{
+    height: auto;
+    width: auto;
+}
+
+.edit-uni {
+    background-color: #FFF;
+
+    border: 2px solid rgba(0,0,0,0);
+        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+       -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+
+    /*width: 70%;*/
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    /*padding: 30px;*/
+}
+
+.modal-spacer {
+    margin-top: 90px;
 }

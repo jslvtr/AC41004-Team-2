@@ -1,5 +1,8 @@
-<div class="content container">
+<div class="content container edit-uni">
     <h2>User List</h2>
+        <div class="form-group">
+            <a href="/admin/export-users" class="btn btn-success btn-md">Export Users</a>
+        </div>
         <table class="table table-bordered table-striped table-condensed table-responsive">
             <tr class="active"><td><b>Email</b></td><td><b>View Profile</b></td></tr>
             {% for user in users %}
