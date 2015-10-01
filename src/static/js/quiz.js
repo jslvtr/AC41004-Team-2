@@ -70,7 +70,7 @@ function QuizJs(){
                             '</div>'+
                             '<ul></ul>'+
                             '<div class="only-quiz-edit-mode">'+
-                                '<input type="text" id="disabled-text-add-answer" value="Add new answer" onclick="quizJs.add_answer(this)">'+
+                                '<a style="cursor: pointer;" onclick="quizJs.add_answer(this)">Add new answer +</a>'+
                             '</div>'+
                          '</div></li>')
         $(parent).find("#disabled-text-add-answer")
@@ -167,10 +167,7 @@ function QuizJs(){
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function(obj){
-                if (obj.result != "ok")
-                    $("#"+obj.field+"-error-message").html(obj.message)
-                else
-                    location.reload();
+                location.href = obj.relocateTo;
             },
         });
     }

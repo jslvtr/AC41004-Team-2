@@ -945,13 +945,12 @@ def submit_quiz():
         passed = True
     try:
         QuizProfile.get_by_composite_id(uuid.UUID(quiz._id),session['email'])
-        return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+        return jsonify({"result": "ok", "field": "title", "message": "", "relocateTo": "/quiz_profile/"+str(quiz_real.get_id()) }), 200
     except NoSuchQuizProfileExistException as e:
         new_quiz_profile = QuizProfile(uuid.UUID(quiz._id),session['email'],datetime.now(),0,passed)
         new_quiz_profile.save_to_db()
-        user = User.User.find_by_email(session['email'])
-        User.update_user_points(user,"action",quiz_real.get_points() )
-        return jsonify({"result": "ok", "field": "title", "message": ""}), 200
+        User.update_user_points(session['email'],"virtual",quiz_real.get_points())
+        return jsonify({"result": "ok", "field": "title", "message": "", "relocateTo": "/quiz_profile/"+str(quiz_real.get_id())}), 200
 
 
 
