@@ -47,6 +47,17 @@ class User(object):
         user = User(email, encrypted_password.hexdigest(), permissions=Permissions.default().name)
         user.data.update({"points": {"action": 0, "practice": 0, "theory": 0, "networking": 0,
                                      "virtual": 0, "project": 0}})
+        user.data.update({
+            "country": "",
+            "university": "",
+            "school": "",
+            "firstname": "",
+            "lastname": "",
+            "year": "",
+            "level": "",
+            "subject": ""
+        })
+        
         user.save_to_db()
         return True
 
