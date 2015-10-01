@@ -250,3 +250,9 @@
 .quiz-list-user-conteiner > :nth-child(even) > .quiz-item-user-conteiner {
     float: right;
 }
+
+
+.quiz-profile-table
+{
+    width:50%;
+}

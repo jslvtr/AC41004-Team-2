@@ -1,12 +1,22 @@
-<br><br><br><br><br><br><br><br>
+<br><br><br><br><br>
 
-<table class="table table-bordered">
+<table class="table quiz-profile-table" align="center">
+    <thead>
       <tr>
-        <td>Last try:</td>
+        <th><h2>Quiz Status</h2></th>
+      </tr>
+    </thead>
+      <tr>
+        <td>Tried at::</td>
         <td>{{quiz_profile.last_try}}</td>
       </tr>
       <tr>
         <td>Passed:</td>
+          {% if not quiz_profile %}
+            <i class="fa fa-check"></i>
+          {% else %}
+            <i class="fa fa-check"></i>
+          {% endif %}
         <td>{{quiz_profile.passed}}</td>
       </tr>
       {% if not quiz_profile %}
