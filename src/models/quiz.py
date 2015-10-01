@@ -25,6 +25,9 @@ class Quiz:
         self._points = points
         self._id = id_
 
+    def get_id(self):
+        return self._id
+
     def get_title(self):
         return self._title
 
