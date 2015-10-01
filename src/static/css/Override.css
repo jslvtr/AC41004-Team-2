@@ -130,6 +130,12 @@ body {background-color: #EEE; background-image: url("../img/ticks.png") repeat;}
     height: 100%;
 }
 
+@media only screen and (max-width: 768px) {
+    .hero {
+        display: none;
+    }
+}
+
 .content img {
     max-width: 100%;
 }
@@ -771,9 +777,24 @@ td.center.middle {
     margin: 0 auto;
     margin-top: 80px;
     margin-bottom: 40px;
-    /*padding: 30px;*/
+    padding: 5px;
 }
 
 .modal-spacer {
     margin-top: 90px;
+}
+
+#login {
+    background-color: #FFF;
+
+    border: 2px solid rgba(0,0,0,0);
+        -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+       -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+
+    /*width: 70%;*/
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    padding: 20px;
 }
