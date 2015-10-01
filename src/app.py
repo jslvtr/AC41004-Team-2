@@ -602,19 +602,6 @@ def export_users():
     if year != "None":
          query_builder.update({"year": year})
 
-    networking = request.form['networking']
-    if networking != "":
-        networking_points = int(networking)
-        if networking_points != "":
-            networking_operator = request.form['networking-operator']
-            if networking_operator == ">":
-                query_builder.update({"points.networking": {"$gt": networking_points}})
-            elif networking_operator == "<":
-                query_builder.update({"points.networking": {"$lt": networking_points}})
-            elif networking_operator == "=":
-                query_builder.update({"points.networking": networking_points})
-
-
     action = request.form['action']
     if action != "":
         action_points = int(action)
@@ -626,6 +613,18 @@ def export_users():
                 query_builder.update({"points.action": {"$lt": action_points}})
             elif action_operator == "=":
                 query_builder.update({"points.action": action_points})
+
+    networking = request.form['networking']
+    if networking != "":
+        networking_points = int(networking)
+        if networking_points != "":
+            networking_operator = request.form['networking-operator']
+            if networking_operator == ">":
+                query_builder.update({"points.networking": {"$gt": networking_points}})
+            elif networking_operator == "<":
+                query_builder.update({"points.networking": {"$lt": networking_points}})
+            elif networking_operator == "=":
+                query_builder.update({"points.networking": networking_points})
 
 
     practice = request.form['practice']
