@@ -573,9 +573,13 @@ def admin_view_profile(user_email):
             attended_events = profile.get_all_attended(profile.email)
             current_date = datetime.now()
             permissions = User.get_user_permissions(session['email'])
+            user_points = profile.data['points'] if 'points' in profile.data.keys() else None
+            awards = []
+            if user_points is not None:
+                awards = Award.check_user_awards(profile.data['points'])
             return render_template('user-profile.html', email=user_email, profile=profile, events=events, totalpoints=totalpoints,
                                    rank=profile.get_point_rank(), permissions=permissions, date=current_date,
-                                   attended_events=attended_events)
+                                   attended_events=attended_events, awards=awards)
 
     else:
         abort(401)
@@ -596,13 +600,13 @@ def export_users():
         query_builder.update({"school": college})
     subject = request.form['course']
     if subject != "None" and subject != "":
-         query_builder.update({"subject": subject})
+        query_builder.update({"subject": subject})
     level = request.form['level']
     if level != "None":
-         query_builder.update({"level": level})
+        query_builder.update({"level": level})
     year = request.form['yearofstudy']
     if year != "None":
-         query_builder.update({"year": year})
+        query_builder.update({"year": year})
 
     action = request.form['action']
     if action != "":
@@ -627,7 +631,6 @@ def export_users():
                 query_builder.update({"points.networking": {"$lt": networking_points}})
             elif networking_operator == "=":
                 query_builder.update({"points.networking": networking_points})
-
 
     practice = request.form['practice']
     if practice != "":
@@ -679,7 +682,8 @@ def export_users():
 
     users = User.get_by_filtering(query_builder)
     users_csv = User.export_to_csv(users)
-    return Response(users_csv, headers={"Content-Disposition": "attachment; filename=userlist.csv"}, content_type="text/csv")
+    return Response(users_csv, headers={"Content-Disposition": "attachment; filename=userlist.csv"},
+                    content_type="text/csv")
 
 @app.route('/admin/export-users')
 @secure("admin")
