@@ -111,10 +111,10 @@
 }
 
 /*
-
 #quiz-list-user-conteiner{
-      text-align: center;
+
 }
+
 
 .quiz-item-user-conteiner{
     display:inline-block;
@@ -138,6 +138,7 @@
     position: relative;
 
     margin: 0 auto;
+    margin-bottom: 100px;
 }
 @media only screen and (max-width: 767px) {
     #quiz-list-user-conteiner {
